@@ -106,6 +106,7 @@ const Navigation = () => {
         '& > ul:first-of-type': { mt: 0 },
         display: isHorizontal ? { xs: 'block', lg: 'flex' } : 'block'
       }}
+      style={{ marginTop: '15%' }}
     >
       {navGroups}
     </Box>

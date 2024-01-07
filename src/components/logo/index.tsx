@@ -20,7 +20,7 @@ interface Props {
 }
 
 const LogoSection = ({ reverse, isIcon, sx, to }: Props) => (
-  <ButtonBase disableRipple component={Link} to={!to ? APP_DEFAULT_PATH : to} sx={sx} style={{ marginTop: '23%', marginBottom: '33%' }}>
+  <ButtonBase disableRipple component={Link} to={!to ? APP_DEFAULT_PATH : to} sx={sx} >
     {isIcon ? <LogoIcon /> : <Logo reverse={reverse} />}
   </ButtonBase>
 );

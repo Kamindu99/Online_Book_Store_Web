@@ -1,15 +1,14 @@
 // material-ui 
 
 //assets
-import icon from 'assets/images/icon_3.svg';
 
 // ==============================|| LOGO ICON SVG ||============================== //
 
 const LogoIcon = () => {
 
   return (
-    <> 
-      <img src={icon} alt="HNB General Insurance FLEXI" width="50" height="40" style={{ marginRight: '10px' }} />
+    <>
+      <img src={'https://cdn.freelogovectors.net/wp-content/uploads/2015/06/books-3d-png-icons-3.png'} alt="Online Library" width="50" height="40" style={{ marginRight: '10px' }} />
     </>
   );
 };
