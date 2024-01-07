@@ -24,7 +24,11 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "types": [],
+    "types": [
+      "node",
+      "jest",
+      "webpack-env"
+    ],
     "typeRoots": [
       "./types"
     ],
