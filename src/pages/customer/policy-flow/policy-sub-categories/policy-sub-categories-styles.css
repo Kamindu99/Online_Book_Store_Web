@@ -1,0 +1,52 @@
+.widget-container {
+
+  .widget-container-title-container {
+    margin: 20px;
+  }
+
+  .widget-container-title {
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 22px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Add text shadow */
+  }
+
+  .widget-container-description {
+    text-align: center;
+    color: #FFC107;
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Add text shadow */
+  }
+
+  .widget-container-item {
+
+    .square-button {
+      background-color: #2A4182;
+      background-image: url('../../../../assets/images/customer/policy-widgets-background.png');
+      background-size: cover;
+      color: white;
+      border-radius: 16px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+      .title {
+        color: white;
+      }
+
+      .description {
+        color: #FFC107;
+        font-size: small;
+      }
+
+      @media (max-width: 600px) {
+        height: 171px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+}
