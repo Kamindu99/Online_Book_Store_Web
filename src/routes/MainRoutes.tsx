@@ -6,6 +6,9 @@ import CommonLayout from 'layout/CommonLayout';
 import MainLayout from 'layout/MainLayout';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
+//book master
+import List from 'pages/book-management/book-master/list/List';
+
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
 const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
@@ -43,7 +46,16 @@ const MainRoutes = {
               element: <Dashboard />
             }
           ]
-        }, 
+        },
+        {
+          path: 'book-management',
+          children: [
+            {
+              path: 'list',
+              element: <List />
+            }
+          ]
+        }
       ]
     },
     {
