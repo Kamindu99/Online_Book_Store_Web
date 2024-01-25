@@ -92,7 +92,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
                     <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                         <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
                         <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddEdit} size="small">
-                            Add
+                            Add New
                         </Button>
 
                     </Stack>
@@ -151,9 +151,31 @@ const List = () => {
             name: 'Madol Duwa',
             price: 'Rs. 250.00',
             author: 'Martin Wickramasinghe',
-            addedDate: '2021-09-01'
+            addedDate: '2023-09-01'
+        },
+        {
+            id: 2,
+            name: 'Nidhanaya',
+            price: 'Rs. 320.00',
+            author: 'J.B. Disanayake',
+            addedDate: '2024-01-05'
+        },
+        {
+            id: 3,
+            name: 'Gehenu Lamai',
+            price: 'Rs. 200.00',
+            author: 'Karunasena Jayalath',
+            addedDate: '2021-05-01'
+        },
+        {
+            id: 4,
+            name: 'Sulanga Wage Avidin',
+            price: 'Rs. 430.00',
+            author: 'Sujeeva Prasannaarachchi',
+            addedDate: '2022-09-01'
         }
     ])
+
     const [customer, setCustomer] = useState<any>(null);
     const [add, setAdd] = useState<boolean>(false);
 
