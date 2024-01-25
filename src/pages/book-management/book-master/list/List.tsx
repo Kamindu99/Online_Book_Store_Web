@@ -31,7 +31,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import AddCustomer from 'sections/book-management/book-master/AddCustomer';
+import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -222,7 +222,7 @@ const List = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddCustomer customer={customer} onCancel={handleAdd} />
+                <AddEditBook customer={customer} onCancel={handleAdd} />
             </Dialog>
         </>
     )
