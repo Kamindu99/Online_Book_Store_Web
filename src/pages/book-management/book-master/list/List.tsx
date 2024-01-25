@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
+    Dialog,
     Stack,
     Table,
     TableBody,
@@ -18,6 +19,7 @@ import {
 // third-party
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 import {
     GlobalFilter,
@@ -29,6 +31,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import AddCustomer from 'sections/book-management/book-master/AddCustomer';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -142,7 +145,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 
 const List = () => {
 
-    const [data, setData] = useState<dataProps[]>([
+    const bookdata: dataProps[] = ([
         {
             id: 1,
             name: 'Madol Duwa',
@@ -151,11 +154,13 @@ const List = () => {
             addedDate: '2021-09-01'
         }
     ])
+    const [customer, setCustomer] = useState<any>(null);
+    const [add, setAdd] = useState<boolean>(false);
 
-    const handleAddEdit = () => {
-        setData(data)
-        window.location.replace('/user-management/create')
-    }
+    const handleAdd = () => {
+        setAdd(!add);
+        if (customer && !add) setCustomer([]);
+    };
 
     const columns = useMemo(
         () =>
@@ -204,9 +209,21 @@ const List = () => {
                 <ScrollX>
                     <ReactTable columns={columns}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={data} handleAddEdit={handleAddEdit} />
+                        data={bookdata} handleAddEdit={handleAdd} />
                 </ScrollX>
             </MainCard>
+            <Dialog
+                maxWidth="sm"
+                TransitionComponent={PopupTransition}
+                keepMounted
+                fullWidth
+                onClose={handleAdd}
+                open={add}
+                sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <AddCustomer customer={customer} onCancel={handleAdd} />
+            </Dialog>
         </>
     )
 };
