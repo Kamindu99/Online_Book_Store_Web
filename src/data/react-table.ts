@@ -65,25 +65,7 @@ const newPerson = (index: number) => {
     about: tempData.text.sentence,
     avatar: tempData.number.status(1, 10),
     skills: tempData.skill,
-    time: tempData.time,
-    date: tempData.date,
-    modulenames: tempData.modulename,
-    menuname: tempData.menuname,
-    menuaction: tempData.menuaction,
-    url: tempData.url,
-    keyvalue: tempData.keyvalue,
-    activitytime: tempData.activitytime,
-    deptname: tempData.deptname,
-    rolenames: tempData.rolename,
-    nic: tempData.nic,
-    policytype: tempData.policytype,
-    product: tempData.product,
-    locationcode: tempData.locationcode,
-    locationname: tempData.locationname,
-    locationdesc: tempData.locationdesc,
-    province: tempData.province,
-    desctrict: tempData.descrict,
-
+    time: tempData.time
   };
 };
 

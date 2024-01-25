@@ -37,30 +37,6 @@ export interface UploadMultiFileProps extends DropzoneOptions {
   setFieldValue: (field: string, value: any) => void;
 }
 
-export interface UploadMultiFileNicFrontProps extends DropzoneOptions {
-  files1?: CustomFile[] | null;
-  error?: boolean;
-  showList1?: boolean;
-  type?: DropzopType;
-  sx?: SxProps<Theme>;
-  onUpload?: VoidFunction;
-  onRemove?: (file: File | string) => void;
-  onRemoveAll?: VoidFunction;
-  setFieldValue: (field: string, value: any) => void;
-}
-export interface UploadMultiFileNicBackProps extends DropzoneOptions {
-  files2?: CustomFile[] | null;
-  error?: boolean;
-  showList2?: boolean;
-  type?: DropzopType;
-  sx?: SxProps<Theme>;
-  onUpload?: VoidFunction;
-  onRemove?: (file: File | string) => void;
-  onRemoveAll?: VoidFunction;
-  setFieldValue: (field: string, value: any) => void;
-}
-
-
 export interface FilePreviewProps {
   showList?: boolean;
   type?: DropzopType;

@@ -136,19 +136,5 @@
   "utils": "Utils",
   "widgets": "Widgets",
   "More Items": "More Items",
-  "home": "Home",
-  "admin": "Admin",
-  "agent": "Agent",
-  "admin-dashboard": "Dashboard",
-  "admin-member-management": "Member Management",
-  "introducers": "Introducers",
-  "transactions": "Transactions",
-  "dashboard-admin": "Dashboard",
-  "hr": "Library Management",
-  "library-management": "Library Management",
-  "role-creation": "Books Management",
-  "para-creation": "Parameter Management",
-  "users": "Users",
-  "parameter": "Parameter",
-  "action": "Action"
+  "home": "Home"
 }

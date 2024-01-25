@@ -19,7 +19,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 
-const prodImage = require('assets/images/e-commerce');
+const prodImage = require.context('assets/images/e-commerce', true);
 
 // ==============================|| PRODUCT CARD ||============================== //
 

@@ -5,6 +5,9 @@ import { Box, Button, Container, CardMedia, Divider, Grid, Link, Stack, Typograp
 // third party
 import { motion } from 'framer-motion';
 
+// project import
+import useConfig from 'hooks/useConfig';
+
 // assets
 import { SendOutlined } from '@ant-design/icons';
 
@@ -17,7 +20,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 // types
 import { ThemeDirection, ThemeMode } from 'types/config';
 
-import dashImage from 'assets/images/landing/img-footer-theme1.png';
+const dashImage = require.context('assets/images/landing', true);
 
 // link - custom style
 const FooterLink = styled(Link)(({ theme }) => ({
@@ -38,6 +41,7 @@ type showProps = {
 
 const FooterBlock = ({ isFull }: showProps) => {
   const theme = useTheme();
+  const { presetColor } = useConfig();
   const textColor = theme.palette.mode === ThemeMode.DARK ? 'text.primary' : 'background.paper';
 
   const linkSX = {
@@ -98,7 +102,7 @@ const FooterBlock = ({ isFull }: showProps) => {
         >
           <CardMedia
             component="img"
-            image={dashImage}
+            image={dashImage(`./img-footer-${presetColor}.png`)}
             sx={{
               display: { xs: 'none', md: 'block' },
               width: '55%',

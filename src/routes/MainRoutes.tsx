@@ -10,23 +10,17 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
 const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
 const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-password')));
-const AuthResetPassword = Loadable(lazy(() => import('pages/auth/change-password')));
+const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
 const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 const AuthCodeVerification = Loadable(lazy(() => import('pages/auth/code-verification')));
 
-// books routing
-const HrUserManagementRoleCreation = Loadable(lazy(() => import('pages/book-management/books-maintains/booksList/list')))
-const HrUserManagementRoleCreationCreateEditView = Loadable(lazy(() => import('pages/book-management/books-maintains/books-add-edit/create-edit-view')))
-const HrUserManagementParameter = Loadable(lazy(() => import('pages/parameter/book-category/book-category')))
-
-//dashboard routing
-const AdminDashboard = Loadable(lazy(() => import('pages/dashboard/admin/home/create-edit-view')));
-
-//maintenance routing
 const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/404')));
 const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500')));
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
+
+// render - home page
+const Dashboard = Loadable(lazy(() => import('pages/home/dashboard')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -42,37 +36,14 @@ const MainRoutes = {
       ),
       children: [
         {
-          path: '/dashboard',
+          path: 'home',
           children: [
             {
-              path: 'admin',
-              element: <AdminDashboard />
+              path: 'dashboard',
+              element: <Dashboard />
             }
-
           ]
-        },
-        {
-          path: '/books-management',
-          children: [
-            {
-              path: 'books',
-              children: [
-                {
-                  path: 'books-list',
-                  element: <HrUserManagementRoleCreation />
-                },
-                {
-                  path: 'books-list/create-edit-view/:actionType/:userId',
-                  element: <HrUserManagementRoleCreationCreateEditView />
-                },
-                {
-                  path: 'parameter',
-                  element: <HrUserManagementParameter />
-                }
-              ]
-            },
-          ]
-        }
+        }, 
       ]
     },
     {

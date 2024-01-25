@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Button, Grid, Stack, Typography } from '@mui/material';
@@ -12,11 +12,10 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // types
 import { ThemeMode } from 'types/config';
-import { Link as RouterLink } from 'react-router-dom';
 
 // ============================|| STATIC - CODE VERIFICATION ||============================ //
 
-const AuthCodeVerification = ({ isDemo = false }: { isDemo?: boolean }) => {
+const AuthCodeVerification = () => {
   const theme = useTheme();
   const [otp, setOtp] = useState<string>();
 
@@ -49,7 +48,7 @@ const AuthCodeVerification = ({ isDemo = false }: { isDemo?: boolean }) => {
       </Grid>
       <Grid item xs={12}>
         <AnimateButton>
-          <Button component={Link} to={isDemo ? '/auth/reset-password' : '/reset-password'} disableElevation fullWidth size="large" type="submit" variant="contained">
+          <Button disableElevation fullWidth size="large" type="submit" variant="contained">
             Continue
           </Button>
         </AnimateButton>
@@ -57,13 +56,7 @@ const AuthCodeVerification = ({ isDemo = false }: { isDemo?: boolean }) => {
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="space-between" alignItems="baseline">
           <Typography>Did not receive the email? Check your spam filter, or</Typography>
-          <Typography 
-          variant="h6"
-          component={RouterLink}
-          sx={{ minWidth: 85, ml: 2, textDecoration: 'none', cursor: 'pointer' }} 
-          color="primary" 
-          to={isDemo ? '/auth/check-mail' : '/check-mail'}
-          >
+          <Typography variant="body1" sx={{ minWidth: 85, ml: 2, textDecoration: 'none', cursor: 'pointer' }} color="primary">
             Resend code
           </Typography>
         </Stack>

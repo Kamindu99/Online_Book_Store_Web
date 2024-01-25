@@ -31,25 +31,6 @@ const skills = [
 ];
 
 const time = ['just now', '1 day ago', '2 min ago', '2 days ago', '1 week ago', '1 year ago', '5 months ago', '3 hours ago', '1 hour ago'];
-const modulenames = ['2024-01-02'];
-const menuname = ['Menu Action List', 'Dashboard', 'Users', 'Role Creation'];
-const menuaction = ['CREATE', 'VIEW'];
-const keyvalue = ['0 -Code ID', '1 -NIC'];
-const url = ['/user-management/menu-action-list', '/user-management/dashboard', '/user-management/user-list', '/user-management/role-creation'];
-const date = ['2023-09-13', '2023-09-18', '2023-02-10', '2023-01-05'];
-const activitytime = ['15:43:36', '15:43:20', '15:43:30', '	14:43:36', '15:40:36'];
-const deptname = ['Default'];
-const rolenames = ['Madol Duwa', 'Hath Pana'];
-const nic = ['997654232V', '923543129V', '976543459V', '934254765V', '199817302837', '209817302837'];
-const policytype = ['Motor'];
-const product = ['Fire'];
-const locationcode = ['Loc1', 'Loc2', 'Loc3', 'Loc4'];
-const locationname = ['MC', 'Kandy', 'Colombo', 'Galle'];
-const locationdesc = ['Magestic City', 'Kandy', 'Colombo', 'Galle'];
-const province = ['Western', 'Central', 'Western', 'Southern'];
-const descrict = ['Colombo', 'Kandy', 'Colombo', 'Galle'];
-
-
 
 function mockData(index: number) {
   return {
@@ -71,12 +52,12 @@ function mockData(index: number) {
     name: {
       first: chance.first(),
       last: chance.last(),
-      full: chance.name(),
+      full: chance.name()
     },
     text: {
       title: chance.sentence({ words: chance.integer({ min: 4, max: 12 }) }),
       sentence: chance.sentence(),
-      description: chance.paragraph,
+      description: chance.paragraph
     },
     number: {
       percentage: chance.integer({ min: 0, max: 100 }),
@@ -90,26 +71,7 @@ function mockData(index: number) {
       avatar: (index: number) => `avatar_${index}`
     },
     skill: lodash.sampleSize(skills, chance.integer({ min: 2, max: 6 })),
-    time: lodash.sampleSize(time),
-    modulename: lodash.sampleSize(modulenames, chance.integer({ min: 2, max: 4 })),
-    menuname: lodash.sampleSize(menuname),
-    menuaction: lodash.sampleSize(menuaction),
-    url: lodash.sampleSize(url),
-    keyvalue: lodash.sampleSize(keyvalue),
-    date: lodash.sampleSize(date),
-    activitytime: lodash.sampleSize(activitytime),
-    deptname: lodash.sampleSize(deptname),
-    rolename: lodash.sampleSize(rolenames),
-    nic: lodash.sampleSize(nic),
-    policytype: lodash.sampleSize(policytype),
-    product: lodash.sampleSize(product),
-    locationcode: lodash.sampleSize(locationcode),
-    locationname: lodash.sampleSize(locationname),
-    locationdesc: lodash.sampleSize(locationdesc),
-    province: lodash.sampleSize(province),
-    descrict: lodash.sampleSize(descrict)
-
-
+    time: lodash.sampleSize(time)
   };
 }
 

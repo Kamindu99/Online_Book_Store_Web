@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
-import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack } from '@mui/material';
+import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -27,15 +27,15 @@ const AuthForgotPassword = () => {
     <>
       <Formik
         initialValues={{
-          userid: '',
+          email: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          userid: Yup.string().max(255).required('userid is required')
+          email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await resetPassword(values.userid).then(
+            await resetPassword(values.email).then(
               () => {
                 setStatus({ success: true });
                 setSubmitting(false);
@@ -80,22 +80,22 @@ const AuthForgotPassword = () => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="userid-forgot">User ID</InputLabel>
+                  <InputLabel htmlFor="email-forgot">Email Address</InputLabel>
                   <OutlinedInput
                     fullWidth
-                    error={Boolean(touched.userid && errors.userid)}
-                    id="userid-forgot"
-                    type="text"
-                    value={values.userid}
-                    name="userid"
+                    error={Boolean(touched.email && errors.email)}
+                    id="email-forgot"
+                    type="email"
+                    value={values.email}
+                    name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter your user id"
+                    placeholder="Enter email address"
                     inputProps={{}}
                   />
-                  {touched.userid && errors.userid && (
-                    <FormHelperText error id="helper-text-userid-forgot">
-                      {errors.userid}
+                  {touched.email && errors.email && (
+                    <FormHelperText error id="helper-text-email-forgot">
+                      {errors.email}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -105,13 +105,13 @@ const AuthForgotPassword = () => {
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
               )}
-              {/* <Grid item xs={12} sx={{ mb: -2 }}>
+              <Grid item xs={12} sx={{ mb: -2 }}>
                 <Typography variant="caption">Do not forgot to check SPAM box.</Typography>
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Reset Password
+                    Send Password Reset Email
                   </Button>
                 </AnimateButton>
               </Grid>

@@ -1,21 +1,21 @@
 import { Link } from 'react-router-dom';
 
 // material-ui
-// import { useTheme } from '@mui/material/styles';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Box, Button, Grid, Divider, Typography, useMediaQuery } from '@mui/material';
 
 // project import
-// import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/useAuth';
 import AnimateButton from 'components/@extended/AnimateButton';
 import AuthWrapper from 'sections/auth/AuthWrapper';
 
 // ================================|| CHECK MAIL ||================================ //
 
-const CheckMail = ({ isDemo = false }: { isDemo?: boolean }) => {
-  // const theme = useTheme();
-  // const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+const CheckMail = () => {
+  const theme = useTheme();
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // const { login } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <AuthWrapper>
@@ -32,7 +32,7 @@ const CheckMail = ({ isDemo = false }: { isDemo?: boolean }) => {
           <AnimateButton>
             <Button
               component={Link}
-              to={isDemo ? '/auth/code-verification' : '/code-verification'}
+              to={isLoggedIn ? '/auth/login' : '/login'}
               disableElevation
               fullWidth
               size="large"
@@ -40,15 +40,15 @@ const CheckMail = ({ isDemo = false }: { isDemo?: boolean }) => {
               variant="contained"
               color="primary"
             >
-              Ok
+              Sign in
             </Button>
           </AnimateButton>
         </Grid>
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <Divider>
             <Typography variant={matchDownSM ? 'subtitle1' : 'h5'}>Sign up with</Typography>
           </Divider>
-        </Grid> */}
+        </Grid>
       </Grid>
     </AuthWrapper>
   );

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,18 +20,10 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "types": [
-      "node",
-      "jest",
-      "webpack-env"
-    ],
-    "typeRoots": [
-      "./types"
-    ],
+    "types": ["node", "jest", "webpack-env"],
+    "typeRoots": ["./types"],
     "baseUrl": "src",
     "downlevelIteration": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

@@ -24,6 +24,7 @@ import {
 
 // third-party
 import { CSVLink } from 'react-csv';
+import { Headers } from 'react-csv/components/CommonPropTypes';
 import { Column, ColumnInstance, HeaderGroup, Row, SortingRule } from 'react-table';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDrop, useDrag, useDragLayer, DragLayerMonitor, DropTargetMonitor } from 'react-dnd';
@@ -496,7 +497,7 @@ export const SortingSelect = ({ sortBy, setSortBy, allColumns }: SortingSelectPr
 interface CSVExportProps {
   data: never[] | any[];
   filename: string;
-  headers?: any;
+  headers?: Headers;
 }
 
 export const CSVExport = ({ data, filename, headers }: CSVExportProps) => {

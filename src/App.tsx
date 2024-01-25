@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
 
-import Snackbar from 'components/@extended/Snackbar';
 import Loader from 'components/Loader';
 import Locales from 'components/Locales';
 import RTLLayout from 'components/RTLLayout';
 import ScrollTop from 'components/ScrollTop';
+import Snackbar from 'components/@extended/Snackbar';
 import Notistack from 'components/third-party/Notistack';
 
 import { dispatch } from 'store';

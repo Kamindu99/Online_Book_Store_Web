@@ -8,7 +8,7 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
-  // Link,
+  Link,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -51,17 +51,17 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
     <>
       <Formik
         initialValues={{
-          userid: 'info@codedthemes.com',
+          email: 'info@codedthemes.com',
           password: '123456',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          userid: Yup.string().max(255).required('User id is required'),
+          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login(values.userid, values.password);
+            await login(values.email, values.password);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -81,21 +81,21 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="userid-login">User ID</InputLabel>
+                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
                   <OutlinedInput
-                    id="userid-login"
-                    type="text"
-                    value={values.userid}
-                    name="userid"
+                    id="email-login"
+                    type="email"
+                    value={values.email}
+                    name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter user id"
+                    placeholder="Enter email address"
                     fullWidth
-                    error={Boolean(touched.userid && errors.userid)}
+                    error={Boolean(touched.email && errors.email)}
                   />
-                  {touched.userid && errors.userid && (
-                    <FormHelperText error id="standard-weight-helper-text-userid-login">
-                      {errors.userid}
+                  {touched.email && errors.email && (
+                    <FormHelperText error id="standard-weight-helper-text-email-login">
+                      {errors.email}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -149,9 +149,9 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                     }
                     label={<Typography variant="h6">Keep me sign in</Typography>}
                   />
-                  {/* <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
+                  <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
                     Forgot Password?
-                  </Link> */}
+                  </Link>
                 </Stack>
               </Grid>
               {errors.submit && (
@@ -162,29 +162,10 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Sign In
+                    Login
                   </Button>
                 </AnimateButton>
-                
               </Grid>
-              <Grid item xs={12}>
-              <Stack  alignItems="center">
-              <Typography
-              component={RouterLink}
-              to={isDemo ? '/auth/forgot-password' : '/forgot-password'} 
-              // to={isLoggedIn ? '/auth/register' : '/register'}
-              variant="h6"
-              sx={{ textDecoration: 'none' }}
-              color="primary"
-            >
-              Forgot Password?
-            </Typography>
-              {/* <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="primary">
-                    Forgot Password?
-                  </Link> */}
-                  </Stack>
-              </Grid>
-              
             </Grid>
           </form>
         )}

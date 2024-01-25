@@ -8,7 +8,7 @@ import Avatar from 'components/@extended/Avatar';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { ReactNode } from 'react';
 
-const avatarImage = require('assets/images/users');
+const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| PRODUCT DETAILS - REVIEW ||============================== //
 

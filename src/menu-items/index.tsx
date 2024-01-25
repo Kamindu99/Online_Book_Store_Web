@@ -1,14 +1,13 @@
 // project import
+import home from './home';
 
 // types
 import { NavItemType } from 'types/menu';
-import dashboard from './dashboard';
-import hr from './hr';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems: { items: NavItemType[] } = {
-  items: [dashboard, hr]
+  items: [home]
 };
 
 export default menuItems;
