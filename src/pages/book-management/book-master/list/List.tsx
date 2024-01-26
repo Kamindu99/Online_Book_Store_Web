@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
+    Chip,
     Dialog,
     Stack,
     Table,
@@ -17,9 +18,9 @@ import {
 } from '@mui/material';
 
 // third-party
+import { PopupTransition } from 'components/@extended/Transitions';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import { PopupTransition } from 'components/@extended/Transitions';
 
 import {
     GlobalFilter,
@@ -28,10 +29,10 @@ import {
 
 // project import
 import { PlusOutlined } from '@ant-design/icons';
-import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
+import { ReactTableProps, dataProps } from './types/types';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -227,8 +228,18 @@ const List = () => {
                 },
                 {
                     Header: 'Status',
-                    accessor: 'status'
-                }
+                    accessor: 'status',
+                    Cell: ({ value }: { value: string }) => {
+                        switch (value) {
+                            case 'Active':
+                                return <Chip color="error" label="Active" size="small" variant="light" />;
+                            case 'Disposed':
+                                return <Chip color="success" label="Disposed" size="small" variant="light" />;
+                            default:
+                                return <Chip color="info" label="Active" size="small" variant="light" />;
+                        }
+                    }
+                },
             ] as Column[],
         []
     );
