@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
+    Dialog,
     Stack,
     Table,
     TableBody,
@@ -18,6 +19,7 @@ import {
 // third-party
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 import {
     GlobalFilter,
@@ -29,6 +31,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -89,7 +92,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
                     <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                         <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
                         <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddEdit} size="small">
-                            Add
+                            Add New
                         </Button>
 
                     </Stack>
@@ -142,29 +145,65 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 
 const List = () => {
 
-    const [data, setData] = useState<dataProps[]>([
+    const bookdata: dataProps[] = ([
         {
             id: 1,
-            name: 'Admin',
-            email: 'admin@gmail.com',
-            phone: '0715273881',
-            address: 'Nugegoda, Colombo',
-            city: 'Nugegoda',
+            name: 'Madol Duwa',
+            author: 'Martin Wickramasinghe',
+            disposedDate: '2021-09-01',
+            reason: 'Damaged'
         },
         {
             id: 2,
-            name: 'User 1',
-            email: 'user1@gmail.com',
-            phone: '0715273881',
-            address: 'Nugegoda, Colombo',
-            city: 'Nugegoda',
+            name: 'Nidhanaya',
+            author: 'J.B. Disanayake',
+            disposedDate: '2024-01-05',
+            reason: 'Damaged'
+        },
+        {
+            id: 3,
+            name: 'Gehenu Lamai',
+            author: 'Karunasena Jayalath',
+            disposedDate: '2021-05-01',
+            reason: 'Damaged'
+        },
+        {
+            id: 4,
+            name: 'Sulanga Wage Avidin',
+            author: 'Sujeeva Prasannaarachchi',
+            disposedDate: '2022-09-01',
+            reason: 'Damaged'
+        },
+        {
+            id: 5,
+            name: 'Nidhanaya',
+            author: 'J.B. Disanayake',
+            disposedDate: '2024-01-05',
+            reason: 'Damaged'
+        },
+        {
+            id: 6,
+            name: 'Gehenu Lamai',
+            author: 'Karunasena Jayalath',
+            disposedDate: '2021-05-01',
+            reason: 'Damaged'
+        },
+        {
+            id: 7,
+            name: 'Sulanga Wage Avidin',
+            author: 'Sujeeva Prasannaarachchi',
+            disposedDate: '2022-09-01',
+            reason: 'Damaged'
         }
     ])
 
-    const handleAddEdit = () => {
-        setData(data)
-        window.location.replace('/user-management/create')
-    }
+    const [customer, setCustomer] = useState<any>(null);
+    const [add, setAdd] = useState<boolean>(false);
+
+    const handleAdd = () => {
+        setAdd(!add);
+        if (customer && !add) setCustomer([]);
+    };
 
     const columns = useMemo(
         () =>
@@ -192,20 +231,16 @@ const List = () => {
                     accessor: 'name'
                 },
                 {
-                    Header: 'Email',
-                    accessor: 'email'
+                    Header: 'Author',
+                    accessor: 'author'
                 },
                 {
-                    Header: 'Phone',
-                    accessor: 'phone'
+                    Header: 'Disposed Date',
+                    accessor: 'disposedDate'
                 },
                 {
-                    Header: 'Address',
-                    accessor: 'address'
-                },
-                {
-                    Header: 'City',
-                    accessor: 'city'
+                    Header: 'Reason',
+                    accessor: 'reason'
                 }
             ] as Column[],
         []
@@ -217,9 +252,21 @@ const List = () => {
                 <ScrollX>
                     <ReactTable columns={columns}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={data} handleAddEdit={handleAddEdit} />
+                        data={bookdata} handleAddEdit={handleAdd} />
                 </ScrollX>
             </MainCard>
+            <Dialog
+                maxWidth="sm"
+                TransitionComponent={PopupTransition}
+                keepMounted
+                fullWidth
+                onClose={handleAdd}
+                open={add}
+                sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <AddEditBook customer={customer} onCancel={handleAdd} />
+            </Dialog>
         </>
     )
 };

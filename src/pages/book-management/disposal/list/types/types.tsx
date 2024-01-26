@@ -3,10 +3,9 @@ import { Column, HeaderGroup } from 'react-table';
 export interface dataProps {
     id?: number;
     name?: string;
-    email?: string;
-    phone?: string;
-    address?: string;
-    city?: string;
+    author?: string;
+    disposedDate?: string;
+    reason?: string;
 }
 
 export interface ReactTableProps {
