@@ -239,7 +239,7 @@ const List = () => {
                                 return <Chip color="info" label="Active" size="small" variant="light" />;
                         }
                     }
-                },
+                }
             ] as Column[],
         []
     );
