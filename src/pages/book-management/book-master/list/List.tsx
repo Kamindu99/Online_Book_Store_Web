@@ -151,28 +151,32 @@ const List = () => {
             name: 'Madol Duwa',
             price: 'Rs. 250.00',
             author: 'Martin Wickramasinghe',
-            addedDate: '2023-09-01'
+            addedDate: '2023-09-01',
+            status: 'Active'
         },
         {
             id: 2,
             name: 'Nidhanaya',
             price: 'Rs. 320.00',
             author: 'J.B. Disanayake',
-            addedDate: '2024-01-05'
+            addedDate: '2024-01-05',
+            status: 'Active'
         },
         {
             id: 3,
             name: 'Gehenu Lamai',
             price: 'Rs. 200.00',
             author: 'Karunasena Jayalath',
-            addedDate: '2021-05-01'
+            addedDate: '2021-05-01',
+            status: 'Active'
         },
         {
             id: 4,
             name: 'Sulanga Wage Avidin',
             price: 'Rs. 430.00',
             author: 'Sujeeva Prasannaarachchi',
-            addedDate: '2022-09-01'
+            addedDate: '2022-09-01',
+            status: 'Active'
         }
     ])
 
@@ -220,6 +224,10 @@ const List = () => {
                 {
                     Header: 'Added Date',
                     accessor: 'addedDate'
+                },
+                {
+                    Header: 'Status',
+                    accessor: 'status'
                 }
             ] as Column[],
         []

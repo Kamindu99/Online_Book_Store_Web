@@ -31,7 +31,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import AddEditBook from 'sections/book-management/book-master/AddEditBook';
+import AddEditDisposal from 'sections/book-management/disposal/AddEditDisposal';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -143,7 +143,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 
 // ==============================|| List ||============================== //
 
-const List = () => {
+const DisposalList = () => {
 
     const bookdata: dataProps[] = ([
         {
@@ -176,21 +176,21 @@ const List = () => {
         },
         {
             id: 5,
-            name: 'Nidhanaya',
+            name: 'Nuwan Renu',
             author: 'J.B. Disanayake',
             disposedDate: '2024-01-05',
             reason: 'Damaged'
         },
         {
             id: 6,
-            name: 'Gehenu Lamai',
+            name: 'Loku Nena',
             author: 'Karunasena Jayalath',
             disposedDate: '2021-05-01',
             reason: 'Damaged'
         },
         {
             id: 7,
-            name: 'Sulanga Wage Avidin',
+            name: 'Tharu Walalla',
             author: 'Sujeeva Prasannaarachchi',
             disposedDate: '2022-09-01',
             reason: 'Damaged'
@@ -265,10 +265,10 @@ const List = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddEditBook customer={customer} onCancel={handleAdd} />
+                <AddEditDisposal customer={customer} onCancel={handleAdd} />
             </Dialog>
         </>
     )
 };
 
-export default List;
+export default DisposalList;

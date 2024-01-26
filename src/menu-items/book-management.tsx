@@ -18,10 +18,17 @@ const bookmanagement: NavItemType = {
     type: 'group',
     children: [
         {
-            id: 'list',
-            title: <FormattedMessage id="list" />,
+            id: 'master-list',
+            title: <FormattedMessage id="master-list" />,
             type: 'item',
-            url: '/book-management/list',
+            url: '/book-management/book-master/list',
+            icon: icons.TeamOutlined,
+        },
+        {
+            id: 'disposal-list',
+            title: <FormattedMessage id="disposal-list" />,
+            type: 'item',
+            url: '/book-management/book-disposal/list',
             icon: icons.TeamOutlined,
         }
     ]

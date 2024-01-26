@@ -136,5 +136,7 @@
   "utils": "Utils",
   "widgets": "Widgets",
   "More Items": "More Items",
-  "home": "Home"
+  "home": "Home",
+  "master-list": "Books List",
+  "disposal-list": "Disposal List"
 }

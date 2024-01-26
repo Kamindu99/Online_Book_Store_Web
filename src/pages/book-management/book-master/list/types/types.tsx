@@ -5,6 +5,7 @@ export interface dataProps {
     name?: string;
     author?: string;
     price?: string;
+    status?: string;
     addedDate?: string;
 }
 

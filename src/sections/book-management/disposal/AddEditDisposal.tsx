@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import AlertBookDelete from './AlertBookDelete';
+import AlertBookDelete from './AlertDisposalDelete';
 
 // third-party
 import { Form, FormikProvider, FormikValues, useFormik } from 'formik';
@@ -39,15 +39,15 @@ const getInitialValues = (customer: FormikValues | null) => {
     const newCustomer = {
         name: '',
         author: '',
-        price: '',
-        addeddate: '',
+        disposedate: '',
+        reason: '',
         orderStatus: ''
     };
 
     if (customer) {
         newCustomer.name = customer.name;
-        newCustomer.price = customer.price;
-        newCustomer.addeddate = customer.addeddate;
+        newCustomer.disposedate = customer.disposedate;
+        newCustomer.reason = customer.reason;
         return _.merge({}, newCustomer, customer);
     }
 
@@ -67,8 +67,8 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
     const CustomerSchema = Yup.object().shape({
         name: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
-        price: Yup.string().max(255).required('Price is required'),
-        addeddate: Yup.string().max(255).required('Added Date is required')
+        disposedate: Yup.string().max(255).required('Dispose Date is required'),
+        reason: Yup.string().max(255).required('Reason is required')
     });
 
     const [openAlert, setOpenAlert] = useState(false);
@@ -133,7 +133,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
             <FormikProvider value={formik}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <DialogTitle>{customer ? 'Edit Book Details' : 'New Book Details'}</DialogTitle>
+                        <DialogTitle>{customer ? 'Edit Dispose Details' : 'New Dispose Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
@@ -164,27 +164,27 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-price">Price</InputLabel>
+                                        <InputLabel htmlFor="dispose-date">Dispose Date</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="book-price"
-                                            placeholder="Enter Book Price"
-                                            {...getFieldProps('price')}
-                                            error={Boolean(touched.price && errors.price)}
-                                            helperText={touched.price && errors.price}
+                                            id="dispose-date"
+                                            placeholder="Enter Dispose Date"
+                                            {...getFieldProps('disposedate')}
+                                            error={Boolean(touched.disposedate && errors.disposedate)}
+                                            helperText={touched.disposedate && errors.disposedate}
                                         />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="added-date">Added Date</InputLabel>
+                                        <InputLabel htmlFor="reason">Reason</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="added-date"
-                                            placeholder="Enter Book Added Date"
-                                            {...getFieldProps('addeddate')}
-                                            error={Boolean(touched.addeddate && errors.addeddate)}
-                                            helperText={touched.addeddate && errors.addeddate}
+                                            id="reason"
+                                            placeholder="Enter Reason"
+                                            {...getFieldProps('reason')}
+                                            error={Boolean(touched.reason && errors.reason)}
+                                            helperText={touched.reason && errors.reason}
                                         />
                                     </Stack>
                                 </Grid>
