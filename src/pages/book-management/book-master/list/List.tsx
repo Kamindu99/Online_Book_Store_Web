@@ -232,11 +232,11 @@ const List = () => {
                     Cell: ({ value }: { value: string }) => {
                         switch (value) {
                             case 'Active':
-                                return <Chip color="error" label="Active" size="small" variant="light" />;
+                                return <Chip color="success" label="Active" size="small" />;
                             case 'Disposed':
-                                return <Chip color="success" label="Disposed" size="small" variant="light" />;
+                                return <Chip color="error" label="Disposed" size="small" />;
                             default:
-                                return <Chip color="info" label="Active" size="small" variant="light" />;
+                                return <Chip color="info" label="Active" size="small" />;
                         }
                     }
                 }
