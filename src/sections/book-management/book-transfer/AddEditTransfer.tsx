@@ -133,7 +133,7 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
             <FormikProvider value={formik}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <DialogTitle>{customer ? 'Edit Dispose Details' : 'New Dispose Details'}</DialogTitle>
+                        <DialogTitle>{customer ? 'Edit Transfer Details' : 'New Transfer Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
@@ -164,11 +164,11 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="dispose-date">Dispose Date</InputLabel>
+                                        <InputLabel htmlFor="dispose-date">Transfered Date</InputLabel>
                                         <TextField
                                             fullWidth
                                             id="dispose-date"
-                                            placeholder="Enter Dispose Date"
+                                            placeholder="Enter Transfered Date"
                                             {...getFieldProps('transferedate')}
                                             error={Boolean(touched.transferedate && errors.transferedate)}
                                             helperText={touched.transferedate && errors.transferedate}
