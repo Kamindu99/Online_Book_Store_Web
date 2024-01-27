@@ -39,15 +39,15 @@ const getInitialValues = (customer: FormikValues | null) => {
     const newCustomer = {
         name: '',
         author: '',
-        disposedate: '',
-        reason: '',
+        transferedate: '',
+        person: '',
         orderStatus: ''
     };
 
     if (customer) {
         newCustomer.name = customer.name;
-        newCustomer.disposedate = customer.disposedate;
-        newCustomer.reason = customer.reason;
+        newCustomer.transferedate = customer.transferedate;
+        newCustomer.person = customer.person;
         return _.merge({}, newCustomer, customer);
     }
 
@@ -61,14 +61,14 @@ export interface Props {
     onCancel: () => void;
 }
 
-const AddEditBook = ({ customer, onCancel }: Props) => {
+const AddEditTransferBook = ({ customer, onCancel }: Props) => {
     const isCreating = !customer;
 
     const CustomerSchema = Yup.object().shape({
         name: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
-        disposedate: Yup.string().max(255).required('Dispose Date is required'),
-        reason: Yup.string().max(255).required('Reason is required')
+        transferedate: Yup.string().max(255).required('Transfer date is required'),
+        person: Yup.string().max(255).required('Transferd person is required')
     });
 
     const [openAlert, setOpenAlert] = useState(false);
@@ -169,22 +169,22 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                                             fullWidth
                                             id="dispose-date"
                                             placeholder="Enter Dispose Date"
-                                            {...getFieldProps('disposedate')}
-                                            error={Boolean(touched.disposedate && errors.disposedate)}
-                                            helperText={touched.disposedate && errors.disposedate}
+                                            {...getFieldProps('transferedate')}
+                                            error={Boolean(touched.transferedate && errors.transferedate)}
+                                            helperText={touched.transferedate && errors.transferedate}
                                         />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="reason">Reason</InputLabel>
+                                        <InputLabel htmlFor="person">Transfered Person</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="reason"
-                                            placeholder="Enter Reason"
-                                            {...getFieldProps('reason')}
-                                            error={Boolean(touched.reason && errors.reason)}
-                                            helperText={touched.reason && errors.reason}
+                                            id="person"
+                                            placeholder="Enter Transfered Person"
+                                            {...getFieldProps('person')}
+                                            error={Boolean(touched.person && errors.person)}
+                                            helperText={touched.person && errors.person}
                                         />
                                     </Stack>
                                 </Grid>
@@ -222,4 +222,4 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
     );
 };
 
-export default AddEditBook;
+export default AddEditTransferBook;
