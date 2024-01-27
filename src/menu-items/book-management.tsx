@@ -30,6 +30,13 @@ const bookmanagement: NavItemType = {
             type: 'item',
             url: '/book-management/book-disposal/list',
             icon: icons.TeamOutlined,
+        },
+        {
+            id: 'transfer-list',
+            title: <FormattedMessage id="transfer-list" />,
+            type: 'item',
+            url: '/book-management/book-transfer/list',
+            icon: icons.TeamOutlined,
         }
     ]
 };

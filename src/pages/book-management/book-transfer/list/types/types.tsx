@@ -4,9 +4,9 @@ export interface dataProps {
     id?: number;
     name?: string;
     author?: string;
-    disposedDate?: string;
-    reason?: string;
+    price?: string;
     status?: string;
+    addedDate?: string;
 }
 
 export interface ReactTableProps {

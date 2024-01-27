@@ -18,9 +18,9 @@ import {
 } from '@mui/material';
 
 // third-party
+import { PopupTransition } from 'components/@extended/Transitions';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import { PopupTransition } from 'components/@extended/Transitions';
 
 import {
     GlobalFilter,
@@ -29,10 +29,10 @@ import {
 
 // project import
 import { PlusOutlined } from '@ant-design/icons';
-import { ReactTableProps, dataProps } from './types/types';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import AddEditDisposal from 'sections/book-management/disposal/AddEditDisposal';
+import AddEditBook from 'sections/book-management/book-master/AddEditBook';
+import { ReactTableProps, dataProps } from './types/types';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -142,66 +142,42 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
     );
 }
 
-// ==============================|| List ||============================== //
+// ==============================|| Transfer Book List ||============================== //
 
-const DisposalList = () => {
+const TransferBookList = () => {
 
     const bookdata: dataProps[] = ([
         {
             id: 1,
             name: 'Madol Duwa',
+            price: 'Rs. 250.00',
             author: 'Martin Wickramasinghe',
-            disposedDate: '2021-09-01',
-            reason: 'Damaged',
-            status: 'Approved'
+            addedDate: '2023-09-01',
+            status: 'Active'
         },
         {
             id: 2,
             name: 'Nidhanaya',
+            price: 'Rs. 320.00',
             author: 'J.B. Disanayake',
-            disposedDate: '2024-01-05',
-            reason: 'Damaged',
-            status: 'Approved'
+            addedDate: '2024-01-05',
+            status: 'Active'
         },
         {
             id: 3,
             name: 'Gehenu Lamai',
+            price: 'Rs. 200.00',
             author: 'Karunasena Jayalath',
-            disposedDate: '2021-05-01',
-            reason: 'Damaged',
-            status: 'Approved'
+            addedDate: '2021-05-01',
+            status: 'Active'
         },
         {
             id: 4,
             name: 'Sulanga Wage Avidin',
+            price: 'Rs. 430.00',
             author: 'Sujeeva Prasannaarachchi',
-            disposedDate: '2022-09-01',
-            reason: 'Damaged',
-            status: 'Approved'
-        },
-        {
-            id: 5,
-            name: 'Nuwan Renu',
-            author: 'J.B. Disanayake',
-            disposedDate: '2024-01-05',
-            reason: 'Damaged',
-            status: 'Approved'
-        },
-        {
-            id: 6,
-            name: 'Loku Nena',
-            author: 'Karunasena Jayalath',
-            disposedDate: '2021-05-01',
-            reason: 'Damaged',
-            status: 'Approved'
-        },
-        {
-            id: 7,
-            name: 'Tharu Walalla',
-            author: 'Sujeeva Prasannaarachchi',
-            disposedDate: '2022-09-01',
-            reason: 'Damaged',
-            status: 'Approved'
+            addedDate: '2022-09-01',
+            status: 'Active'
         }
     ])
 
@@ -243,24 +219,24 @@ const DisposalList = () => {
                     accessor: 'author'
                 },
                 {
-                    Header: 'Disposed Date',
-                    accessor: 'disposedDate'
+                    Header: 'Price',
+                    accessor: 'price'
                 },
                 {
-                    Header: 'Reason',
-                    accessor: 'reason'
+                    Header: 'Added Date',
+                    accessor: 'addedDate'
                 },
                 {
                     Header: 'Status',
                     accessor: 'status',
                     Cell: ({ value }: { value: string }) => {
                         switch (value) {
-                            case 'Approved':
-                                return <Chip color="success" label="Approved" size="small" />;
-                            case 'Rejected':
-                                return <Chip color="error" label="Rejected" size="small" />;
+                            case 'Active':
+                                return <Chip color="success" label="Active" size="small" />;
+                            case 'Disposed':
+                                return <Chip color="error" label="Disposed" size="small" />;
                             default:
-                                return <Chip color="info" label="Approved" size="small" />;
+                                return <Chip color="info" label="Active" size="small" />;
                         }
                     }
                 }
@@ -287,10 +263,10 @@ const DisposalList = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddEditDisposal customer={customer} onCancel={handleAdd} />
+                <AddEditBook customer={customer} onCancel={handleAdd} />
             </Dialog>
         </>
     )
 };
 
-export default DisposalList;
+export default TransferBookList;

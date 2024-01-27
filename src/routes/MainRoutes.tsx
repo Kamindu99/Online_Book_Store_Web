@@ -9,6 +9,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 //book master
 import List from 'pages/book-management/book-master/list/List';
 import DisposalList from 'pages/book-management/disposal/list/List';
+import TransferBookList from 'pages/book-management/book-transfer/list/List';
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -58,6 +59,10 @@ const MainRoutes = {
             {
               path: 'book-disposal/list',
               element: <DisposalList />
+            },
+            {
+              path: 'book-transfer/list',
+              element: <TransferBookList />
             }
           ]
         }
