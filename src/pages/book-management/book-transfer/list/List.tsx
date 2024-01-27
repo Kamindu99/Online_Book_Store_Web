@@ -150,33 +150,33 @@ const TransferBookList = () => {
         {
             id: 1,
             name: 'Madol Duwa',
-            price: 'Rs. 250.00',
+            person: 'Jagath',
             author: 'Martin Wickramasinghe',
-            addedDate: '2023-09-01',
+            transferDate: '2023-09-01',
             status: 'Active'
         },
         {
             id: 2,
             name: 'Nidhanaya',
-            price: 'Rs. 320.00',
+            person: 'Jagath',
             author: 'J.B. Disanayake',
-            addedDate: '2024-01-05',
+            transferDate: '2024-01-05',
             status: 'Active'
         },
         {
             id: 3,
             name: 'Gehenu Lamai',
-            price: 'Rs. 200.00',
+            person: 'Jagath',
             author: 'Karunasena Jayalath',
-            addedDate: '2021-05-01',
+            transferDate: '2021-05-01',
             status: 'Active'
         },
         {
             id: 4,
             name: 'Sulanga Wage Avidin',
-            price: 'Rs. 430.00',
+            person: 'Jagath',
             author: 'Sujeeva Prasannaarachchi',
-            addedDate: '2022-09-01',
+            transferDate: '2022-09-01',
             status: 'Active'
         }
     ])
@@ -219,12 +219,12 @@ const TransferBookList = () => {
                     accessor: 'author'
                 },
                 {
-                    Header: 'Price',
-                    accessor: 'price'
+                    Header: 'Transfered Person',
+                    accessor: 'person'
                 },
                 {
-                    Header: 'Added Date',
-                    accessor: 'addedDate'
+                    Header: 'Transfered Date',
+                    accessor: 'transferDate'
                 },
                 {
                     Header: 'Status',
