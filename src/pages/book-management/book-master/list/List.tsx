@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 // material ui
 import {
@@ -33,6 +33,9 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import { ReactTableProps, dataProps } from './types/types';
+import { useDispatch, useSelector } from 'store';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { getProducts, toInitialState } from 'store/reducers/book-master';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -146,55 +149,19 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 
 const List = () => {
 
-    const bookdata: dataProps[] = ([
-        {
-            id: 1,
-            name: 'Madol Duwa',
-            price: 'Rs. 250.00',
-            author: 'Martin Wickramasinghe',
-            addedDate: '2023-09-01',
-            status: 'Active'
-        },
-        {
-            id: 2,
-            name: 'Nidhanaya',
-            price: 'Rs. 320.00',
-            author: 'J.B. Disanayake',
-            addedDate: '2024-01-05',
-            status: 'Active'
-        },
-        {
-            id: 3,
-            name: 'Gehenu Lamai',
-            price: 'Rs. 200.00',
-            author: 'Karunasena Jayalath',
-            addedDate: '2021-05-01',
-            status: 'Active'
-        },
-        {
-            id: 4,
-            name: 'Sulanga Wage Avidin',
-            price: 'Rs. 430.00',
-            author: 'Sujeeva Prasannaarachchi',
-            addedDate: '2022-09-01',
-            status: 'Active'
-        }
-    ])
+    const dispatch = useDispatch();
+    const { books, error, isLoading, success } = useSelector(state => state.book)
 
-    const [customer, setCustomer] = useState<any>(null);
+    const [book, setBook] = useState<dataProps>();
+    const [bookList, setBookList] = useState<dataProps[]>([]);
     const [add, setAdd] = useState<boolean>(false);
-
-    const handleAdd = () => {
-        setAdd(!add);
-        if (customer && !add) setCustomer([]);
-    };
 
     const columns = useMemo(
         () =>
             [
                 {
                     Header: '#',
-                    accessor: 'id',
+                    accessor: 'bookId',
                     className: 'cell-center',
                     Cell: ({ row }: { row: Row }) => {
                         if (row.id === undefined || row.id === null || row.id === '') {
@@ -212,7 +179,7 @@ const List = () => {
                 },
                 {
                     Header: 'Name',
-                    accessor: 'name'
+                    accessor: 'bookName'
                 },
                 {
                     Header: 'Author',
@@ -228,12 +195,12 @@ const List = () => {
                 },
                 {
                     Header: 'Status',
-                    accessor: 'status',
-                    Cell: ({ value }: { value: string }) => {
+                    accessor: 'statusId',
+                    Cell: ({ value }: { value: number }) => {
                         switch (value) {
-                            case 'Active':
+                            case 1:
                                 return <Chip color="success" label="Active" size="small" />;
-                            case 'Disposed':
+                            case 2:
                                 return <Chip color="error" label="Disposed" size="small" />;
                             default:
                                 return <Chip color="info" label="Active" size="small" />;
@@ -244,13 +211,80 @@ const List = () => {
         []
     );
 
+    // ----------------------- | API Call - Roles | ---------------------
+
+    useEffect(() => {
+        dispatch(getProducts())
+    }, [success])
+
+    useEffect(() => {
+        if (!books) {
+            setBookList([])
+            return
+        }
+        if (books == null) {
+            setBookList([])
+            return
+        }
+        setBookList(books!)
+    }, [books])
+
+    useEffect(() => {
+        if (error != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = error as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (success != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: success,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [success])
+
+    if (isLoading) {
+        return <>Loading...</>
+    }
+
+    const handleAdd = () => {
+        setAdd(!add);
+        if (book && !add) setBook({});
+    };
+
     return (
         <>
             <MainCard content={false}>
                 <ScrollX>
                     <ReactTable columns={columns}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={bookdata} handleAddEdit={handleAdd} />
+                        data={bookList} handleAddEdit={handleAdd} />
                 </ScrollX>
             </MainCard>
             <Dialog
@@ -263,7 +297,7 @@ const List = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddEditBook customer={customer} onCancel={handleAdd} />
+                <AddEditBook customer={book} onCancel={handleAdd} />
             </Dialog>
         </>
     )
