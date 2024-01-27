@@ -43,7 +43,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
     const theme = useTheme();
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-    const sortBy = { id: 'id', desc: false };
+    const sortBy = { id: 'bookId', desc: false };
 
     const filterTypes = useMemo(() => renderFilterTypes, []);
 
@@ -66,7 +66,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
             columns,
             data,
             filterTypes,
-            initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar'], sortBy: [sortBy] }
+            initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [''], sortBy: [sortBy] }
         },
         useGlobalFilter,
         useFilters,

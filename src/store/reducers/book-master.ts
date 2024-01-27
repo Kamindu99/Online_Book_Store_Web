@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+import axios from 'axios';
 import { dispatch } from '../index';
 
 // types
@@ -66,8 +66,8 @@ export function toInitialState() {
 export function getProducts() {
     return async () => {
         try {
-            const response = await axios.get('/api/v1/book-management/book-master/all');
-            dispatch(slice.actions.getProductsSuccess(response.data.products));
+            const response = await axios.get('https://book-management-backend-jkfi.onrender.com/api/v1/book-management/book-master/all/');
+            dispatch(slice.actions.getProductsSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         }
