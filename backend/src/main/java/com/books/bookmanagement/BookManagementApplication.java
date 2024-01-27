@@ -1,13 +1,13 @@
-package com.employee.employeemanagement;
+package com.books.bookmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EmployeeManagementApplication {
+public class BookManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmployeeManagementApplication.class, args);
+		SpringApplication.run(BookManagementApplication.class, args);
 	}
 
 }
