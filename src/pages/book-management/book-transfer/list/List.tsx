@@ -178,6 +178,14 @@ const TransferBookList = () => {
             author: 'Sujeeva Prasannaarachchi',
             transferDate: '2022-09-01',
             status: 'Active'
+        },
+        {
+            id: 5,
+            name: 'Kaliyugaya',
+            person: 'Jagath',
+            author: 'Sujeeva Prasannaarachchi',
+            transferDate: '2022-09-01',
+            status: 'Active'
         }
     ])
 
