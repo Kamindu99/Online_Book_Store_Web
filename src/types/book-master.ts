@@ -5,6 +5,7 @@ export type Books = {
     price?: string;
     addedDate?: string;
     statusId?: number;
+    statusName?: number;
 };
 
 export interface BookStateProps {
