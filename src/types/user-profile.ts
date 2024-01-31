@@ -12,15 +12,6 @@ export type UserProfile = {
   work_phone?: string;
   personal_phone?: string;
   birthdayText?: string;
-  lastMessage?: string;
-  status?: string;
-  friends?: number;
-  followers?: number;
-  contact?: string;
-  company?: string;
-  location?: string;
-  online_status?: string;
-  unReadChatCount?: number;
   // groups?: Group[];
   time?: string;
   tier?: string;
