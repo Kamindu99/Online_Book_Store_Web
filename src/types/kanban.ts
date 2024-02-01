@@ -1,5 +1,13 @@
 export interface KanbanStateProps {
-
+  columns: KanbanColumn[];
+  columnsOrder: string[];
+  comments: KanbanComment[];
+  items: KanbanItem[];
+  profiles: KanbanProfile[];
+  selectedItem: string | false;
+  userStory: KanbanUserStory[];
+  userStoryOrder: string[];
+  error: object | string | null;
 }
 
 export type KanbanColumn = {
