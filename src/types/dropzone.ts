@@ -18,12 +18,6 @@ export interface CustomFile extends File {
   lastModifiedDate?: Date;
 }
 
-export interface UploadProps extends DropzoneOptions {
-  error?: boolean;
-  file: CustomFile[] | null;
-  setFieldValue: (field: string, value: any) => void;
-  sx?: SxProps<Theme>;
-}
 
 export interface UploadMultiFileProps extends DropzoneOptions {
   files?: CustomFile[] | null;
