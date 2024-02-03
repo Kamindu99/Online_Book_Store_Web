@@ -1,7 +1,12 @@
 import { Column, HeaderGroup } from 'react-table';
 
 export interface dataProps {
-
+    bookId?: number;
+    bookName?: string;
+    author?: string;
+    price?: string;
+    addedDate?: string;
+    statusId?: number;
 }
 
 export interface ReactTableProps {
