@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BookDao extends JpaRepository<Book,Integer> {
-    Optional<Book> findByBookName(String bookName);
-}
+public interface BookDao extends JpaRepository<Book,Integer> { }

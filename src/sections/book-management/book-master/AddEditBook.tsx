@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -26,31 +26,28 @@ import * as Yup from 'yup';
 
 import IconButton from 'components/@extended/IconButton';
 
-import { dispatch } from 'store';
+import { useDispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { createProduct, toInitialState, updateProduct } from 'store/reducers/book-master';
 
 // types
 
 // constant
 const getInitialValues = (customer: FormikValues | null) => {
     const newCustomer = {
-        name: '',
+        bookId: undefined,
+        bookName: '',
         author: '',
         price: '',
-        addeddate: '',
-        orderStatus: ''
+        addedDate: '',
+        statusId: 1
     };
-
     if (customer) {
-        newCustomer.name = customer.name;
-        newCustomer.price = customer.price;
-        newCustomer.addeddate = customer.addeddate;
         return _.merge({}, newCustomer, customer);
     }
-
     return newCustomer;
 };
 
@@ -62,13 +59,17 @@ export interface Props {
 }
 
 const AddEditBook = ({ customer, onCancel }: Props) => {
+
+    const dispatch = useDispatch();
+    const { error, isLoading, success } = useSelector(state => state.book)
+
     const isCreating = !customer;
 
     const CustomerSchema = Yup.object().shape({
-        name: Yup.string().max(255).required('Name is required'),
+        bookName: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
         price: Yup.string().max(255).required('Price is required'),
-        addeddate: Yup.string().max(255).required('Added Date is required')
+        addedDate: Yup.string().max(255).required('Added Date is required')
     });
 
     const [openAlert, setOpenAlert] = useState(false);
@@ -81,43 +82,24 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
     const formik = useFormik({
         initialValues: getInitialValues(customer!),
         validationSchema: CustomerSchema,
-        onSubmit: (values, { setSubmitting }) => {
+        enableReinitialize: true,
+        onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
-                // const newCustomer = {
-                //   name: values.name,
-                //   email: values.email,
-                //   location: values.location,
-                //   orderStatus: values.orderStatus
-                // };
+                const newCustomer = {
+                    bookId: values.bookId,
+                    bookName: values.bookName,
+                    author: values.author,
+                    price: values.price,
+                    addedDate: values.addedDate,
+                    statusId: values.statusId
+                };
 
                 if (customer) {
-                    // dispatch(updateCustomer(customer.id, newCustomer)); - update
-                    dispatch(
-                        openSnackbar({
-                            open: true,
-                            message: 'Customer update successfully.',
-                            variant: 'alert',
-                            alert: {
-                                color: 'success'
-                            },
-                            close: false
-                        })
-                    );
+                    dispatch(updateProduct(newCustomer));
                 } else {
-                    // dispatch(createCustomer(newCustomer)); - add
-                    dispatch(
-                        openSnackbar({
-                            open: true,
-                            message: 'Customer added successfully.',
-                            variant: 'alert',
-                            alert: {
-                                color: 'success'
-                            },
-                            close: false
-                        })
-                    );
+                    dispatch(createProduct(newCustomer));
                 }
-
+                resetForm()
                 setSubmitting(false);
                 onCancel();
             } catch (error) {
@@ -127,6 +109,50 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
     });
 
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+
+    useEffect(() => {
+        if (error != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = error as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (success != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: success,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [success])
+
+    if (isLoading) {
+        return <>Loading...</>
+    }
 
     return (
         <>
@@ -138,23 +164,23 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-name"> Book Name</InputLabel>
+                                        <InputLabel htmlFor="bookName"> Book Name</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="book-name"
+                                            id="bookName"
                                             placeholder="Enter Book Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
+                                            {...getFieldProps('bookName')}
+                                            error={Boolean(touched.bookName && errors.bookName)}
+                                            helperText={touched.bookName && errors.bookName}
                                         />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-athor">Author</InputLabel>
+                                        <InputLabel htmlFor="author">Author</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="book-athor"
+                                            id="author"
                                             placeholder="Enter Book Author"
                                             {...getFieldProps('author')}
                                             error={Boolean(touched.author && errors.author)}
@@ -164,10 +190,10 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-price">Price</InputLabel>
+                                        <InputLabel htmlFor="price">Price</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="book-price"
+                                            id="price"
                                             placeholder="Enter Book Price"
                                             {...getFieldProps('price')}
                                             error={Boolean(touched.price && errors.price)}
@@ -177,14 +203,14 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="added-date">Added Date</InputLabel>
+                                        <InputLabel htmlFor="addedDate">Added Date</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="added-date"
+                                            id="addedDate"
                                             placeholder="Enter Book Added Date"
-                                            {...getFieldProps('addeddate')}
-                                            error={Boolean(touched.addeddate && errors.addeddate)}
-                                            helperText={touched.addeddate && errors.addeddate}
+                                            {...getFieldProps('addedDate')}
+                                            error={Boolean(touched.addedDate && errors.addedDate)}
+                                            helperText={touched.addedDate && errors.addedDate}
                                         />
                                     </Stack>
                                 </Grid>
@@ -217,7 +243,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                     </Form>
                 </LocalizationProvider>
             </FormikProvider>
-            {!isCreating && <AlertBookDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
+            {!isCreating && <AlertBookDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} deleteId={customer?.bookId} />}
         </>
     );
 };

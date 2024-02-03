@@ -27,7 +27,7 @@ public class BookService {
             book.setAuthor(bookDto.getAuthor());
             book.setPrice(bookDto.getPrice());
             book.setAddedDate(bookDto.getAddedDate());
-            book.setStatusId(parseInt(bookDto.getStatusId()));
+            book.setStatusId(1);
 
             Book savedBook = bookDao.save(book);
 
@@ -50,6 +50,74 @@ public class BookService {
             bookList = bookDao.findAll();
 
             return ResponseEntity.ok(bookList);
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ResponseEntity getBookById(Integer id) throws Exception {
+        try{
+            Optional<Book> optionalBook = bookDao.findById(id);
+            if(optionalBook.isPresent()){
+                Book employee = optionalBook.get();
+                return ResponseEntity.ok(employee);
+            }
+            else{
+                throw new Exception("Data not found for given id");
+            }
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ResponseEntity updateBook(BookDto bookDto) throws Exception {
+        try{
+            if(bookDto.getBookId()==null){
+                throw new Exception("Book id not found");
+            }
+            Optional<Book> optionalBook = bookDao.findById(bookDto.getBookId());
+
+            if(optionalBook.isPresent()){
+                Book book = optionalBook.get();
+                book.setBookName(bookDto.getBookName());
+                book.setAuthor(bookDto.getAuthor());
+                book.setPrice(bookDto.getPrice());
+                book.setAddedDate(bookDto.getAddedDate());
+                book.setStatusId(Integer.parseInt(bookDto.getStatusId()));
+
+                Book updatedBook = bookDao.save(book);
+
+                if(updatedBook==null){
+                    throw new Exception("Error Saving");
+                }
+                else{
+                    return ResponseEntity.ok(book);
+                }
+            }
+            else{
+                throw new Exception("Data not found for given id");
+            }
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ResponseEntity deleteBookById(Integer id) throws Exception {
+        try{
+            Optional<Book> optionalBook = bookDao.findById(id);
+            if(optionalBook.isPresent()){
+                bookDao.deleteById(id);
+                return ResponseEntity.ok("Delete Success");
+            }
+            else{
+                throw new Exception("Data not found for given id");
+            }
         }
         catch (Exception e){
             log.error(e.getMessage());

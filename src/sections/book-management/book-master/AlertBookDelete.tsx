@@ -4,20 +4,23 @@ import { Button, Dialog, DialogContent, Stack, Typography } from '@mui/material'
 // project import
 import Avatar from 'components/@extended/Avatar';
 import { PopupTransition } from 'components/@extended/Transitions';
+import { dispatch } from 'store';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { deleteProduct } from 'store/reducers/book-master';
 
 // types
 interface Props {
     title: string;
     open: boolean;
     handleClose: (status: boolean) => void;
+    deleteId: number;
 }
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertBookDelete({ title, open, handleClose }: Props) {
+export default function AlertBookDelete({ title, open, handleClose, deleteId }: Props) {
     return (
         <Dialog
             open={open}
@@ -51,7 +54,11 @@ export default function AlertBookDelete({ title, open, handleClose }: Props) {
                         <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
                             Cancel
                         </Button>
-                        <Button fullWidth color="error" variant="contained" onClick={() => handleClose(true)} autoFocus>
+                        <Button fullWidth color="error" variant="contained" onClick={() => {
+                            // delete API call
+                            dispatch(deleteProduct(deleteId!))
+                            handleClose(true)
+                        }} autoFocus>
                             Delete
                         </Button>
                     </Stack>

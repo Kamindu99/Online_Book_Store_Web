@@ -1,17 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 
 // material ui
 import {
     Button,
     Chip,
     Dialog,
+    IconButton,
     Stack,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
+    Tooltip,
     alpha,
     useMediaQuery,
     useTheme
@@ -28,14 +30,16 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { PlusOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
-import { ReactTableProps, dataProps } from './types/types';
 import { useDispatch, useSelector } from 'store';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getProducts, toInitialState } from 'store/reducers/book-master';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { ReactTableProps, dataProps } from './types/types';
+import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
+import { Books } from 'types/book-master';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -148,13 +152,28 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 // ==============================|| List ||============================== //
 
 const List = () => {
-
+    const theme = useTheme();
     const dispatch = useDispatch();
     const { books, error, isLoading, success } = useSelector(state => state.book)
 
     const [book, setBook] = useState<dataProps>();
+    console.log(book);
+
     const [bookList, setBookList] = useState<dataProps[]>([]);
     const [add, setAdd] = useState<boolean>(false);
+
+    const handleAdd = () => {
+        setAdd(!add);
+        if (book && !add) setBook(undefined);
+    };
+
+    //alert model
+    const [openAlert, setOpenAlert] = useState(false);
+    const [userRoleId, setuserRoleId] = useState<number | null>(null)
+
+    const handleAlertClose = () => {
+        setOpenAlert(!openAlert);
+    };
 
     const columns = useMemo(
         () =>
@@ -205,6 +224,46 @@ const List = () => {
                             default:
                                 return <Chip color="info" label="Active" size="small" />;
                         }
+                    }
+                },
+                {
+                    id: "actions",
+                    Header: 'Actions',
+                    accessor: 'actions',
+                    className: 'cell-center',
+                    Cell: ({ row }: { row: Row }) => {
+                        return (
+                            <>
+                                <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+                                    <Tooltip title="Edit">
+                                        <IconButton
+                                            color="primary"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                const data: Books = row.original;
+                                                e.stopPropagation();
+                                                setBook({ ...data });
+                                                handleAdd();
+                                            }}
+                                        >
+                                            <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                        <IconButton
+                                            color="error"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                let data: Books = row.original;
+                                                e.stopPropagation();
+                                                setuserRoleId(data.bookId!)
+                                                setOpenAlert(true)
+                                            }}
+                                        >
+                                            <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Stack>
+                            </>
+                        )
                     }
                 }
             ] as Column[],
@@ -273,11 +332,6 @@ const List = () => {
         return <>Loading...</>
     }
 
-    const handleAdd = () => {
-        setAdd(!add);
-        if (book && !add) setBook({});
-    };
-
     return (
         <>
             <MainCard content={false}>
@@ -299,6 +353,8 @@ const List = () => {
             >
                 <AddEditBook customer={book} onCancel={handleAdd} />
             </Dialog>
+            {/* alert model */}
+            {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />}
         </>
     )
 };

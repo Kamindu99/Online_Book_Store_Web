@@ -27,4 +27,22 @@ public class BookController {
         ResponseEntity response = bookService.getAllBook();
         return response;
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable Integer id) throws Exception {
+        ResponseEntity response = bookService.getBookById(id);
+        return response;
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Book> updateBook(@RequestBody BookDto bookDto) throws Exception {
+        ResponseEntity response = bookService.updateBook(bookDto);
+        return response;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBookById(@PathVariable Integer id) throws Exception {
+        ResponseEntity response = bookService.deleteBookById(id);
+        return response;
+    }
 }
