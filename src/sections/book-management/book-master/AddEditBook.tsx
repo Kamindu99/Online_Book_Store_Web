@@ -9,6 +9,7 @@ import {
     Divider,
     Grid,
     InputLabel,
+    MenuItem,
     Stack,
     TextField,
     Tooltip
@@ -41,8 +42,9 @@ const getInitialValues = (book: FormikValues | null) => {
         bookId: undefined,
         bookName: '',
         author: '',
-        price: undefined,
-        noOfPage: undefined,
+        category: '',
+        price: '',
+        noOfPage: '',
         addedDate: new Date().toISOString().split('T')[0],
         statusId: 1
     };
@@ -69,6 +71,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
     const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
+        category: Yup.string().max(255).required('Category is required'),
         price: Yup.string().max(5).required('Price is required'),
         noOfPage: Yup.string().max(5).required('No of Page is required'),
         addedDate: Yup.string().max(255).required('Added Date is required')
@@ -91,6 +94,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                     bookId: values.bookId,
                     bookName: values.bookName,
                     author: values.author,
+                    category: values.category,
                     price: values.price,
                     noOfPage: values.noOfPage,
                     addedDate: values.addedDate,
@@ -191,7 +195,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12} lg={4}>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="price">Price</InputLabel>
                                         <TextField
@@ -205,7 +209,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12} lg={4}>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="noOfPage">No of Page</InputLabel>
                                         <TextField
@@ -219,7 +223,34 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12} lg={4}>
+                                <Grid item xs={12} lg={6}>
+                                    <Stack spacing={1.25}>
+                                        <InputLabel htmlFor="category">Category</InputLabel>
+                                        <TextField
+                                            fullWidth
+                                            id="category"
+                                            select
+                                            placeholder="Enter Book Category"
+                                            {...getFieldProps('category')}
+                                            error={Boolean(touched.category && errors.category)}
+                                            helperText={touched.category && errors.category}
+                                        >
+                                            <MenuItem key={1} value={"Adventure"}>
+                                                {"Adventure"}
+                                            </MenuItem>
+                                            <MenuItem key={2} value={"Novel"}>
+                                                {"Novel"}
+                                            </MenuItem>
+                                            <MenuItem key={3} value={"Educational"}>
+                                                {"Educational"}
+                                            </MenuItem>
+                                            <MenuItem key={4} value={"Religious"}>
+                                                {"Religious"}
+                                            </MenuItem>
+                                        </TextField>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="addedDate">Added Date</InputLabel>
                                         <TextField

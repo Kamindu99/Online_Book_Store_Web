@@ -23,6 +23,7 @@ public class BookService {
             Book book = new Book();
             book.setBookName(bookDto.getBookName());
             book.setAuthor(bookDto.getAuthor());
+            book.setCategory(bookDto.getCategory());
             book.setPrice(bookDto.getPrice());
             book.setNoOfPage(bookDto.getNoOfPage());
             book.setAddedDate(bookDto.getAddedDate());
@@ -84,6 +85,7 @@ public class BookService {
                 Book book = optionalBook.get();
                 book.setBookName(bookDto.getBookName());
                 book.setAuthor(bookDto.getAuthor());
+                book.setCategory(bookDto.getCategory());
                 book.setPrice(bookDto.getPrice());
                 book.setNoOfPage(bookDto.getNoOfPage());
                 book.setAddedDate(bookDto.getAddedDate());

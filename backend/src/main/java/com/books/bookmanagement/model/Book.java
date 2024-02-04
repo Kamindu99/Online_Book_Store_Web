@@ -24,6 +24,9 @@ public class Book {
     @Column(name="author")
     private String author;
 
+    @Column(name="category")
+    private String category;
+
     @Column(name="price")
     private Integer price;
 

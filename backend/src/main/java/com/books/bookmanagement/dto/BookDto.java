@@ -13,6 +13,7 @@ public class BookDto {
     private Integer bookId;
     private String bookName;
     private String author;
+    private String category;
     private Integer price;
     private Integer noOfPage;
     private String addedDate;

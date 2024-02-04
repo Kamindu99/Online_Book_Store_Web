@@ -211,11 +211,15 @@ const List = () => {
                     accessor: 'author'
                 },
                 {
+                    Header: 'Category',
+                    accessor: 'category'
+                },
+                {
                     Header: 'Price',
                     accessor: 'price',
                     className: 'cell-right',
                     Cell: ({ value }: { value: number }) => {
-                        return <div style={{ marginRight: '10%' }}><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
+                        return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
                     }
                 },
                 {
@@ -223,7 +227,7 @@ const List = () => {
                     accessor: 'noOfPage',
                     className: 'cell-right',
                     Cell: ({ value }: { value: number }) => {
-                        return <div style={{ marginRight: '20%' }}><NumericFormat value={value} displayType="text" /></div>;
+                        return <div><NumericFormat value={value} displayType="text" /></div>;
                     }
                 },
                 {
@@ -264,7 +268,7 @@ const List = () => {
                                                 setBook({ ...data });
                                                 handleAdd();
                                             }}
-                                            disabled={row.values?.statusId === 2}
+                                        // disabled={row.values?.statusId === 2}
                                         >
                                             <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
