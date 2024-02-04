@@ -268,7 +268,7 @@ const List = () => {
                                                 setBook({ ...data });
                                                 handleAdd();
                                             }}
-                                        // disabled={row.values?.statusId === 2}
+                                            disabled={row.values?.statusId === 2}
                                         >
                                             <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
