@@ -41,24 +41,29 @@ const slice = createSlice({
             state.isLoading = false;
         },
 
-        // GET PRODUCTS
-        getProductsSuccess(state, action) {
+        // GET BOOKS
+        getBooksSuccess(state, action) {
             state.books = action.payload;
         },
 
-        // POST PRODUCT
-        createProductSuccess(state, action) {
-            state.success = "Product created successfully";
+        // POST BOOK
+        createBookSuccess(state, action) {
+            state.success = "Book created successfully";
         },
 
-        // PUT PRODUCT
-        updateProductSuccess(state, action) {
-            state.success = "Product Update successfully";
+        // PUT BOOK
+        updateBookSuccess(state, action) {
+            state.success = "Book Update successfully";
         },
 
-        // DELETE PRODUCT
-        deleteProductSuccess(state, action) {
-            state.success = "Product Delete successfully";
+        // DELETE BOOK
+        deleteBookSuccess(state, action) {
+            state.success = "Book Delete successfully";
+        },
+
+        // APPROVE BOOK
+        approveBookSuccess(state, action) {
+            state.success = "Book Approve successfully";
         },
     }
 });
@@ -78,12 +83,12 @@ export function toInitialState() {
     }
 }
 
-export function getProducts() {
+export function getBooks() {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
             const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master/all/');
-            dispatch(slice.actions.getProductsSuccess(response.data));
+            dispatch(slice.actions.getBooksSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {
@@ -92,12 +97,12 @@ export function getProducts() {
     };
 }
 
-export function createProduct(createProductProps: Books) {
+export function createBook(createBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/book-management/book-master/create/', createProductProps);
-            dispatch(slice.actions.createProductSuccess(response.data));
+            const response = await axios.post('http://localhost:8000/api/v1/book-management/book-master/create/', createBookProps);
+            dispatch(slice.actions.createBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {
@@ -106,17 +111,12 @@ export function createProduct(createProductProps: Books) {
     };
 }
 
-/**
- * UPDATE Product_STATUS
- * @param updateProductProps
- * @returns 
- */
-export function updateProduct(updateProductProps: Books) {
+export function updateBook(updateBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/update/${updateProductProps?.bookId}`, updateProductProps);
-            dispatch(slice.actions.updateProductSuccess(response.data));
+            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/update/${updateBookProps?.bookId}`, updateBookProps);
+            dispatch(slice.actions.updateBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {
@@ -125,12 +125,26 @@ export function updateProduct(updateProductProps: Books) {
     };
 }
 
-export function deleteProduct(bookId: number) {
+export function deleteBook(bookId: number) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
             const response = await axios.delete(`http://localhost:8000/api/v1/book-management/book-master/delete/${bookId}`);
-            dispatch(slice.actions.deleteProductSuccess(response.data));
+            dispatch(slice.actions.deleteBookSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+export function approveBook(bookId: number) {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+        try {
+            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/approve/${bookId}`);
+            dispatch(slice.actions.approveBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

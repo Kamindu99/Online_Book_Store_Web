@@ -30,12 +30,12 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import { useDispatch, useSelector } from 'store';
-import { getProducts, toInitialState } from 'store/reducers/book-master';
+import { approveBook, getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { ReactTableProps, dataProps } from './types/types';
 import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
@@ -175,6 +175,10 @@ const List = () => {
         setOpenAlert(!openAlert);
     };
 
+    const approveBookById = (bookId: number) => {
+        dispatch(approveBook(bookId))
+    };
+
     const columns = useMemo(
         () =>
             [
@@ -218,11 +222,11 @@ const List = () => {
                     Cell: ({ value }: { value: number }) => {
                         switch (value) {
                             case 1:
-                                return <Chip color="success" label="Active" size="small" />;
+                                return <Chip color="warning" label="Penging" size="small" />;
                             case 2:
-                                return <Chip color="error" label="Disposed" size="small" />;
+                                return <Chip color="success" label="Approved" size="small" />;
                             default:
-                                return <Chip color="info" label="Active" size="small" />;
+                                return <Chip color="warning" label="Penging" size="small" />;
                         }
                     }
                 },
@@ -244,8 +248,22 @@ const List = () => {
                                                 setBook({ ...data });
                                                 handleAdd();
                                             }}
+                                            disabled={row.values?.statusId === 2}
                                         >
                                             <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Approve">
+                                        <IconButton
+                                            color="success"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                const data: Books = row.original;
+                                                e.stopPropagation();
+                                                approveBookById(data.bookId!)
+                                            }}
+                                            disabled={row.values?.statusId === 2}
+                                        >
+                                            <CheckOutlined twoToneColor={theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete">
@@ -257,6 +275,7 @@ const List = () => {
                                                 setuserRoleId(data.bookId!)
                                                 setOpenAlert(true)
                                             }}
+                                            disabled={row.values?.statusId === 2}
                                         >
                                             <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                                         </IconButton>
@@ -273,7 +292,7 @@ const List = () => {
     // ----------------------- | API Call - Roles | ---------------------
 
     useEffect(() => {
-        dispatch(getProducts())
+        dispatch(getBooks())
     }, [success])
 
     useEffect(() => {
@@ -351,7 +370,7 @@ const List = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddEditBook customer={book} onCancel={handleAdd} />
+                <AddEditBook book={book} onCancel={handleAdd} />
             </Dialog>
             {/* alert model */}
             {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />}

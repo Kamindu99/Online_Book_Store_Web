@@ -31,13 +31,13 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { createProduct, toInitialState, updateProduct } from 'store/reducers/book-master';
+import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
 
 // types
 
 // constant
-const getInitialValues = (customer: FormikValues | null) => {
-    const newCustomer = {
+const getInitialValues = (book: FormikValues | null) => {
+    const newBook = {
         bookId: undefined,
         bookName: '',
         author: '',
@@ -45,27 +45,27 @@ const getInitialValues = (customer: FormikValues | null) => {
         addedDate: '',
         statusId: 1
     };
-    if (customer) {
-        return _.merge({}, newCustomer, customer);
+    if (book) {
+        return _.merge({}, newBook, book);
     }
-    return newCustomer;
+    return newBook;
 };
 
-// ==============================|| CUSTOMER ADD / EDIT ||============================== //
+// ==============================|| Book ADD / EDIT ||============================== //
 
 export interface Props {
-    customer?: any;
+    book?: any;
     onCancel: () => void;
 }
 
-const AddEditBook = ({ customer, onCancel }: Props) => {
+const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
     const { error, isLoading, success } = useSelector(state => state.book)
 
-    const isCreating = !customer;
+    const isCreating = !book;
 
-    const CustomerSchema = Yup.object().shape({
+    const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
         price: Yup.string().max(255).required('Price is required'),
@@ -80,12 +80,12 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
     };
 
     const formik = useFormik({
-        initialValues: getInitialValues(customer!),
-        validationSchema: CustomerSchema,
+        initialValues: getInitialValues(book!),
+        validationSchema: BookSchema,
         enableReinitialize: true,
         onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
-                const newCustomer = {
+                const newBook = {
                     bookId: values.bookId,
                     bookName: values.bookName,
                     author: values.author,
@@ -94,10 +94,10 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                     statusId: values.statusId
                 };
 
-                if (customer) {
-                    dispatch(updateProduct(newCustomer));
+                if (book) {
+                    dispatch(updateBook(newBook));
                 } else {
-                    dispatch(createProduct(newCustomer));
+                    dispatch(createBook(newBook));
                 }
                 resetForm()
                 setSubmitting(false);
@@ -159,7 +159,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
             <FormikProvider value={formik}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <DialogTitle>{customer ? 'Edit Book Details' : 'New Book Details'}</DialogTitle>
+                        <DialogTitle>{book ? 'Edit Book Details' : 'New Book Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
@@ -221,7 +221,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                             <Grid container justifyContent="space-between" alignItems="center">
                                 <Grid item>
                                     {!isCreating && (
-                                        <Tooltip title="Delete Customer" placement="top">
+                                        <Tooltip title="Delete Book" placement="top">
                                             <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
                                                 <DeleteFilled />
                                             </IconButton>
@@ -234,7 +234,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                                             Cancel
                                         </Button>
                                         <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                            {customer ? 'Edit' : 'Add'}
+                                            {book ? 'Edit' : 'Add'}
                                         </Button>
                                     </Stack>
                                 </Grid>
@@ -243,7 +243,7 @@ const AddEditBook = ({ customer, onCancel }: Props) => {
                     </Form>
                 </LocalizationProvider>
             </FormikProvider>
-            {!isCreating && <AlertBookDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} deleteId={customer?.bookId} />}
+            {!isCreating && <AlertBookDelete title={book.fatherName} open={openAlert} handleClose={handleAlertClose} deleteId={book?.bookId} />}
         </>
     );
 };

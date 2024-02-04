@@ -45,4 +45,10 @@ public class BookController {
         ResponseEntity response = bookService.deleteBookById(id);
         return response;
     }
+
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<Book> approveBookById(@PathVariable Integer id) throws Exception{
+        ResponseEntity response = bookService.approveBookById(id);
+        return response;
+    }
 }

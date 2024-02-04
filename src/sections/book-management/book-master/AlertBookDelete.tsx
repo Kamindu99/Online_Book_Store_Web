@@ -8,7 +8,7 @@ import { dispatch } from 'store';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { deleteProduct } from 'store/reducers/book-master';
+import { deleteBook } from 'store/reducers/book-master';
 
 // types
 interface Props {
@@ -56,7 +56,7 @@ export default function AlertBookDelete({ title, open, handleClose, deleteId }: 
                         </Button>
                         <Button fullWidth color="error" variant="contained" onClick={() => {
                             // delete API call
-                            dispatch(deleteProduct(deleteId!))
+                            dispatch(deleteBook(deleteId!))
                             handleClose(true)
                         }} autoFocus>
                             Delete

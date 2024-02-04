@@ -124,4 +124,28 @@ public class BookService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public ResponseEntity approveBookById(Integer id) throws Exception {
+        try {
+            Optional<Book> optionalBook = bookDao.findById(id);
+            if(optionalBook.isPresent()){
+                Book book = optionalBook.get();
+                book.setStatusId(2);
+                Book updatedBook = bookDao.save(book);
+                if(updatedBook==null){
+                    throw new Exception("Error Saving");
+                }
+                else{
+                    return ResponseEntity.ok(book);
+                }
+            }
+            else{
+                throw new Exception("Data not found for given id");
+            }
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
 }
