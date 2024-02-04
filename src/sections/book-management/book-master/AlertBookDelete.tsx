@@ -41,12 +41,7 @@ export default function AlertBookDelete({ title, open, handleClose, deleteId }: 
                             Are you sure you want to delete?
                         </Typography>
                         <Typography align="center">
-                            By deleting
-                            <Typography variant="subtitle1" component="span">
-                                {' '}
-                                "{title}"{' '}
-                            </Typography>
-                            user, all task assigned to that user will also be deleted.
+                            By deleting this book, it will be permanently removed from the system.
                         </Typography>
                     </Stack>
 

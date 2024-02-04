@@ -41,8 +41,9 @@ const getInitialValues = (book: FormikValues | null) => {
         bookId: undefined,
         bookName: '',
         author: '',
-        price: '',
-        addedDate: '',
+        price: undefined,
+        noOfPage: undefined,
+        addedDate: new Date().toISOString().split('T')[0],
         statusId: 1
     };
     if (book) {
@@ -68,7 +69,8 @@ const AddEditBook = ({ book, onCancel }: Props) => {
     const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
-        price: Yup.string().max(255).required('Price is required'),
+        price: Yup.string().max(5).required('Price is required'),
+        noOfPage: Yup.string().max(5).required('No of Page is required'),
         addedDate: Yup.string().max(255).required('Added Date is required')
     });
 
@@ -90,6 +92,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                     bookName: values.bookName,
                     author: values.author,
                     price: values.price,
+                    noOfPage: values.noOfPage,
                     addedDate: values.addedDate,
                     statusId: values.statusId
                 };
@@ -188,7 +191,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} lg={4}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="price">Price</InputLabel>
                                         <TextField
@@ -198,13 +201,29 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                             {...getFieldProps('price')}
                                             error={Boolean(touched.price && errors.price)}
                                             helperText={touched.price && errors.price}
+                                            type='number'
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} lg={4}>
+                                    <Stack spacing={1.25}>
+                                        <InputLabel htmlFor="noOfPage">No of Page</InputLabel>
+                                        <TextField
+                                            fullWidth
+                                            id="noOfPage"
+                                            placeholder="Enter No of Page"
+                                            {...getFieldProps('noOfPage')}
+                                            error={Boolean(touched.noOfPage && errors.noOfPage)}
+                                            helperText={touched.noOfPage && errors.noOfPage}
+                                            type='number'
+                                        />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="addedDate">Added Date</InputLabel>
                                         <TextField
+                                            type='date'
                                             fullWidth
                                             id="addedDate"
                                             placeholder="Enter Book Added Date"

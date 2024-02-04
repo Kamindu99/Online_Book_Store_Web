@@ -14,16 +14,15 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    alpha,
     useMediaQuery,
     useTheme
 } from '@mui/material';
 
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { EmptyTable, HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-
+import { NumericFormat } from 'react-number-format';
 import {
     GlobalFilter,
     renderFilterTypes
@@ -61,7 +60,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
         page,
         gotoPage,
         setPageSize,
-        state: { globalFilter, selectedRowIds, pageIndex, pageSize },
+        state: { globalFilter, pageIndex, pageSize },
         preGlobalFilteredRows,
         setGlobalFilter,
         setSortBy,
@@ -82,7 +81,6 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 
     return (
         <>
-            <TableRowSelection selected={Object.keys(selectedRowIds).length} />
             <Stack spacing={3}>
                 <Stack
                     direction={matchDownSM ? 'column' : 'row'}
@@ -118,25 +116,29 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
                         ))}
                     </TableHead>
                     <TableBody {...getTableBodyProps()}>
-                        {page.map((row: Row, i: number) => {
-                            prepareRow(row);
-                            return (
-                                <Fragment key={i}>
-                                    <TableRow
-                                        {...row.getRowProps()}
-                                        onClick={() => {
-                                            row.toggleRowSelected();
-                                        }}
-                                        sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                                    >
-                                        {row.cells.map((cell: Cell) => (
-                                            <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                                        ))}
-                                    </TableRow>
-                                    {/* {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns, expanded })} */}
-                                </Fragment>
-                            );
-                        })}
+                        {page.length > 0 ? (
+                            page.map((row: Row, i: number) => {
+                                prepareRow(row);
+                                return (
+                                    <Fragment key={i}>
+                                        <TableRow
+                                            {...row.getRowProps()}
+                                            onClick={() => {
+                                                row.toggleRowSelected();
+                                            }}
+                                            sx={{ bgcolor: 'inherit' }}
+                                        >
+                                            {row.cells.map((cell: Cell) => (
+                                                <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                                            ))}
+                                        </TableRow>
+                                        {/* {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns, expanded })} */}
+                                    </Fragment>
+                                );
+                            })
+                        ) : (
+                            <EmptyTable msg="No Data" colSpan={9} />
+                        )}
                         <TableRow>
                             <TableCell sx={{ p: 2 }} colSpan={12}>
                                 <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
@@ -210,7 +212,19 @@ const List = () => {
                 },
                 {
                     Header: 'Price',
-                    accessor: 'price'
+                    accessor: 'price',
+                    className: 'cell-right',
+                    Cell: ({ value }: { value: number }) => {
+                        return <div style={{ marginRight: '10%' }}><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
+                    }
+                },
+                {
+                    Header: 'No of Page',
+                    accessor: 'noOfPage',
+                    className: 'cell-right',
+                    Cell: ({ value }: { value: number }) => {
+                        return <div style={{ marginRight: '20%' }}><NumericFormat value={value} displayType="text" /></div>;
+                    }
                 },
                 {
                     Header: 'Added Date',

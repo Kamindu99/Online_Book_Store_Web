@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.Integer.parseInt;
-
 @Service
 @Slf4j
 public class BookService {
@@ -26,6 +24,7 @@ public class BookService {
             book.setBookName(bookDto.getBookName());
             book.setAuthor(bookDto.getAuthor());
             book.setPrice(bookDto.getPrice());
+            book.setNoOfPage(bookDto.getNoOfPage());
             book.setAddedDate(bookDto.getAddedDate());
             book.setStatusId(1);
 
@@ -61,8 +60,8 @@ public class BookService {
         try{
             Optional<Book> optionalBook = bookDao.findById(id);
             if(optionalBook.isPresent()){
-                Book employee = optionalBook.get();
-                return ResponseEntity.ok(employee);
+                Book book = optionalBook.get();
+                return ResponseEntity.ok(book);
             }
             else{
                 throw new Exception("Data not found for given id");
@@ -86,6 +85,7 @@ public class BookService {
                 book.setBookName(bookDto.getBookName());
                 book.setAuthor(bookDto.getAuthor());
                 book.setPrice(bookDto.getPrice());
+                book.setNoOfPage(bookDto.getNoOfPage());
                 book.setAddedDate(bookDto.getAddedDate());
                 book.setStatusId(Integer.parseInt(bookDto.getStatusId()));
 

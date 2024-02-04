@@ -25,7 +25,10 @@ public class Book {
     private String author;
 
     @Column(name="price")
-    private String price;
+    private Integer price;
+
+    @Column(name="noOfPage")
+    private Integer noOfPage;
 
     @Column(name="addedDate")
     private String addedDate;
