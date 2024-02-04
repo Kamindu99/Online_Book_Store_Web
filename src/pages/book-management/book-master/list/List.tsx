@@ -264,7 +264,7 @@ const List = () => {
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
-                                            <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Approve">
@@ -277,7 +277,7 @@ const List = () => {
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
-                                            <CheckOutlined twoToneColor={theme.palette.primary.main} />
+                                            <CheckOutlined twoToneColor={theme.palette.success.main} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete">
@@ -291,7 +291,7 @@ const List = () => {
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
-                                            <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                                            <DeleteTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.error.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>

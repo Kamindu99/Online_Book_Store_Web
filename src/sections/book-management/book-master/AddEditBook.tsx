@@ -165,7 +165,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                         <DialogTitle>{book ? 'Edit Book Details' : 'New Book Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="bookName"> Book Name</InputLabel>
                                         <TextField
@@ -178,7 +178,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="author">Author</InputLabel>
                                         <TextField
