@@ -71,7 +71,14 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
             filterTypes,
             initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [''], sortBy: [sortBy] }
         },
-
+        useGlobalFilter,
+        useFilters,
+        useSortBy,
+        useExpanded,
+        usePagination,
+        useRowSelect,
+        useBlockLayout,
+        useResizeColumns
     );
 
     return (
