@@ -21,7 +21,7 @@ import {
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
 import { EmptyTable, HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
-import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
+import { Cell, Column, HeaderGroup, Row, useBlockLayout, useExpanded, useFilters, useGlobalFilter, usePagination, useResizeColumns, useRowSelect, useSortBy, useTable } from 'react-table';
 import { NumericFormat } from 'react-number-format';
 import {
     GlobalFilter,
@@ -55,28 +55,8 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
         getTableBodyProps,
         headerGroups,
         prepareRow,
-        allColumns,
-        rows,
-        page,
-        gotoPage,
-        setPageSize,
-        state: { globalFilter, pageIndex, pageSize },
-        preGlobalFilteredRows,
-        setGlobalFilter,
-        setSortBy,
-    } = useTable(
-        {
-            columns,
-            data,
-            filterTypes,
-            initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [''], sortBy: [sortBy] }
-        },
-        useGlobalFilter,
-        useFilters,
-        useSortBy,
-        useExpanded,
-        usePagination,
-        useRowSelect
+
+        useResizeColumns
     );
 
     return (
