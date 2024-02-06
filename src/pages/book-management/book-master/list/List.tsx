@@ -55,7 +55,29 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
         getTableBodyProps,
         headerGroups,
         prepareRow,
-
+        allColumns,
+        rows,
+        page,
+        gotoPage,
+        setPageSize,
+        state: { globalFilter, pageIndex, pageSize },
+        preGlobalFilteredRows,
+        setGlobalFilter,
+        setSortBy,
+    } = useTable(
+        {
+            columns,
+            data,
+            filterTypes,
+            initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [''], sortBy: [sortBy] }
+        },
+        useGlobalFilter,
+        useFilters,
+        useSortBy,
+        useExpanded,
+        usePagination,
+        useRowSelect,
+        useBlockLayout,
         useResizeColumns
     );
 
