@@ -383,9 +383,19 @@ const List = () => {
                 </ScrollX>
             </MainCard>
             <Dialog
-
-                {/* alert model */}
-                {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />}
+                maxWidth="sm"
+                TransitionComponent={PopupTransition}
+                keepMounted
+                fullWidth
+                onClose={handleAdd}
+                open={add}
+                sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <AddEditBook book={book} onCancel={handleAdd} />
+            </Dialog>
+            {/* alert model */}
+            {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />}
         </>
     )
 };
