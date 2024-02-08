@@ -1,19 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 // material ui
 import {
     Button,
-    Chip,
     Dialog,
-    IconButton,
     Stack,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-    Tooltip,
     useMediaQuery,
     useTheme
 } from '@mui/material';
@@ -21,24 +18,21 @@ import {
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
 import { EmptyTable, HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
-import { Cell, Column, HeaderGroup, Row, useBlockLayout, useExpanded, useFilters, useGlobalFilter, usePagination, useResizeColumns, useRowSelect, useSortBy, useTable } from 'react-table';
 import { NumericFormat } from 'react-number-format';
+import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import {
     GlobalFilter,
     renderFilterTypes
 } from 'utils/react-table';
 
 // project import
-import { DeleteTwoTone, EditTwoTone, PlusOutlined, CheckOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import { useDispatch, useSelector } from 'store';
-import { approveBook, getBooks, toInitialState } from 'store/reducers/book-master';
+import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { ReactTableProps, dataProps } from './types/types';
-import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
-import { Books } from 'types/book-master';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -77,8 +71,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
         useExpanded,
         usePagination,
         useRowSelect,
-        useBlockLayout,
-        useResizeColumns
+
     );
 
     return (
@@ -156,7 +149,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 // ==============================|| List ||============================== //
 
 const List = () => {
-    const theme = useTheme();
+    //  const theme = useTheme();
     const dispatch = useDispatch();
     const { books, error, isLoading, success } = useSelector(state => state.book)
 
@@ -172,16 +165,16 @@ const List = () => {
     };
 
     //alert model
-    const [openAlert, setOpenAlert] = useState(false);
-    const [userRoleId, setuserRoleId] = useState<number | null>(null)
+    //  const [openAlert, setOpenAlert] = useState(false);
+    //const [userRoleId, setuserRoleId] = useState<number | null>(null)
 
-    const handleAlertClose = () => {
-        setOpenAlert(!openAlert);
-    };
+    // const handleAlertClose = () => {
+    //     setOpenAlert(!openAlert);
+    // };
 
-    const approveBookById = (bookId: number) => {
-        dispatch(approveBook(bookId))
-    };
+    // const approveBookById = (bookId: number) => {
+    //     dispatch(approveBook(bookId))
+    // };
 
     const columns = useMemo(
         () =>
@@ -236,77 +229,77 @@ const List = () => {
                     Header: 'Added Date',
                     accessor: 'addedDate'
                 },
-                {
-                    Header: 'Status',
-                    accessor: 'statusId',
-                    Cell: ({ value }: { value: number }) => {
-                        switch (value) {
-                            case 1:
-                                return <Chip color="warning" label="Penging" size="small" />;
-                            case 2:
-                                return <Chip color="success" label="Approved" size="small" />;
-                            case 3:
-                                return <Chip color="error" label="Disposal" size="small" />;
-                            default:
-                                return <Chip color="warning" label="Penging" size="small" />;
-                        }
-                    }
-                },
-                {
-                    id: "actions",
-                    Header: 'Actions',
-                    accessor: 'actions',
-                    className: 'cell-center',
-                    Cell: ({ row }: { row: Row }) => {
-                        return (
-                            <>
-                                <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-                                    <Tooltip title="Edit">
-                                        <IconButton
-                                            color="primary"
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                const data: Books = row.original;
-                                                e.stopPropagation();
-                                                setBook({ ...data });
-                                                handleAdd();
-                                            }}
-                                            disabled={row.values?.statusId === 2}
-                                        >
-                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Approve">
-                                        <IconButton
-                                            color="success"
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                const data: Books = row.original;
-                                                e.stopPropagation();
-                                                approveBookById(data.bookId!)
-                                            }}
-                                            disabled={row.values?.statusId === 2}
-                                        >
-                                            <CheckOutlined twoToneColor={theme.palette.success.main} />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Delete">
-                                        <IconButton
-                                            color="error"
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                let data: Books = row.original;
-                                                e.stopPropagation();
-                                                setuserRoleId(data.bookId!)
-                                                setOpenAlert(true)
-                                            }}
-                                            disabled={row.values?.statusId === 2}
-                                        >
-                                            <DeleteTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.error.main} />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Stack>
-                            </>
-                        )
-                    }
-                }
+                // {
+                //     Header: 'Status',
+                //     accessor: 'statusId',
+                //     Cell: ({ value }: { value: number }) => {
+                //         switch (value) {
+                //             case 1:
+                //                 return <Chip color="warning" label="Penging" size="small" />;
+                //             case 2:
+                //                 return <Chip color="success" label="Approved" size="small" />;
+                //             case 3:
+                //                 return <Chip color="error" label="Disposal" size="small" />;
+                //             default:
+                //                 return <Chip color="warning" label="Penging" size="small" />;
+                //         }
+                //     }
+                // },
+                // {
+                //     id: "actions",
+                //     Header: 'Actions',
+                //     accessor: 'actions',
+                //     className: 'cell-center',
+                //     Cell: ({ row }: { row: Row }) => {
+                //         return (
+                //             <>
+                //                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+                //                     <Tooltip title="Edit">
+                //                         <IconButton
+                //                             color="primary"
+                //                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                //                                 const data: Books = row.original;
+                //                                 e.stopPropagation();
+                //                                 setBook({ ...data });
+                //                                 handleAdd();
+                //                             }}
+                //                             disabled={row.values?.statusId === 2}
+                //                         >
+                //                             <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                //                         </IconButton>
+                //                     </Tooltip>
+                //                     <Tooltip title="Approve">
+                //                         <IconButton
+                //                             color="success"
+                //                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                //                                 const data: Books = row.original;
+                //                                 e.stopPropagation();
+                //                                 approveBookById(data.bookId!)
+                //                             }}
+                //                             disabled={row.values?.statusId === 2}
+                //                         >
+                //                             <CheckOutlined twoToneColor={theme.palette.success.main} />
+                //                         </IconButton>
+                //                     </Tooltip>
+                //                     <Tooltip title="Delete">
+                //                         <IconButton
+                //                             color="error"
+                //                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                //                                 let data: Books = row.original;
+                //                                 e.stopPropagation();
+                //                                 setuserRoleId(data.bookId!)
+                //                                 setOpenAlert(true)
+                //                             }}
+                //                             disabled={row.values?.statusId === 2}
+                //                         >
+                //                             <DeleteTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.error.main} />
+                //                         </IconButton>
+                //                     </Tooltip>
+                //                 </Stack>
+                //             </>
+                //         )
+                //     }
+                // }
             ] as Column[],
         []
     );
@@ -376,11 +369,9 @@ const List = () => {
     return (
         <>
             <MainCard content={false}>
-                <ScrollX>
-                    <ReactTable columns={columns}
-                        getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={bookList} handleAddEdit={handleAdd} />
-                </ScrollX>
+                <ReactTable columns={columns}
+                    getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
+                    data={bookList} handleAddEdit={handleAdd} />
             </MainCard>
             <Dialog
                 maxWidth="sm"
@@ -395,7 +386,7 @@ const List = () => {
                 <AddEditBook book={book} onCancel={handleAdd} />
             </Dialog>
             {/* alert model */}
-            {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />}
+            {/* {userRoleId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userRoleId} />} */}
         </>
     )
 };
