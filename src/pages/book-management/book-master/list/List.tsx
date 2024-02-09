@@ -189,14 +189,14 @@ const List = () => {
                     accessor: 'bookId',
                     className: 'cell-center',
                     Cell: ({ row }: { row: Row }) => {
-                        if (row.id === undefined || row.id === null || row.id === '') {
+                        if (row.values?.bookId === undefined || row.values?.bookId === null) {
                             return <>-</>
                         }
-                        if (typeof row.id === 'string') {
-                            return <>{(parseInt(row.id) + 1).toString()}</>;
+                        if (typeof row.values?.bookId === 'string') {
+                            return <>{(parseInt(row.values?.bookId) + 1).toString()}</>;
                         }
-                        if (typeof row.id === 'number') {
-                            return <>{row.id + 1}</>;
+                        if (typeof row.values?.bookId === 'number') {
+                            return <>{row.values?.bookId + 1}</>;
                         }
                         // Handle any other data types if necessary
                         return <>-</>;
