@@ -230,7 +230,10 @@ const List = () => {
                         return <div><NumericFormat value={value} displayType="text" /></div>;
                     }
                 },
-
+                {
+                    Header: 'Added Date',
+                    accessor: 'addedDate'
+                },
                 {
                     Header: 'Status',
                     accessor: 'statusId',
