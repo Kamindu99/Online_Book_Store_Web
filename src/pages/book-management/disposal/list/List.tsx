@@ -147,7 +147,62 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 const DisposalList = () => {
 
     const bookdata: dataProps[] = ([
-
+        {
+            id: 1,
+            name: 'Madol Duwa',
+            author: 'Martin Wickramasinghe',
+            disposedDate: '2021-09-01',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 2,
+            name: 'Nidhanaya',
+            author: 'J.B. Disanayake',
+            disposedDate: '2024-01-05',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 3,
+            name: 'Gehenu Lamai',
+            author: 'Karunasena Jayalath',
+            disposedDate: '2021-05-01',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 4,
+            name: 'Sulanga Wage Avidin',
+            author: 'Sujeeva Prasannaarachchi',
+            disposedDate: '2022-09-01',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 5,
+            name: 'Nuwan Renu',
+            author: 'J.B. Disanayake',
+            disposedDate: '2024-01-05',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 6,
+            name: 'Loku Nena',
+            author: 'Karunasena Jayalath',
+            disposedDate: '2021-05-01',
+            reason: 'Damaged',
+            status: 'Approved'
+        },
+        {
+            id: 7,
+            name: 'Tharu Walalla',
+            author: 'Sujeeva Prasannaarachchi',
+            disposedDate: '2022-09-01',
+            reason: 'Damaged',
+            status: 'Approved'
+        }
     ])
 
     const [customer, setCustomer] = useState<any>(null);
