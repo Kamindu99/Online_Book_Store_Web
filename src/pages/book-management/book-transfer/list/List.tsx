@@ -155,7 +155,30 @@ const TransferBookList = () => {
             transferDate: '2023-09-01',
             status: 'Active'
         },
-
+        {
+            id: 2,
+            name: 'Nidhanaya',
+            person: 'Jagath',
+            author: 'J.B. Disanayake',
+            transferDate: '2024-01-05',
+            status: 'Active'
+        },
+        {
+            id: 3,
+            name: 'Gehenu Lamai',
+            person: 'Jagath',
+            author: 'Karunasena Jayalath',
+            transferDate: '2021-05-01',
+            status: 'Active'
+        },
+        {
+            id: 4,
+            name: 'Sulanga Wage Avidin',
+            person: 'Jagath',
+            author: 'Sujeeva Prasannaarachchi',
+            transferDate: '2022-09-01',
+            status: 'Active'
+        },
         {
             id: 5,
             name: 'Kaliyugaya',
