@@ -196,7 +196,7 @@ const TransferBookList = () => {
         setAdd(!add);
         if (customer && !add) setCustomer([]);
     };
-    //render
+    //render table
     const columns = useMemo(
         () =>
             [
