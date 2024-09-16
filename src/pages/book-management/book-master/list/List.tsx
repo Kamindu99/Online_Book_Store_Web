@@ -38,6 +38,7 @@ import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
+import ScrollX from 'components/ScrollX';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -372,9 +373,11 @@ const List = () => {
     return (
         <>
             <MainCard content={false}>
-                <ReactTable columns={columns}
-                    getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                    data={bookList} handleAddEdit={handleAdd} />
+                <ScrollX>
+                    <ReactTable columns={columns}
+                        getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
+                        data={bookList} handleAddEdit={handleAdd} />
+                </ScrollX>
             </MainCard>
             <Dialog
                 maxWidth="sm"
