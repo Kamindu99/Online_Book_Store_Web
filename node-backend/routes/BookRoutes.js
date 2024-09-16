@@ -63,7 +63,16 @@ router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
     Product.find({ isActive: true })
         .then((products) => {
-            res.json(products); // Return the filtered products
+            res.json(
+                products.map((product) => {
+                    return {
+                        id: product._id,
+                        bookCode: product.bookCode,
+                        bookName: product.bookName,
+                    }
+                }
+                )
+            ); // Return the filtered products
         })
         .catch((err) => {
             console.log(err);
