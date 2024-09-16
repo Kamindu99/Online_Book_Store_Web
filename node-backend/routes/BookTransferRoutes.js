@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
             try {
                 const updatedBook = await BookModel.findByIdAndUpdate(
                     req.body.bookId,
-                    { status: 'Out' }, // Update the book status
+                    { status: 'Out', isActive: false }, // Update the book status
                     { new: true } // Option to return the updated book
                 );
 

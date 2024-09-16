@@ -60,13 +60,16 @@ router.route("/").get(async (req, res) => {
 });
 
 router.route("/fdd").get((req, res) => {
-    Product.find().then((product) => {
-        res.json(product);
-    }).catch((err) => {
-        console.log(err);
-
-    })
-})
+    // Fetch products where isActive is true
+    Product.find({ isActive: true })
+        .then((products) => {
+            res.json(products); // Return the filtered products
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({ error: 'An error occurred' }); // Handle errors
+        });
+});
 
 router.route("/:id").put(async (req, res) => {
     let productId = req.params.id;

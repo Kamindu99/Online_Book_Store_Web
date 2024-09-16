@@ -53,7 +53,7 @@ export default function AlertBookDelete({ title, open, handleClose, deleteId, bo
                             dispatch(updateReturnBooktransfer(deleteId!, bookId!))
                             handleClose(true)
                         }} autoFocus>
-                            Delete
+                            Submit
                         </Button>
                     </Stack>
                 </Stack>
