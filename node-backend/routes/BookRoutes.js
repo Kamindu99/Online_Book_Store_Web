@@ -66,7 +66,7 @@ router.route("/fdd").get((req, res) => {
             res.json(
                 products.map((product) => {
                     return {
-                        id: product._id,
+                        _id: product._id,
                         bookCode: product.bookCode,
                         bookName: product.bookName,
                     }
