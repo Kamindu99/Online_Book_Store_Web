@@ -30,7 +30,7 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { EditTwoTone, PlusOutlined } from '@ant-design/icons';
+import { EditTwoTone, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditTransfer from 'sections/book-management/book-transfer/AddEditTransfer';
@@ -258,7 +258,7 @@ const TransferBookList = () => {
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
-                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                            <ReloadOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>

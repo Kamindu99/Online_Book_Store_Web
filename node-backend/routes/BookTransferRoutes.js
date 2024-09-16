@@ -4,23 +4,46 @@ const Product = require('../models/BookTransferModel')
 const BookModel = require('../models/BookModel');
 
 router.post("/", async (req, res) => {
-    const product = new Product(req.body);
+    // Step 1: Save the product
     try {
-        const savedProduct = await product.save();
-        const update = await BookModel.findByIdAndUpdate(req.body?.bookId, {
-            status: 'Not Available'
-        }).then((response) => {
-            res.status(200).send({ status: "Updated", response });
+        const product = new Product(req.body); // Create a new product instance from request body
+        const savedProduct = await product.save(); // Save the product to the database
 
-        }).catch((err) => {
-            res.status(500).send({ status: "error in update", err });
+        // Step 2: Update the book status (if bookId exists)
+        if (req.body?.bookId) {
+            try {
+                const updatedBook = await BookModel.findByIdAndUpdate(
+                    req.body.bookId,
+                    { status: 'Out' }, // Update the book status
+                    { new: true } // Option to return the updated book
+                );
 
-        })
-        res.json(savedProduct);
+                if (!updatedBook) {
+                    return res.status(404).json({ status: "Book not found" });
+                }
+
+                // Step 3: Send final response with saved product and updated book details
+                res.status(200).json({
+                    status: "Book transfer saved and book status updated",
+                    savedProduct,
+                    updatedBook
+                });
+            } catch (err) {
+                // Error handling for book update failure
+                return res.status(500).json({ status: "Error updating book status", error: err.message });
+            }
+        } else {
+            // If no bookId is provided, only return saved product
+            res.status(200).json({
+                status: "Book transfer saved",
+                savedProduct
+            });
+        }
     } catch (err) {
-        res.json({ message: err });
+        // Error handling for product save failure
+        res.status(500).json({ status: "Error saving Book", error: err.message });
     }
-})
+});
 
 router.route("/").get(async (req, res) => {
     try {
