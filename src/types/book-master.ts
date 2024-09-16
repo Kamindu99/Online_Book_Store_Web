@@ -1,10 +1,14 @@
 export type Books = {
-    bookId?: number;
+    _id?: string;
+    bookCode?: string;
     bookName?: string;
     author?: string;
-    price?: string;
-    addedDate?: string;
-    statusId?: number;
+    category?: string;
+    price?: number;
+    noOfPages?: number;
+    createdDate?: string;
+    imageUrl?: string;
+    status?: string;
 };
 
 export interface BookStateProps {

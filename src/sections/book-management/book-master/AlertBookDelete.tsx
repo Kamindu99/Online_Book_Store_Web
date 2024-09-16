@@ -15,7 +15,7 @@ interface Props {
     title: string;
     open: boolean;
     handleClose: (status: boolean) => void;
-    deleteId: number;
+    deleteId: string;
 }
 
 // ==============================|| CUSTOMER - DELETE ||============================== //

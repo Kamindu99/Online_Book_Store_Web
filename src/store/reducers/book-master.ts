@@ -87,7 +87,7 @@ export function getBooks() {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master/all/');
+            const response = await axios.get('http://localhost:8000/api/v1/book-management');
             dispatch(slice.actions.getBooksSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -101,7 +101,7 @@ export function createBook(createBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/book-management/book-master/create/', createBookProps);
+            const response = await axios.post('http://localhost:8000/api/v1/book-management/', createBookProps);
             dispatch(slice.actions.createBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -115,7 +115,7 @@ export function updateBook(updateBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/update/${updateBookProps?.bookId}`, updateBookProps);
+            const response = await axios.put(`http://localhost:8000/api/v1/book-management/${updateBookProps?._id}`, updateBookProps);
             dispatch(slice.actions.updateBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -125,11 +125,11 @@ export function updateBook(updateBookProps: Books) {
     };
 }
 
-export function deleteBook(bookId: number) {
+export function deleteBook(bookId: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.delete(`http://localhost:8000/api/v1/book-management/book-master/delete/${bookId}`);
+            const response = await axios.delete(`http://localhost:8000/api/v1/book-management/${bookId}`);
             dispatch(slice.actions.deleteBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -139,11 +139,11 @@ export function deleteBook(bookId: number) {
     };
 }
 
-export function approveBook(bookId: number) {
+export function approveBook(bookId: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/approve/${bookId}`);
+            const response = await axios.put(`http://localhost:8000/api/v1/book-management/approve/${bookId}`);
             dispatch(slice.actions.approveBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));

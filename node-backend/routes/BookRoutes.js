@@ -11,6 +11,7 @@ router.post("/", async (req, res) => {
         res.json({ message: err });
     }
 })
+
 router.route("/").get((req, res) => {
     Product.find().then((product) => {
         res.json(product);
@@ -19,16 +20,20 @@ router.route("/").get((req, res) => {
 
     })
 })
+
 router.route("/:id").put(async (req, res) => {
     let productId = req.params.id;
-    const { productCode, productName, price, qty, imageUrl } = req.body;
+    const { bookCode, bookName, price, author, imageUrl, category, noOfPages } = req.body;
     const updatedProduct = {
-        productCode,
-        productName,
+        bookCode,
+        bookName,
         price,
-        qty,
+        author,
+        category,
+        noOfPages,
         imageUrl
     };
+
     const update = await Product.findByIdAndUpdate(productId, updatedProduct).then((response) => {
         res.status(200).send({ status: "Updated", response });
 
@@ -37,6 +42,7 @@ router.route("/:id").put(async (req, res) => {
 
     })
 })
+
 router.route("/:id").delete(async (req, res) => {
     let productId = req.params.id;
     await Product.findByIdAndDelete(productId).then(() => {
@@ -47,6 +53,7 @@ router.route("/:id").delete(async (req, res) => {
 
     })
 })
+
 router.route("/:id").get(async (req, res) => {
     let productId = req.params.id;
     await Product.findById(productId).then((response) => {
@@ -57,4 +64,5 @@ router.route("/:id").get(async (req, res) => {
 
     })
 })
+
 module.exports = router;

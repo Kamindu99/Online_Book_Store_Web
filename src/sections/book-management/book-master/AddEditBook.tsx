@@ -39,14 +39,15 @@ import { createBook, toInitialState, updateBook } from 'store/reducers/book-mast
 // constant
 const getInitialValues = (book: FormikValues | null) => {
     const newBook = {
-        bookId: undefined,
+        _id: undefined,
         bookName: '',
+        bookCode: '',
         author: '',
         category: '',
         price: '',
-        noOfPage: '',
-        addedDate: new Date().toISOString().split('T')[0],
-        statusId: 1
+        noOfPages: '',
+        imageUrl: '',
+        status: 'New'
     };
     if (book) {
         return _.merge({}, newBook, book);
@@ -73,8 +74,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
         author: Yup.string().max(255).required('Author is required'),
         category: Yup.string().max(255).required('Category is required'),
         price: Yup.string().max(5).required('Price is required'),
-        noOfPage: Yup.string().max(5).required('No of Page is required'),
-        addedDate: Yup.string().max(255).required('Added Date is required')
+        noOfPages: Yup.string().max(5).required('No of Page is required'),
     });
 
     const [openAlert, setOpenAlert] = useState(false);
@@ -91,16 +91,10 @@ const AddEditBook = ({ book, onCancel }: Props) => {
         onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
                 const newBook = {
-                    bookId: values.bookId,
-                    bookName: values.bookName,
-                    author: values.author,
-                    category: values.category,
-                    price: values.price,
-                    noOfPage: values.noOfPage,
-                    addedDate: values.addedDate,
-                    statusId: values.statusId
+                    ...values,
+                    price: Number(values.price),
+                    noOfPages: Number(values.noOfPages),
                 };
-
                 if (book) {
                     dispatch(updateBook(newBook));
                 } else {
@@ -171,6 +165,19 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
+                                        <InputLabel htmlFor="bookCode"> Book Code</InputLabel>
+                                        <TextField
+                                            fullWidth
+                                            id="bookCode"
+                                            placeholder="Enter Book Name"
+                                            {...getFieldProps('bookCode')}
+                                            error={Boolean(touched.bookCode && errors.bookCode)}
+                                            helperText={touched.bookCode && errors.bookCode}
+                                        />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12} lg={6}>
+                                    <Stack spacing={1.25}>
                                         <InputLabel htmlFor="bookName"> Book Name</InputLabel>
                                         <TextField
                                             fullWidth
@@ -211,14 +218,14 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="noOfPage">No of Page</InputLabel>
+                                        <InputLabel htmlFor="noOfPages">No of Page</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="noOfPage"
+                                            id="noOfPages"
                                             placeholder="Enter No of Page"
-                                            {...getFieldProps('noOfPage')}
-                                            error={Boolean(touched.noOfPage && errors.noOfPage)}
-                                            helperText={touched.noOfPage && errors.noOfPage}
+                                            {...getFieldProps('noOfPages')}
+                                            error={Boolean(touched.noOfPages && errors.noOfPages)}
+                                            helperText={touched.noOfPages && errors.noOfPages}
                                             type='number'
                                         />
                                     </Stack>
@@ -258,15 +265,15 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="addedDate">Added Date</InputLabel>
+                                        <InputLabel htmlFor="imageUrl">Image Url</InputLabel>
                                         <TextField
-                                            type='date'
                                             fullWidth
-                                            id="addedDate"
-                                            placeholder="Enter Book Added Date"
-                                            {...getFieldProps('addedDate')}
-                                            error={Boolean(touched.addedDate && errors.addedDate)}
-                                            helperText={touched.addedDate && errors.addedDate}
+                                            id="imageUrl"
+                                            placeholder="Enter Image Url"
+                                            {...getFieldProps('imageUrl')}
+                                            error={Boolean(touched.imageUrl && errors.imageUrl)}
+                                            helperText={touched.imageUrl && errors.imageUrl}
+                                            type='text'
                                         />
                                     </Stack>
                                 </Grid>

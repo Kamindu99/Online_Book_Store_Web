@@ -29,12 +29,12 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { CheckOutlined, DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
 import { useDispatch, useSelector } from 'store';
-import { approveBook, getBooks, toInitialState } from 'store/reducers/book-master';
+import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
@@ -45,7 +45,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
     const theme = useTheme();
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-    const sortBy = { id: 'bookId', desc: false };
+    const sortBy = { id: '_id', desc: false };
 
     const filterTypes = useMemo(() => renderFilterTypes, []);
 
@@ -171,14 +171,10 @@ const List = () => {
 
     //alert model
     const [openAlert, setOpenAlert] = useState(false);
-    const [userRoleId, setuserRoleId] = useState<number | null>(null)
+    const [userRoleId, setuserRoleId] = useState<string | null>(null)
 
     const handleAlertClose = () => {
         setOpenAlert(!openAlert);
-    };
-
-    const approveBookById = (bookId: number) => {
-        dispatch(approveBook(bookId))
     };
 
     const columns = useMemo(
@@ -186,21 +182,25 @@ const List = () => {
             [
                 {
                     Header: '#',
-                    accessor: 'bookId',
+                    accessor: '_id',
                     className: 'cell-center',
                     Cell: ({ row }: { row: Row }) => {
-                        if (row.values?.bookId === undefined || row.values?.bookId === null) {
+                        if (row.id === undefined || row.id === null || row.id === '') {
                             return <>-</>
                         }
-                        if (typeof row.values?.bookId === 'string') {
-                            return <>{(parseInt(row.values?.bookId) + 1).toString()}</>;
+                        if (typeof row.id === 'string') {
+                            return <>{(parseInt(row.id) + 1).toString()}</>;
                         }
-                        if (typeof row.values?.bookId === 'number') {
-                            return <>{row.values?.bookId + 1}</>;
+                        if (typeof row.id === 'number') {
+                            return <>{row.id + 1}</>;
                         }
                         // Handle any other data types if necessary
                         return <>-</>;
                     }
+                },
+                {
+                    Header: 'Code',
+                    accessor: 'bookCode'
                 },
                 {
                     Header: 'Name',
@@ -224,7 +224,7 @@ const List = () => {
                 },
                 {
                     Header: 'No of Page',
-                    accessor: 'noOfPage',
+                    accessor: 'noOfPages',
                     className: 'cell-right',
                     Cell: ({ value }: { value: number }) => {
                         return <div><NumericFormat value={value} displayType="text" /></div>;
@@ -232,18 +232,21 @@ const List = () => {
                 },
                 {
                     Header: 'Added Date',
-                    accessor: 'addedDate'
+                    accessor: 'createdDate',
+                    Cell: ({ value }: { value: string }) => {
+                        return <div>{value?.split('T')[0]}</div>;
+                    }
                 },
                 {
                     Header: 'Status',
-                    accessor: 'statusId',
-                    Cell: ({ value }: { value: number }) => {
+                    accessor: 'status',
+                    Cell: ({ value }: { value: string }) => {
                         switch (value) {
-                            case 1:
-                                return <Chip color="warning" label="Penging" size="small" />;
-                            case 2:
+                            case "New":
+                                return <Chip color="warning" label="New" size="small" />;
+                            case "Approved":
                                 return <Chip color="success" label="Approved" size="small" />;
-                            case 3:
+                            case 'Disposal':
                                 return <Chip color="error" label="Disposal" size="small" />;
                             default:
                                 return <Chip color="warning" label="Penging" size="small" />;
@@ -273,26 +276,13 @@ const List = () => {
                                             <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
-                                    <Tooltip title="Approve">
-                                        <IconButton
-                                            color="success"
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                const data: Books = row.original;
-                                                e.stopPropagation();
-                                                approveBookById(data.bookId!)
-                                            }}
-                                            disabled={row.values?.statusId === 2}
-                                        >
-                                            <CheckOutlined twoToneColor={theme.palette.success.main} />
-                                        </IconButton>
-                                    </Tooltip>
                                     <Tooltip title="Delete">
                                         <IconButton
                                             color="error"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                 let data: Books = row.original;
                                                 e.stopPropagation();
-                                                setuserRoleId(data.bookId!)
+                                                setuserRoleId(data._id!)
                                                 setOpenAlert(true)
                                             }}
                                             disabled={row.values?.statusId === 2}

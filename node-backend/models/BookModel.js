@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Schema definition
 const bookSchema = new mongoose.Schema({
     bookCode: {
         type: String,
@@ -22,11 +23,11 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     price: {
-        type: String,
+        type: Number,
         required: true
     },
     noOfPages: {
-        type: String,
+        type: Number,
         required: true
     },
     imageUrl: {

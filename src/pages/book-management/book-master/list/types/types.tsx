@@ -1,13 +1,7 @@
 import { Column, HeaderGroup } from 'react-table';
+import { Books } from 'types/book-master';
 
-export interface dataProps {
-    bookId?: number;
-    bookName?: string;
-    author?: string;
-    price?: string;
-    addedDate?: string;
-    statusId?: number;
-}
+export interface dataProps extends Books { }
 
 export interface ReactTableProps {
     columns: Column[]

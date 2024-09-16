@@ -4,7 +4,8 @@
   "description": "bookbackend",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "npm i"
   },
   "author": "kamindu",
   "license": "ISC",
