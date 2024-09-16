@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'axios';
+import axios from 'utils/axios-book';
 import { dispatch } from '../index';
 
 // types
@@ -90,7 +90,7 @@ export function getBooks(query: queryStringParams) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master', { params: query });
+            const response = await axios.get('/api/v1/book-management/book-master', { params: query });
             dispatch(slice.actions.getBooksSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -104,7 +104,7 @@ export function getBooksFdd() {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master/fdd');
+            const response = await axios.get('/api/v1/book-management/book-master/fdd');
             dispatch(slice.actions.getBooksFddSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -118,7 +118,7 @@ export function createBook(createBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/book-management/book-master/', createBookProps);
+            const response = await axios.post('/api/v1/book-management/book-master/', createBookProps);
             dispatch(slice.actions.createBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -132,7 +132,7 @@ export function updateBook(updateBookProps: Books) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.put(`http://localhost:8000/api/v1/book-management/book-master/${updateBookProps?._id}`, updateBookProps);
+            const response = await axios.put(`/api/v1/book-management/book-master/${updateBookProps?._id}`, updateBookProps);
             dispatch(slice.actions.updateBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
@@ -146,7 +146,7 @@ export function deleteBook(bookId: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.delete(`http://localhost:8000/api/v1/book-management/book-master/${bookId}`);
+            const response = await axios.delete(`/api/v1/book-management/book-master/${bookId}`);
             dispatch(slice.actions.deleteBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
