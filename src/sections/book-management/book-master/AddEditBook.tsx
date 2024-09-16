@@ -170,7 +170,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         <TextField
                                             fullWidth
                                             id="bookCode"
-                                            placeholder="Enter Book Name"
+                                            placeholder="Enter Book Code"
                                             {...getFieldProps('bookCode')}
                                             error={Boolean(touched.bookCode && errors.bookCode)}
                                             helperText={touched.bookCode && errors.bookCode}
