@@ -1,13 +1,13 @@
 // material-ui
-import { styled, Theme, useTheme } from '@mui/material/styles';
 import { Box, Button, Stack, SxProps } from '@mui/material';
-
+import { styled, Theme, useTheme } from '@mui/material/styles';
 // third-party
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 // project import
-import RejectionFiles from './RejectionFiles';
+import imageCompression from 'browser-image-compression';
 import PlaceholderContent from './PlaceholderContent';
+import RejectionFiles from './RejectionFiles';
 
 // types
 import { CustomFile } from 'types/dropzone';
@@ -41,17 +41,32 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
       'image/*': []
     },
     multiple: false,
-    onDrop: (acceptedFiles: CustomFile[]) => {
+    onDrop: async (acceptedFiles: CustomFile[]) => {
       const file = acceptedFiles[0]; // Assuming only one file is accepted
 
-      const reader = new FileReader();
+      try {
+        // Define compression options
+        const options = {
+          maxSizeMB: 1, // Max size in MB
+          maxWidthOrHeight: 1024, // Max width or height in pixels
+          useWebWorker: true
+        };
 
-      reader.onloadend = () => {
-        const base64String = reader.result; // This is the Base64-encoded string
-        setFieldValue('imageUrl', base64String); // Set Base64 string to form field
-      };
+        // Compress the image
+        const compressedFile = await imageCompression(file, options);
 
-      reader.readAsDataURL(file); // Convert file to Base64
+        // Create a FileReader to read the compressed image
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const base64String = reader.result; // This is the Base64-encoded string
+          setFieldValue('imageUrl', base64String); // Set Base64 string to form field
+        };
+
+        reader.readAsDataURL(compressedFile); // Convert compressed file to Base64
+      } catch (error) {
+        console.error('Image compression error:', error);
+      }
     }
   });
 
@@ -114,3 +129,4 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
 };
 
 export default SingleFileUpload;
+
