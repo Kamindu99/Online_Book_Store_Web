@@ -146,7 +146,7 @@ const List = () => {
     return (
         <>
             {/* Filter Bar */}
-            <Box mb={3}>
+            <Box mb={3} sx={{ backgroundColor: 'white', padding: '15px' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={4} md={4}>
                         <FormControl variant="outlined" sx={{ minWidth: 180, width: '100%' }}>
@@ -215,6 +215,7 @@ const List = () => {
                             imageUrl={book.imageUrl!}
                             bookName={book.bookName!}
                             author={book.author!}
+                            noOfPages={book.noOfPages!}
                             category={book.category!}
                             isActive={book.isActive!}
                             onBorrow={() => handleBorrow(book._id!)}

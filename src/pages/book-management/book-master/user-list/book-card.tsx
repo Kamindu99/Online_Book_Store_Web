@@ -8,10 +8,11 @@ interface BookCardProps {
     isActive: boolean;
     category: string;
     author: string;
+    noOfPages: number;
     onBorrow: () => void;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, onBorrow }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, onBorrow }) => {
     return (
         <Card sx={{
             maxWidth: 345,
@@ -64,7 +65,12 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
             </Box>
             <CardMedia
                 component="img"
-                height="300"
+                sx={{
+                    height: {
+                        xs: 240,
+                        md: 280
+                    }
+                }}
                 image={imageUrl}
                 alt={bookName}
             />
@@ -76,7 +82,8 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                     sx={{
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        textOverflow: 'ellipsis',
+                        marginBottom: '0.2rem'
                     }}
                 >
                     {bookName}
@@ -85,9 +92,18 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 <Typography variant="body2" color="text.secondary" sx={{
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    textOverflow: 'ellipsis',
+                    marginBottom: '0.2rem'
                 }}>
                     {author}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    marginBottom: '0.2rem'
+                }}>
+                    {noOfPages} pages
                 </Typography>
                 {/* <Grid item xs={12}>
                     <Stack direction="row" justifyContent="flex-end">
