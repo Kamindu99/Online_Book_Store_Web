@@ -48,7 +48,7 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
         // Define compression options
         const options = {
           maxSizeMB: 1, // Max size in MB
-          maxWidthOrHeight: 1024, // Max width or height in pixels
+          maxWidthOrHeight: 360,
           useWebWorker: true
         };
 
