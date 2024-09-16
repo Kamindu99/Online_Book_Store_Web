@@ -126,7 +126,7 @@ const List = () => {
         <>
             <Grid container spacing={2}>
                 {bookList.map((book) => (
-                    <Grid item xs={12} sm={6} md={2.4} key={book._id!}>
+                    <Grid item xs={6} sm={6} md={2.4} key={book._id!}>
                         <BookCard
                             imageUrl={book.imageUrl!}
                             bookName={book.bookName!}
@@ -136,7 +136,7 @@ const List = () => {
                     </Grid>
 
                 ))}
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={12} md={12}>
                     <TablePagination
                         gotoPage={tableParams?.setPage}
                         rows={[]}
