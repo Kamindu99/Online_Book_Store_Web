@@ -39,7 +39,7 @@ const getInitialValues = (booktransfer: FormikValues | null) => {
 
     const newBooktransfer = {
         bookId: '',
-        transferedate: '',
+        transferedate: new Date().toISOString().split('T')[0],
         person: '',
     };
 
