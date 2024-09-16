@@ -10,7 +10,6 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Stack,
     TextField
 } from '@mui/material';
 
@@ -44,7 +43,7 @@ const List = () => {
     const [category, setCategory] = useState<string>('');
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);
-    const [categoryTerm, setCategoryTerm] = useState<string>(''); // Category filter
+    const [categoryTerm, setCategoryTerm] = useState<string>("All"); // Category filter
     const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
 
     const tableParams: TableParamsType = {
@@ -67,7 +66,7 @@ const List = () => {
             per_page: perPage,
             direction: direction,
             sort: sort,
-            category: category,
+            category: category === 'All' ? '' : category,
             search: search
         };
         dispatch(getBooks(listParameters));
@@ -148,57 +147,66 @@ const List = () => {
         <>
             {/* Filter Bar */}
             <Box mb={3}>
-                <Stack direction="row" spacing={2}>
-                    <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                        <InputLabel>Category</InputLabel>
-                        <Select
-                            value={categoryTerm}
-                            onChange={handleCategoryChange}
-                            label="Category"
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={4} md={4}>
+                        <FormControl variant="outlined" sx={{ minWidth: 180, width: '100%' }}>
+                            <InputLabel>Category</InputLabel>
+                            <Select
+                                value={categoryTerm}
+                                onChange={handleCategoryChange}
+                                label="Category"
+                            >
+                                <MenuItem key={0} value={"All"}>
+                                    All
+                                </MenuItem>
+                                <MenuItem key={1} value={"Adventure"}>
+                                    Adventure
+                                </MenuItem>
+                                <MenuItem key={2} value={"Novel"}>
+                                    Novel
+                                </MenuItem>
+                                <MenuItem key={3} value={"Short Stories"}>
+                                    Short Stories
+                                </MenuItem>
+                                <MenuItem key={4} value={"Educational"}>
+                                    Educational
+                                </MenuItem>
+                                <MenuItem key={5} value={"Religious"}>
+                                    Religious
+                                </MenuItem>
+                                <MenuItem key={6} value={"Astrology"}>
+                                    Astrology
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} sm={5} md={5}>
+                        <TextField
+                            label="Search"
+                            variant="outlined"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            fullWidth
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={3} md={3}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            onClick={() => {
+                                setSearch(searchTerm);
+                                setCategory(categoryTerm);
+                            }}
                         >
-                            <MenuItem key={1} value={""}>
-                                {"All"}
-                            </MenuItem>
-                            <MenuItem key={1} value={"Adventure"}>
-                                {"Adventure"}
-                            </MenuItem>
-                            <MenuItem key={2} value={"Novel"}>
-                                {"Novel"}
-                            </MenuItem>
-                            <MenuItem key={3} value={"Short Stories"}>
-                                {"Short Stories"}
-                            </MenuItem>
-                            <MenuItem key={4} value={"Educational"}>
-                                {"Educational"}
-                            </MenuItem>
-                            <MenuItem key={5} value={"Religious"}>
-                                {"Religious"}
-                            </MenuItem>
-                            <MenuItem key={6} value={"Astrology"}>
-                                {"Astrology"}
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <TextField
-                        label="Search"
-                        variant="outlined"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                    />
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            setSearch(searchTerm);
-                            setCategory(categoryTerm);
-                        }}
-                    >
-                        Apply Filters
-                    </Button>
-                </Stack>
+                            Apply Filters
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
+
 
             <Grid container spacing={2}>
                 {bookList.map((book) => (
