@@ -14,6 +14,8 @@ import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import BookCard from './book-card';
 import { dataProps } from './types/types';
+import { TablePagination, TableParamsType } from 'components/third-party/ReactTable';
+import { listParametersType } from 'types/book-master';
 
 // ==============================|| List ||============================== //
 
@@ -27,17 +29,36 @@ const List = () => {
 
     // ----------------------- | API Call - Roles | ---------------------
 
+    const [page, setPage] = useState<number>(0);
+    const [perPage, setPerPage] = useState<number>(10);
+    const [direction, setDirection] = useState<"asc" | "desc">("desc");
+    const [search, setSearch] = useState<string>("");
+    const [sort, setSort] = useState<string>("_id");
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+
+    const tableParams: TableParamsType = {
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+        direction,
+        setDirection,
+        sort,
+        setSort,
+        search,
+        setSearch,
+        pageCount: totalRecords
+    }
+
     useEffect(() => {
-        dispatch(getBooks(
-            {
-                direction: "desc",
-                page: 0,
-                per_page: 10,
-                search: '',
-                sort: "_id"
-            }
-        ))
-    }, [success])
+        const listParameters: listParametersType = {
+            page: page,
+            per_page: perPage,
+            direction: direction,
+            sort: sort
+        };
+        dispatch(getBooks(listParameters));
+    }, [dispatch, success, page, perPage, direction, sort]);
 
     useEffect(() => {
         if (!booksList) {
@@ -49,6 +70,7 @@ const List = () => {
             return
         }
         setBookList(booksList?.result!)
+        setTotalRecords(booksList?.pagination?.total!)
     }, [booksList])
 
     useEffect(() => {
@@ -104,7 +126,7 @@ const List = () => {
         <>
             <Grid container spacing={2}>
                 {bookList.map((book) => (
-                    <Grid item xs={12} sm={6} md={3} key={book._id!}>
+                    <Grid item xs={12} sm={6} md={2.4} key={book._id!}>
                         <BookCard
                             imageUrl={book.imageUrl!}
                             bookName={book.bookName!}
@@ -112,7 +134,18 @@ const List = () => {
                             onBorrow={() => handleBorrow(book._id!)}
                         />
                     </Grid>
+
                 ))}
+                <Grid item xs={12}>
+                    <TablePagination
+                        gotoPage={tableParams?.setPage}
+                        rows={[]}
+                        setPageSize={tableParams?.setPerPage}
+                        pageIndex={tableParams?.page}
+                        pageSize={tableParams?.perPage}
+                        pageCount={tableParams?.pageCount}
+                    />
+                </Grid>
             </Grid>
         </>
     )

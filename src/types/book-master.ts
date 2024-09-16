@@ -35,7 +35,7 @@ export interface DefaultRootStateProps {
     book: BookStateProps;
 }
 
-export interface queryStringParams {
+export interface listParametersType {
     direction?: string;
     page?: number;
     per_page?: number;

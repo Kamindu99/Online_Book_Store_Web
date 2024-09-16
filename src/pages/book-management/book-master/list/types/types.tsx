@@ -1,3 +1,4 @@
+import { TableParamsType } from 'components/third-party/ReactTable';
 import { Column, HeaderGroup } from 'react-table';
 import { Books } from 'types/book-master';
 
@@ -8,6 +9,7 @@ export interface ReactTableProps {
     data: dataProps[]
     handleAddEdit: () => void
     getHeaderProps: (column: HeaderGroup) => {};
+    tableParams: TableParamsType
 }
 export interface TableHeaderProps {
     headerGroups: HeaderGroup[];

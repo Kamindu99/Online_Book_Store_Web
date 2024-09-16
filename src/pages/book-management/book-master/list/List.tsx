@@ -20,7 +20,7 @@ import {
 
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
-import { EmptyTable, HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
+import { EmptyTable, HeaderSort, SortingSelect, TablePagination, TableParamsType } from 'components/third-party/ReactTable';
 import { NumericFormat } from 'react-number-format';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import {
@@ -37,12 +37,12 @@ import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelet
 import { useDispatch, useSelector } from 'store';
 import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { Books } from 'types/book-master';
+import { Books, listParametersType } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTableProps) {
+function ReactTable({ columns, data, handleAddEdit, getHeaderProps, tableParams }: ReactTableProps) {
     const theme = useTheme();
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -58,9 +58,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
         allColumns,
         rows,
         page,
-        gotoPage,
-        setPageSize,
-        state: { globalFilter, pageIndex, pageSize },
+        state: { globalFilter, pageIndex },
         preGlobalFilteredRows,
         setGlobalFilter,
         setSortBy,
@@ -69,7 +67,9 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
             columns,
             data,
             filterTypes,
-            initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [''], sortBy: [sortBy] }
+            initialState: { pageIndex: tableParams?.page, pageSize: tableParams?.perPage },
+            manualPagination: true,
+            pageCount: tableParams?.pageCount,
         },
         useGlobalFilter,
         useFilters,
@@ -142,7 +142,14 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
                         )}
                         <TableRow>
                             <TableCell sx={{ p: 2 }} colSpan={12}>
-                                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+                                <TablePagination
+                                    gotoPage={tableParams?.setPage}
+                                    rows={rows}
+                                    setPageSize={tableParams?.setPerPage}
+                                    pageIndex={pageIndex}
+                                    pageSize={tableParams?.perPage}
+                                    pageCount={tableParams?.pageCount}
+                                />
                             </TableCell>
                         </TableRow>
                     </TableBody>
@@ -301,17 +308,36 @@ const List = () => {
 
     // ----------------------- | API Call - Roles | ---------------------
 
+    const [page, setPage] = useState<number>(0);
+    const [perPage, setPerPage] = useState<number>(10);
+    const [direction, setDirection] = useState<"asc" | "desc">("desc");
+    const [search, setSearch] = useState<string>("");
+    const [sort, setSort] = useState<string>("_id");
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+
+    const tableParams: TableParamsType = {
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+        direction,
+        setDirection,
+        sort,
+        setSort,
+        search,
+        setSearch,
+        pageCount: totalRecords
+    }
+
     useEffect(() => {
-        dispatch(getBooks(
-            {
-                direction: "desc",
-                page: 0,
-                per_page: 10,
-                search: '',
-                sort: "_id"
-            }
-        ))
-    }, [success])
+        const listParameters: listParametersType = {
+            page: page,
+            per_page: perPage,
+            direction: direction,
+            sort: sort
+        };
+        dispatch(getBooks(listParameters));
+    }, [dispatch, success, page, perPage, direction, sort]);
 
     useEffect(() => {
         if (!booksList) {
@@ -323,6 +349,7 @@ const List = () => {
             return
         }
         setBookList(booksList?.result!)
+        setTotalRecords(booksList?.pagination?.total!)
     }, [booksList])
 
     useEffect(() => {
@@ -375,7 +402,7 @@ const List = () => {
                 <ScrollX>
                     <ReactTable columns={columns}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={bookList} handleAddEdit={handleAdd} />
+                        data={bookList} handleAddEdit={handleAdd} tableParams={tableParams} />
                 </ScrollX>
             </MainCard>
             <Dialog

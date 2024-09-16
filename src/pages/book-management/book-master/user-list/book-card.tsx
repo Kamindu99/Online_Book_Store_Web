@@ -14,7 +14,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, onBorro
     return (
         <Card sx={{
             maxWidth: 345,
-            margin: 2,
+            margin: 0,
             transition: '0.3s',
             cursor: 'pointer',
             '&:hover': {
@@ -29,10 +29,24 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, onBorro
                 alt={bookName}
             />
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                    }}
+                >
                     {bookName}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+
+                <Typography variant="body2" color="text.secondary" sx={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                }}>
                     {author}
                 </Typography>
                 <Grid item xs={12}>

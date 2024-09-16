@@ -6,7 +6,7 @@ import axios from 'utils/axios-book';
 import { dispatch } from '../index';
 
 // types
-import { Books, DefaultRootStateProps, queryStringParams } from 'types/book-master';
+import { Books, DefaultRootStateProps, listParametersType } from 'types/book-master';
 
 // ----------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ export function toInitialState() {
     }
 }
 
-export function getBooks(query: queryStringParams) {
+export function getBooks(query: listParametersType) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {

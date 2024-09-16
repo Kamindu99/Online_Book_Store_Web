@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState, ReactNode, Ref } from 'react';
+import React, { forwardRef, useEffect, useRef, useState, ReactNode, Ref, Dispatch, SetStateAction } from 'react';
 
 // material-ui
 import { styled, useTheme, Theme } from '@mui/material/styles';
@@ -42,6 +42,20 @@ interface HeaderSortProps {
   sort?: boolean;
 }
 
+export interface TableParamsType {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  perPage: number;
+  setPerPage: Dispatch<SetStateAction<number>>;
+  direction: "asc" | "desc";
+  setDirection: Dispatch<SetStateAction<"asc" | "desc">>;
+  sort: string;
+  setSort: Dispatch<SetStateAction<string>>;
+  pageCount: number;
+  search?: string;
+  setSearch?: Dispatch<SetStateAction<string>>;
+}
+
 export const HeaderSort = ({ column, sort }: HeaderSortProps) => {
   const theme = useTheme();
 
@@ -77,9 +91,10 @@ interface TablePaginationProps {
   pageIndex: number;
   pageSize: number;
   rows: Row[];
+  pageCount?: number;
 }
 
-export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex }: TablePaginationProps) => {
+export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, pageCount }: TablePaginationProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -142,7 +157,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
       </Grid>
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
         <Pagination
-          count={Math.ceil(rows.length / pageSize)}
+          count={pageCount ? Math.ceil(pageCount / pageSize) : Math.ceil(rows.length / pageSize)}
           page={pageIndex + 1}
           onChange={handleChangePagination}
           color="primary"
