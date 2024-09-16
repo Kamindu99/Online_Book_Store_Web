@@ -7,17 +7,21 @@ import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { dispatch } from 'store';
+import { updateReturnBooktransfer } from 'store/reducers/book-transfer';
 
 // types
 interface Props {
     title: string;
     open: boolean;
     handleClose: (status: boolean) => void;
+    deleteId: string;
+    bookId: string;
 }
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertBookDelete({ title, open, handleClose }: Props) {
+export default function AlertBookDelete({ title, open, handleClose, deleteId, bookId }: Props) {
     return (
         <Dialog
             open={open}
@@ -35,23 +39,20 @@ export default function AlertBookDelete({ title, open, handleClose }: Props) {
                     </Avatar>
                     <Stack spacing={2}>
                         <Typography variant="h4" align="center">
-                            Are you sure you want to delete?
+                            Are you sure return this book?
                         </Typography>
-                        <Typography align="center">
-                            By deleting
-                            <Typography variant="subtitle1" component="span">
-                                {' '}
-                                "{title}"{' '}
-                            </Typography>
-                            user, all task assigned to that user will also be deleted.
-                        </Typography>
+
                     </Stack>
 
                     <Stack direction="row" spacing={2} sx={{ width: 1 }}>
                         <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
                             Cancel
                         </Button>
-                        <Button fullWidth color="error" variant="contained" onClick={() => handleClose(true)} autoFocus>
+                        <Button fullWidth color="error" variant="contained" onClick={() => {
+                            // delete API call
+                            dispatch(updateReturnBooktransfer(deleteId!, bookId!))
+                            handleClose(true)
+                        }} autoFocus>
                             Delete
                         </Button>
                     </Stack>

@@ -60,7 +60,10 @@ router.route("/").get(async (req, res) => {
         sortObj[sort] = sortOrder;
 
         // Build search query (assuming search on bookName, you can add more fields as needed)
-        const searchQuery = search ? { bookName: new RegExp(search, 'i') } : {};
+        const searchQuery = {
+            ...search ? { bookName: new RegExp(search, 'i') } : {}, // Search filter
+            isActive: true // Only get active products
+        };
 
         // Fetch total number of matching products
         const total = await Product.countDocuments(searchQuery);
@@ -130,6 +133,55 @@ router.route("/:id").put(async (req, res) => {
 
     })
 })
+
+router.route("/return/:id/:bookId").put(async (req, res) => {
+    const transferId = req.params.id;
+    const bookId = req.params.bookId;
+
+    // Step 1: Update the product
+    try {
+        // Update the product to set `isActive` to false
+        const updatedProduct = await Product.findByIdAndUpdate(transferId, { isActive: false }, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ status: "Book Transfer not found" });
+        }
+
+        // Step 2: Update the book status (if bookId exists)
+        if (bookId) {
+            try {
+                // Update the book status to 'Listed'
+                const updatedBook = await BookModel.findByIdAndUpdate(
+                    bookId,
+                    { status: 'Listed' }, // Update status to 'Listed'
+                    { new: true }         // Return updated document
+                );
+
+                if (!updatedBook) {
+                    return res.status(404).json({ status: "Book not found" });
+                }
+
+                // Step 3: Send final response with updated product and book
+                return res.status(200).json({
+                    status: "Book returned and book status updated",
+                    updatedProduct,
+                    updatedBook
+                });
+            } catch (bookError) {
+                return res.status(500).json({ status: "Error updating book status", error: bookError.message });
+            }
+        } else {
+            // If no bookId, just return the updated product
+            return res.status(200).json({
+                status: "Book returned",
+                updatedProduct
+            });
+        }
+    } catch (productError) {
+        // Error handling for product update failure
+        return res.status(500).json({ status: "Error updating product", error: productError.message });
+    }
+});
 
 router.route("/:id").delete(async (req, res) => {
     let productId = req.params.id;

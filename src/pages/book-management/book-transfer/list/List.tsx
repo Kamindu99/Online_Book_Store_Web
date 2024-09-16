@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Fragment, useMemo, useState, MouseEvent, useEffect } from 'react';
+import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 
 // material ui
 import {
     Button,
-    Chip,
     Dialog,
     IconButton,
     Stack,
@@ -34,11 +33,13 @@ import { EditTwoTone, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditTransfer from 'sections/book-management/book-transfer/AddEditTransfer';
-import { ReactTableProps, dataProps } from './types/types';
-import { Books } from 'types/book-master';
 import { useDispatch, useSelector } from 'store';
 import { getBookstransfer, toInitialState } from 'store/reducers/book-transfer';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { Books } from 'types/book-master';
+import { ReactTableProps, dataProps } from './types/types';
+import { Bookstransfer } from 'types/book-transfer';
+import AlertBookDelete from 'sections/book-management/book-transfer/AlertTransferDelete';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -208,22 +209,22 @@ const TransferBookList = () => {
                     Header: 'Transfer Date',
                     accessor: 'transferedate',
                 },
-                {
-                    Header: 'Status',
-                    accessor: 'status',
-                    Cell: ({ value }: { value: string }) => {
-                        switch (value) {
-                            case "Out":
-                                return <Chip color="warning" label="Out" size="small" />;
-                            case "Listed":
-                                return <Chip color="success" label="Listed" size="small" />;
-                            case 'Disposal':
-                                return <Chip color="error" label="Disposal" size="small" />;
-                            default:
-                                return <Chip color="warning" label="Penging" size="small" />;
-                        }
-                    }
-                },
+                // {
+                //     Header: 'Status',
+                //     accessor: 'status',
+                //     Cell: ({ value }: { value: string }) => {
+                //         switch (value) {
+                //             case "Out":
+                //                 return <Chip color="warning" label="Out" size="small" />;
+                //             case "Listed":
+                //                 return <Chip color="success" label="Listed" size="small" />;
+                //             case 'Disposal':
+                //                 return <Chip color="error" label="Disposal" size="small" />;
+                //             default:
+                //                 return <Chip color="warning" label="Penging" size="small" />;
+                //         }
+                //     }
+                // },
                 {
                     id: "actions",
                     Header: 'Actions',
@@ -251,10 +252,12 @@ const TransferBookList = () => {
                                         <IconButton
                                             color="primary"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                const data: Books = row.original;
+                                                let data: Bookstransfer = row.original;
                                                 e.stopPropagation();
-                                                setCustomer({ ...data });
-                                                handleAdd();
+                                                setBookTransferId(data._id!)
+                                                setBookId(data?.bookId!)
+                                                setOpenAlert(true)
+
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
@@ -269,6 +272,15 @@ const TransferBookList = () => {
             ] as Column[],
         []
     );
+
+    //alert model
+    const [openAlert, setOpenAlert] = useState(false);
+    const [bookTransferId, setBookTransferId] = useState<string | null>(null)
+    const [bookId, setBookId] = useState<string | null>(null)
+
+    const handleAlertClose = () => {
+        setOpenAlert(!openAlert);
+    };
 
 
     // ----------------------- | API Call - Roles | ---------------------
@@ -364,6 +376,8 @@ const TransferBookList = () => {
             >
                 <AddEditTransfer booktransfer={customer} onCancel={handleAdd} />
             </Dialog>
+            {/* alert model */}
+            {bookTransferId && bookId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={bookTransferId} bookId={bookId} />}
         </>
     )
 };

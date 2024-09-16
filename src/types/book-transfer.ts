@@ -1,3 +1,5 @@
+import { Books } from "./book-master";
+
 export type Bookstransfer = {
     _id?: string;
     // bookCode?: string;
@@ -12,6 +14,7 @@ export type Bookstransfer = {
     bookId?: string;
     person?: string;
     transferedate?: string;
+    bmBook?: Books
 };
 
 export type PaginationDTO = {

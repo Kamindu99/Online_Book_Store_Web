@@ -64,6 +64,11 @@ const slice = createSlice({
             state.success = "Book transfer Update successfully";
         },
 
+        // PUT BOOK RETURN
+        updateReturnBookSuccess(state, action) {
+            state.success = "Book Return successfully";
+        },
+
         // DELETE BOOK
         deleteBookSuccess(state, action) {
             state.success = "Book transfer Delete successfully";
@@ -134,6 +139,20 @@ export function updateBooktransfer(updateBookProps: Bookstransfer) {
         try {
             const response = await axios.put(`/api/v1/book-management/book-transfer/${updateBookProps?._id}`, updateBookProps);
             dispatch(slice.actions.updateBookSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+export function updateReturnBooktransfer(bookTransferId: string, bookId: string) {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+        try {
+            const response = await axios.put(`/api/v1/book-management/book-transfer/return/${bookTransferId}/${bookId}`);
+            dispatch(slice.actions.updateReturnBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

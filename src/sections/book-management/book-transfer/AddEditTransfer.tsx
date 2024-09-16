@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // material-ui
 import {
@@ -12,12 +12,10 @@ import {
     InputLabel,
     Stack,
     TextField,
-    Tooltip,
     useTheme
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import AlertBookDelete from './AlertTransferDelete';
 
 // third-party
 import { Form, FormikProvider, FormikValues, useFormik } from 'formik';
@@ -26,15 +24,13 @@ import * as Yup from 'yup';
 
 // project imports
 
-import IconButton from 'components/@extended/IconButton';
 
 import { dispatch, useSelector } from 'store';
 
 // assets
-import { DeleteFilled } from '@ant-design/icons';
 import { getBooksFdd } from 'store/reducers/book-master';
-import { Books } from 'types/book-master';
 import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-transfer';
+import { Books } from 'types/book-master';
 
 // types
 
@@ -62,20 +58,13 @@ export interface Props {
 }
 
 const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
-    const isCreating = !booktransfer;
+
     const theme = useTheme()
 
     const BooktransferSchema = Yup.object().shape({
         transferedate: Yup.string().max(255).required('Transfer date is required'),
         person: Yup.string().max(255).required('Transferd person is required')
     });
-
-    const [openAlert, setOpenAlert] = useState(false);
-
-    const handleAlertClose = () => {
-        setOpenAlert(!openAlert);
-        onCancel();
-    };
 
     const formik = useFormik({
         initialValues: getInitialValues(booktransfer!),
@@ -177,13 +166,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                         <DialogActions sx={{ p: 2.5 }}>
                             <Grid container justifyContent="space-between" alignItems="center">
                                 <Grid item>
-                                    {!isCreating && (
-                                        <Tooltip title="Delete Booktransfer" placement="top">
-                                            <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
-                                                <DeleteFilled />
-                                            </IconButton>
-                                        </Tooltip>
-                                    )}
+
                                 </Grid>
                                 <Grid item>
                                     <Stack direction="row" spacing={2} alignItems="center">
@@ -200,7 +183,6 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                     </Form>
                 </LocalizationProvider>
             </FormikProvider>
-            {!isCreating && <AlertBookDelete title={booktransfer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
         </>
     );
 };

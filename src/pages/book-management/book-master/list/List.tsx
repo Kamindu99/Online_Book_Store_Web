@@ -31,6 +31,7 @@ import {
 // project import
 import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
+import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
 import { useDispatch, useSelector } from 'store';
@@ -38,7 +39,6 @@ import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
-import ScrollX from 'components/ScrollX';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -274,7 +274,7 @@ const List = () => {
                                             }}
                                             disabled={row.values?.statusId === 2}
                                         >
-                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                            <EditTwoTone twoToneColor={theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete">
@@ -286,9 +286,8 @@ const List = () => {
                                                 setuserRoleId(data._id!)
                                                 setOpenAlert(true)
                                             }}
-                                            disabled={row.values?.statusId === 2}
                                         >
-                                            <DeleteTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.error.main} />
+                                            <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>
