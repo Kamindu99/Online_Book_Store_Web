@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', category = '' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -26,8 +26,18 @@ router.route("/").get(async (req, res) => {
         const sortObj = {};
         sortObj[sort] = sortOrder;
 
-        // Build search query (assuming search on bookName, you can add more fields as needed)
-        const searchQuery = search ? { bookName: new RegExp(search, 'i') } : {};
+        // Build search query
+        let searchQuery = {};
+
+        // If a search term is provided, search by bookName
+        if (search) {
+            searchQuery.bookName = new RegExp(search, 'i'); // Case-insensitive search
+        }
+
+        // If a category is provided, filter by category
+        if (category) {
+            searchQuery.category = category;
+        }
 
         // Fetch total number of matching products
         const total = await Product.countDocuments(searchQuery);

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -58,6 +58,7 @@ export interface Props {
 }
 
 const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
+    console.log(booktransfer);
 
     const theme = useTheme()
 
@@ -93,9 +94,27 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
     const { booksFdd } = useSelector(state => state.book)
+
     useEffect(() => {
         dispatch(getBooksFdd());
     }, [])
+
+    const [bookList, setBookList] = useState<Books[]>([]);
+
+    useEffect(() => {
+        if (booktransfer) {
+            setBookList([
+                {
+                    _id: booktransfer.bookId,
+                    bookCode: booktransfer.bmBook?.bookCode,
+                    bookName: booktransfer.bmBook?.bookName
+                },
+                ...booksFdd!
+            ])
+        } else {
+            setBookList(booksFdd!)
+        }
+    }, [booktransfer, booksFdd])
 
     return (
         <>
@@ -114,11 +133,11 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                                         <Autocomplete
                                             fullWidth
                                             id="bookId"
-                                            value={booksFdd?.find((option) => option._id === formik.values.bookId) || null}
+                                            value={bookList?.find((option) => option._id === formik.values.bookId) || null}
                                             onChange={(event: any, newValue: Books | null) => {
                                                 formik.setFieldValue('bookId', newValue?._id);
                                             }}
-                                            options={booksFdd || []}
+                                            options={bookList || []}
                                             getOptionLabel={(item) => `${item.bookCode} - ${item.bookName}`}
                                             renderInput={(params) => {
                                                 return (

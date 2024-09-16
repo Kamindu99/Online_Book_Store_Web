@@ -3,7 +3,15 @@ import { useEffect, useState } from 'react';
 
 // material ui
 import {
-    Grid
+    Box,
+    Button,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField
 } from '@mui/material';
 
 // third-party
@@ -33,8 +41,11 @@ const List = () => {
     const [perPage, setPerPage] = useState<number>(10);
     const [direction, setDirection] = useState<"asc" | "desc">("desc");
     const [search, setSearch] = useState<string>("");
+    const [category, setCategory] = useState<string>('');
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [categoryTerm, setCategoryTerm] = useState<string>(''); // Category filter
+    const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
 
     const tableParams: TableParamsType = {
         page,
@@ -55,10 +66,12 @@ const List = () => {
             page: page,
             per_page: perPage,
             direction: direction,
-            sort: sort
+            sort: sort,
+            category: category,
+            search: search
         };
         dispatch(getBooks(listParameters));
-    }, [dispatch, success, page, perPage, direction, sort]);
+    }, [dispatch, success, page, perPage, direction, sort, search, category]);
 
     useEffect(() => {
         if (!booksList) {
@@ -118,12 +131,75 @@ const List = () => {
         console.log(`Borrowing book with id ${bookId}`);
     };
 
+
+    const handleCategoryChange = (event: any) => {
+        setCategoryTerm(event.target.value as string);
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
     if (isLoading) {
         return <>Loading...</>
     }
 
     return (
         <>
+            {/* Filter Bar */}
+            <Box mb={3}>
+                <Stack direction="row" spacing={2}>
+                    <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                            value={categoryTerm}
+                            onChange={handleCategoryChange}
+                            label="Category"
+                        >
+                            <MenuItem key={1} value={""}>
+                                {"All"}
+                            </MenuItem>
+                            <MenuItem key={1} value={"Adventure"}>
+                                {"Adventure"}
+                            </MenuItem>
+                            <MenuItem key={2} value={"Novel"}>
+                                {"Novel"}
+                            </MenuItem>
+                            <MenuItem key={3} value={"Short Stories"}>
+                                {"Short Stories"}
+                            </MenuItem>
+                            <MenuItem key={4} value={"Educational"}>
+                                {"Educational"}
+                            </MenuItem>
+                            <MenuItem key={5} value={"Religious"}>
+                                {"Religious"}
+                            </MenuItem>
+                            <MenuItem key={6} value={"Astrology"}>
+                                {"Astrology"}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <TextField
+                        label="Search"
+                        variant="outlined"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            setSearch(searchTerm);
+                            setCategory(categoryTerm);
+                        }}
+                    >
+                        Apply Filters
+                    </Button>
+                </Stack>
+            </Box>
+
             <Grid container spacing={2}>
                 {bookList.map((book) => (
                     <Grid item xs={6} sm={6} md={2.4} key={book._id!}>
@@ -131,6 +207,8 @@ const List = () => {
                             imageUrl={book.imageUrl!}
                             bookName={book.bookName!}
                             author={book.author!}
+                            category={book.category!}
+                            isActive={book.isActive!}
                             onBorrow={() => handleBorrow(book._id!)}
                         />
                     </Grid>
