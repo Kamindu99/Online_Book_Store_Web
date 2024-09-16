@@ -33,6 +33,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
+import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 
 // types
 
@@ -263,17 +264,15 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         </TextField>
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12} lg={6}>
+                                <Grid item xs={12} lg={12}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="imageUrl">Image Url</InputLabel>
-                                        <TextField
-                                            fullWidth
-                                            id="imageUrl"
-                                            placeholder="Enter Image Url"
-                                            {...getFieldProps('imageUrl')}
-                                            error={Boolean(touched.imageUrl && errors.imageUrl)}
-                                            helperText={touched.imageUrl && errors.imageUrl}
-                                            type='text'
+                                        <SingleFileUpload
+                                            sx={{ width: '100%' }}
+                                            //@ts-ignore
+                                            file={formik.values.imageUrl!}
+                                            setFieldValue={formik.setFieldValue}
+                                            error={formik.touched.imageUrl && Boolean(formik.errors.imageUrl)}
                                         />
                                     </Stack>
                                 </Grid>

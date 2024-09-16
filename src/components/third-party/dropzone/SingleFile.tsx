@@ -1,16 +1,16 @@
 // material-ui
-import { styled, useTheme } from '@mui/material/styles';
-import { Box, Button, Stack } from '@mui/material';
+import { styled, Theme, useTheme } from '@mui/material/styles';
+import { Box, Button, Stack, SxProps } from '@mui/material';
 
 // third-party
-import { useDropzone } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 // project import
 import RejectionFiles from './RejectionFiles';
 import PlaceholderContent from './PlaceholderContent';
 
 // types
-import { CustomFile, UploadProps } from 'types/dropzone';
+import { CustomFile } from 'types/dropzone';
 
 const DropzoneWrapper = styled('div')(({ theme }) => ({
   outline: 'none',
@@ -26,6 +26,13 @@ const DropzoneWrapper = styled('div')(({ theme }) => ({
 
 // ==============================|| UPLOAD - SINGLE FILE ||============================== //
 
+export interface UploadProps extends DropzoneOptions {
+  error?: boolean;
+  file: string | null;
+  setFieldValue: (field: string, value: any) => void;
+  sx?: SxProps<Theme>;
+}
+
 const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadProps) => {
   const theme = useTheme();
 
@@ -35,38 +42,38 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
     },
     multiple: false,
     onDrop: (acceptedFiles: CustomFile[]) => {
-      setFieldValue(
-        'files',
-        acceptedFiles.map((file: CustomFile) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      const file = acceptedFiles[0]; // Assuming only one file is accepted
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64String = reader.result; // This is the Base64-encoded string
+        setFieldValue('imageUrl', base64String); // Set Base64 string to form field
+      };
+
+      reader.readAsDataURL(file); // Convert file to Base64
     }
   });
 
   const thumbs =
     file &&
-    file.map((item: CustomFile) => (
-      <img
-        key={item.name}
-        alt={item.name}
-        src={item.preview}
-        style={{
-          top: 8,
-          left: 8,
-          borderRadius: 2,
-          position: 'absolute',
-          width: 'calc(100% - 16px)',
-          height: 'calc(100% - 16px)',
-          background: theme.palette.background.paper
-        }}
-        onLoad={() => {
-          URL.revokeObjectURL(item.preview!);
-        }}
-      />
-    ));
+    <img
+      key={'file.preview'}
+      alt={'file.name'}
+      src={file}
+      style={{
+        top: 8,
+        left: 8,
+        borderRadius: 2,
+        position: 'absolute',
+        width: 'calc(100% - 16px)',
+        height: 'calc(100% - 16px)',
+        background: theme.palette.background.paper
+      }}
+      onLoad={() => {
+        URL.revokeObjectURL(file);
+      }}
+    />
 
   const onRemove = () => {
     setFieldValue('files', null);
