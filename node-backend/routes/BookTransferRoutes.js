@@ -153,7 +153,7 @@ router.route("/return/:id/:bookId").put(async (req, res) => {
                 // Update the book status to 'Listed'
                 const updatedBook = await BookModel.findByIdAndUpdate(
                     bookId,
-                    { status: 'Listed' }, // Update status to 'Listed'
+                    { status: 'Listed', isActive: true }, // Update status to 'Listed'
                     { new: true }         // Return updated document
                 );
 
