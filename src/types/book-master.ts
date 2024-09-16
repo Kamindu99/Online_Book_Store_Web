@@ -11,8 +11,21 @@ export type Books = {
     status?: string;
 };
 
+export type PaginationDTO = {
+    page?: number,
+    size?: number,
+    total?: number,
+    totalPages?: number
+}
+
+export type BooksList = {
+    pagination?: PaginationDTO,
+    result?: Books[];
+};
+
 export interface BookStateProps {
-    books: Books[] | null;
+    booksList: BooksList | null;
+    booksFdd: Books[] | null;
     error: object | string | null;
     success: object | string | null;
     isLoading: boolean
@@ -20,4 +33,12 @@ export interface BookStateProps {
 
 export interface DefaultRootStateProps {
     book: BookStateProps;
+}
+
+export interface queryStringParams {
+    direction?: string;
+    page?: number;
+    per_page?: number;
+    search?: string;
+    sort?: string;
 }

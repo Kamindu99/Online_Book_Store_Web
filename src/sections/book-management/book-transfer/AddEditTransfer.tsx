@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
+    Autocomplete,
     Button,
     DialogActions,
     DialogContent,
@@ -11,7 +12,8 @@ import {
     InputLabel,
     Stack,
     TextField,
-    Tooltip
+    Tooltip,
+    useTheme
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -26,47 +28,44 @@ import * as Yup from 'yup';
 
 import IconButton from 'components/@extended/IconButton';
 
-import { dispatch } from 'store';
-import { openSnackbar } from 'store/reducers/snackbar';
+import { dispatch, useSelector } from 'store';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { getBooksFdd } from 'store/reducers/book-master';
+import { Books } from 'types/book-master';
+import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-transfer';
 
 // types
 
 // constant
-const getInitialValues = (customer: FormikValues | null) => {
-    const newCustomer = {
-        name: '',
-        author: '',
+const getInitialValues = (booktransfer: FormikValues | null) => {
+
+    const newBooktransfer = {
+        bookId: '',
         transferedate: '',
         person: '',
-        orderStatus: ''
     };
 
-    if (customer) {
-        newCustomer.name = customer.name;
-        newCustomer.transferedate = customer.transferedate;
-        newCustomer.person = customer.person;
-        return _.merge({}, newCustomer, customer);
+    if (booktransfer) {
+        return _.merge({}, newBooktransfer, booktransfer);
     }
 
-    return newCustomer;
+    return newBooktransfer;
 };
 
 // ==============================|| CUSTOMER ADD / EDIT ||============================== //
 
 export interface Props {
-    customer?: any;
+    booktransfer?: any;
     onCancel: () => void;
 }
 
-const AddEditTransferBook = ({ customer, onCancel }: Props) => {
-    const isCreating = !customer;
+const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
+    const isCreating = !booktransfer;
+    const theme = useTheme()
 
-    const CustomerSchema = Yup.object().shape({
-        name: Yup.string().max(255).required('Name is required'),
-        author: Yup.string().max(255).required('Author is required'),
+    const BooktransferSchema = Yup.object().shape({
         transferedate: Yup.string().max(255).required('Transfer date is required'),
         person: Yup.string().max(255).required('Transferd person is required')
     });
@@ -79,45 +78,21 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
     };
 
     const formik = useFormik({
-        initialValues: getInitialValues(customer!),
-        validationSchema: CustomerSchema,
-        onSubmit: (values, { setSubmitting }) => {
+        initialValues: getInitialValues(booktransfer!),
+        validationSchema: BooktransferSchema,
+        enableReinitialize: true,
+        onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
-                // const newCustomer = {
-                //   name: values.name,
-                //   email: values.email,
-                //   location: values.location,
-                //   orderStatus: values.orderStatus
-                // };
-
-                if (customer) {
-                    // dispatch(updateCustomer(customer.id, newCustomer)); - update
-                    dispatch(
-                        openSnackbar({
-                            open: true,
-                            message: 'Customer update successfully.',
-                            variant: 'alert',
-                            alert: {
-                                color: 'success'
-                            },
-                            close: false
-                        })
-                    );
+                if (booktransfer) {
+                    dispatch(updateBooktransfer(values));
                 } else {
-                    // dispatch(createCustomer(newCustomer)); - add
-                    dispatch(
-                        openSnackbar({
-                            open: true,
-                            message: 'Customer added successfully.',
-                            variant: 'alert',
-                            alert: {
-                                color: 'success'
-                            },
-                            close: false
-                        })
-                    );
+                    dispatch(createBooktransfer({
+                        bookId: values.bookId,
+                        transferedate: values.transferedate,
+                        person: values.person
+                    }));
                 }
-
+                resetForm()
                 setSubmitting(false);
                 onCancel();
             } catch (error) {
@@ -128,46 +103,54 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
 
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
+    const { booksFdd } = useSelector(state => state.book)
+    useEffect(() => {
+        dispatch(getBooksFdd());
+    }, [])
+
     return (
         <>
             <FormikProvider value={formik}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <DialogTitle>{customer ? 'Edit Transfer Details' : 'New Transfer Details'}</DialogTitle>
+                        <DialogTitle>{booktransfer ? 'Edit Transfer Details' : 'New Transfer Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+
+                                <Grid item xs={12} md={12}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-name"> Book Name</InputLabel>
-                                        <TextField
+                                        <InputLabel htmlFor="bookId">
+                                            Book Name <span style={{ color: 'red' }}>*</span>
+                                        </InputLabel>
+                                        <Autocomplete
                                             fullWidth
-                                            id="book-name"
-                                            placeholder="Enter Book Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
+                                            id="bookId"
+                                            value={booksFdd?.find((option) => option._id === formik.values.bookId) || null}
+                                            onChange={(event: any, newValue: Books | null) => {
+                                                formik.setFieldValue('bookId', newValue?._id);
+                                            }}
+                                            options={booksFdd || []}
+                                            getOptionLabel={(item) => `${item.bookCode} - ${item.bookName}`}
+                                            renderInput={(params) => {
+                                                return (
+                                                    <TextField
+                                                        {...params}
+                                                        placeholder="Select Book"
+                                                        sx={{ '& .MuiAutocomplete-input.Mui-disabled': { WebkitTextFillColor: theme.palette.text.primary } }}
+                                                    />
+                                                )
+                                            }}
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
+
+                                <Grid item xs={12} md={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="book-athor">Author</InputLabel>
+                                        <InputLabel htmlFor="transferedate">Transfered Date</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="book-athor"
-                                            placeholder="Enter Book Author"
-                                            {...getFieldProps('author')}
-                                            error={Boolean(touched.author && errors.author)}
-                                            helperText={touched.author && errors.author}
-                                        />
-                                    </Stack>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="dispose-date">Transfered Date</InputLabel>
-                                        <TextField
-                                            fullWidth
-                                            id="dispose-date"
+                                            id="transferedate"
+                                            type='date'
                                             placeholder="Enter Transfered Date"
                                             {...getFieldProps('transferedate')}
                                             error={Boolean(touched.transferedate && errors.transferedate)}
@@ -175,7 +158,7 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} md={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="person">Transfered Person</InputLabel>
                                         <TextField
@@ -195,7 +178,7 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
                             <Grid container justifyContent="space-between" alignItems="center">
                                 <Grid item>
                                     {!isCreating && (
-                                        <Tooltip title="Delete Customer" placement="top">
+                                        <Tooltip title="Delete Booktransfer" placement="top">
                                             <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
                                                 <DeleteFilled />
                                             </IconButton>
@@ -208,7 +191,7 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
                                             Cancel
                                         </Button>
                                         <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                            {customer ? 'Edit' : 'Add'}
+                                            {booktransfer ? 'Edit' : 'Add'}
                                         </Button>
                                     </Stack>
                                 </Grid>
@@ -217,7 +200,7 @@ const AddEditTransferBook = ({ customer, onCancel }: Props) => {
                     </Form>
                 </LocalizationProvider>
             </FormikProvider>
-            {!isCreating && <AlertBookDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
+            {!isCreating && <AlertBookDelete title={booktransfer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
         </>
     );
 };

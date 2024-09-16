@@ -25,4 +25,7 @@ app.listen(PORT, () => {
 });
 
 const bookRoute = require('./routes/BookRoutes');
-app.use("/api/v1/book-management", bookRoute);
+app.use("/api/v1/book-management/book-master", bookRoute);
+
+const booktransferRoute = require('./routes/BookTransferRoutes');
+app.use("/api/v1/book-management/book-transfer", booktransferRoute);

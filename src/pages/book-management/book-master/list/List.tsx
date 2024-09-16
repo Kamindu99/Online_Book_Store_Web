@@ -156,7 +156,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 const List = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { books, error, isLoading, success } = useSelector(state => state.book)
+    const { booksList, error, isLoading, success } = useSelector(state => state.book)
 
     const [book, setBook] = useState<dataProps>();
     console.log(book);
@@ -242,10 +242,10 @@ const List = () => {
                     accessor: 'status',
                     Cell: ({ value }: { value: string }) => {
                         switch (value) {
-                            case "New":
-                                return <Chip color="warning" label="New" size="small" />;
-                            case "Approved":
-                                return <Chip color="success" label="Approved" size="small" />;
+                            case "Out":
+                                return <Chip color="warning" label="Out" size="small" />;
+                            case "Listed":
+                                return <Chip color="success" label="Listed" size="small" />;
                             case 'Disposal':
                                 return <Chip color="error" label="Disposal" size="small" />;
                             default:
@@ -302,20 +302,28 @@ const List = () => {
     // ----------------------- | API Call - Roles | ---------------------
 
     useEffect(() => {
-        dispatch(getBooks())
+        dispatch(getBooks(
+            {
+                direction: "desc",
+                page: 0,
+                per_page: 10,
+                search: '',
+                sort: "_id"
+            }
+        ))
     }, [success])
 
     useEffect(() => {
-        if (!books) {
+        if (!booksList) {
             setBookList([])
             return
         }
-        if (books == null) {
+        if (booksList == null) {
             setBookList([])
             return
         }
-        setBookList(books!)
-    }, [books])
+        setBookList(booksList?.result!)
+    }, [booksList])
 
     useEffect(() => {
         if (error != null) {

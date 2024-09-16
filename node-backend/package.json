@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "bookbackend",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
     "build": "npm i"

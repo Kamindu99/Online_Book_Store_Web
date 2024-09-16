@@ -1,17 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState, MouseEvent, useEffect } from 'react';
 
 // material ui
 import {
     Button,
     Chip,
     Dialog,
+    IconButton,
     Stack,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
+    Tooltip,
     alpha,
     useMediaQuery,
     useTheme
@@ -28,11 +30,15 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { PlusOutlined } from '@ant-design/icons';
+import { EditTwoTone, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditTransfer from 'sections/book-management/book-transfer/AddEditTransfer';
 import { ReactTableProps, dataProps } from './types/types';
+import { Books } from 'types/book-master';
+import { useDispatch, useSelector } from 'store';
+import { getBookstransfer, toInitialState } from 'store/reducers/book-transfer';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -145,52 +151,12 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
 // ==============================|| Transfer Book List ||============================== //
 
 const TransferBookList = () => {
-
-    const bookdata: dataProps[] = ([
-        {
-            id: 1,
-            name: 'Madol Duwa',
-            person: 'Jagath',
-            author: 'Martin Wickramasinghe',
-            transferDate: '2023-09-01',
-            status: 'Active'
-        },
-        {
-            id: 2,
-            name: 'Nidhanaya',
-            person: 'Jagath',
-            author: 'J.B. Disanayake',
-            transferDate: '2024-01-05',
-            status: 'Active'
-        },
-        {
-            id: 3,
-            name: 'Gehenu Lamai',
-            person: 'Jagath',
-            author: 'Karunasena Jayalath',
-            transferDate: '2021-05-01',
-            status: 'Active'
-        },
-        {
-            id: 4,
-            name: 'Sulanga Wage Avidin',
-            person: 'Jagath',
-            author: 'Sujeeva Prasannaarachchi',
-            transferDate: '2022-09-01',
-            status: 'Active'
-        },
-        {
-            id: 5,
-            name: 'Kaliyugaya',
-            person: 'Jagath',
-            author: 'Sujeeva Prasannaarachchi',
-            transferDate: '2022-09-01',
-            status: 'Active'
-        }
-    ])
+    const theme = useTheme();
+    const dispatch = useDispatch();
 
     const [customer, setCustomer] = useState<any>(null);
     const [add, setAdd] = useState<boolean>(false);
+    const [bookList, setBookList] = useState<dataProps[]>([]);
 
     const handleAdd = () => {
         setAdd(!add);
@@ -219,38 +185,163 @@ const TransferBookList = () => {
                     }
                 },
                 {
+                    Header: 'Code',
+                    accessor: 'bmBook.bookCode'
+                },
+                {
                     Header: 'Name',
-                    accessor: 'name'
+                    accessor: 'bmBook.bookName'
                 },
                 {
                     Header: 'Author',
-                    accessor: 'author'
+                    accessor: 'bmBook.author'
                 },
                 {
-                    Header: 'Transfered Person',
+                    Header: 'Category',
+                    accessor: 'bmBook.category'
+                },
+                {
+                    Header: 'Person',
                     accessor: 'person'
                 },
                 {
-                    Header: 'Transfered Date',
-                    accessor: 'transferDate'
+                    Header: 'Transfer Date',
+                    accessor: 'transferedate',
                 },
                 {
                     Header: 'Status',
                     accessor: 'status',
                     Cell: ({ value }: { value: string }) => {
                         switch (value) {
-                            case 'Active':
-                                return <Chip color="success" label="Active" size="small" />;
-                            case 'Disposed':
-                                return <Chip color="error" label="Disposed" size="small" />;
+                            case "Out":
+                                return <Chip color="warning" label="Out" size="small" />;
+                            case "Listed":
+                                return <Chip color="success" label="Listed" size="small" />;
+                            case 'Disposal':
+                                return <Chip color="error" label="Disposal" size="small" />;
                             default:
-                                return <Chip color="info" label="Active" size="small" />;
+                                return <Chip color="warning" label="Penging" size="small" />;
                         }
+                    }
+                },
+                {
+                    id: "actions",
+                    Header: 'Actions',
+                    accessor: 'actions',
+                    className: 'cell-center',
+                    Cell: ({ row }: { row: Row }) => {
+                        return (
+                            <>
+                                <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+                                    <Tooltip title="Edit">
+                                        <IconButton
+                                            color="primary"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                const data: Books = row.original;
+                                                e.stopPropagation();
+                                                setCustomer({ ...data });
+                                                handleAdd();
+                                            }}
+                                            disabled={row.values?.statusId === 2}
+                                        >
+                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Return">
+                                        <IconButton
+                                            color="primary"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                const data: Books = row.original;
+                                                e.stopPropagation();
+                                                setCustomer({ ...data });
+                                                handleAdd();
+                                            }}
+                                            disabled={row.values?.statusId === 2}
+                                        >
+                                            <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Stack>
+                            </>
+                        )
                     }
                 }
             ] as Column[],
         []
     );
+
+
+    // ----------------------- | API Call - Roles | ---------------------
+
+    const { bookstransferList, error, isLoading, success } = useSelector(state => state.bookTransfer)
+
+    useEffect(() => {
+        dispatch(getBookstransfer(
+            {
+                direction: "desc",
+                page: 0,
+                per_page: 10,
+                search: '',
+                sort: "_id"
+            }
+        ))
+    }, [success])
+
+    useEffect(() => {
+        if (!bookstransferList) {
+            setBookList([])
+            return
+        }
+        if (bookstransferList == null) {
+            setBookList([])
+            return
+        }
+        setBookList(bookstransferList?.result!)
+    }, [bookstransferList])
+
+    useEffect(() => {
+        if (error != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = error as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (success != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: success,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [success])
+
+    if (isLoading) {
+        return <>Loading...</>
+    }
 
     return (
         <>
@@ -258,7 +349,7 @@ const TransferBookList = () => {
                 <ScrollX>
                     <ReactTable columns={columns}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={bookdata} handleAddEdit={handleAdd} />
+                        data={bookList} handleAddEdit={handleAdd} />
                 </ScrollX>
             </MainCard>
             <Dialog
@@ -271,7 +362,7 @@ const TransferBookList = () => {
                 sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <AddEditTransfer customer={customer} onCancel={handleAdd} />
+                <AddEditTransfer booktransfer={customer} onCancel={handleAdd} />
             </Dialog>
         </>
     )

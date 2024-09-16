@@ -47,7 +47,7 @@ const getInitialValues = (book: FormikValues | null) => {
         price: '',
         noOfPages: '',
         imageUrl: '',
-        status: 'New'
+        status: 'Listed'
     };
     if (book) {
         return _.merge({}, newBook, book);

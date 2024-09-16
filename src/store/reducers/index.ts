@@ -13,6 +13,7 @@ import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
 import book from './book-master';
+import bookTransfer from './book-transfer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -32,7 +33,8 @@ const reducers = combineReducers({
   product: productReducer,
   kanban,
   invoice,
-  book
+  book,
+  bookTransfer
 });
 
 export default reducers;

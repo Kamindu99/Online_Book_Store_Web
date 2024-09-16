@@ -1,11 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/BookModel')
+const Product = require('../models/BookTransferModel')
+const BookModel = require('../models/BookModel');
 
 router.post("/", async (req, res) => {
     const product = new Product(req.body);
     try {
         const savedProduct = await product.save();
+        const update = await BookModel.findByIdAndUpdate(req.body?.bookId, {
+            status: 'Not Available'
+        }).then((response) => {
+            res.status(200).send({ status: "Updated", response });
+
+        }).catch((err) => {
+            res.status(500).send({ status: "error in update", err });
+
+        })
         res.json(savedProduct);
     } catch (err) {
         res.json({ message: err });
@@ -15,7 +25,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = 'bookId', direction = 'asc' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -38,6 +48,18 @@ router.route("/").get(async (req, res) => {
             .skip(pageNumber * pageSize)
             .limit(pageSize);
 
+        // Fetch the book details for each product
+        const results = await Promise.all(products.map(async (product) => {
+            // Fetch the book details from the BookModel using the bookId
+            const bookDetails = await BookModel.findById(product.bookId);
+
+            // Return the product with the embedded book details (bmBook)
+            return {
+                ...product.toObject(), // Convert Mongoose object to plain JavaScript object
+                bmBook: bookDetails // Add book details here
+            };
+        }));
+
         // Calculate total pages
         const totalPages = Math.ceil(total / pageSize);
 
@@ -49,7 +71,7 @@ router.route("/").get(async (req, res) => {
                 total: total,
                 totalPages: totalPages
             },
-            result: products
+            result: results
         };
 
         res.json(response);
@@ -70,15 +92,11 @@ router.route("/fdd").get((req, res) => {
 
 router.route("/:id").put(async (req, res) => {
     let productId = req.params.id;
-    const { bookCode, bookName, price, author, imageUrl, category, noOfPages } = req.body;
+    const { bookId, person, transferedate } = req.body;
     const updatedProduct = {
-        bookCode,
-        bookName,
-        price,
-        author,
-        category,
-        noOfPages,
-        imageUrl
+        bookId,
+        person,
+        transferedate
     };
 
     const update = await Product.findByIdAndUpdate(productId, updatedProduct).then((response) => {
