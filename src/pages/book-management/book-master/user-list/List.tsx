@@ -5,24 +5,28 @@ import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
+    Collapse,
     FormControl,
     Grid,
+    IconButton,
     InputLabel,
     MenuItem,
     Select,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 
 // third-party
 
 // project import
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { TablePagination, TableParamsType } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { listParametersType } from 'types/book-master';
 import BookCard from './book-card';
 import { dataProps } from './types/types';
-import { TablePagination, TableParamsType } from 'components/third-party/ReactTable';
-import { listParametersType } from 'types/book-master';
 
 // ==============================|| List ||============================== //
 
@@ -45,6 +49,8 @@ const List = () => {
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [categoryTerm, setCategoryTerm] = useState<string>("All"); // Category filter
     const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
+
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const tableParams: TableParamsType = {
         page,
@@ -147,64 +153,68 @@ const List = () => {
         <>
             {/* Filter Bar */}
             <Box mb={3} sx={{ backgroundColor: 'white', padding: '15px' }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={4} md={4}>
-                        <FormControl variant="outlined" sx={{ minWidth: 180, width: '100%' }}>
-                            <InputLabel>Category</InputLabel>
-                            <Select
-                                value={categoryTerm}
-                                onChange={handleCategoryChange}
-                                label="Category"
-                            >
-                                <MenuItem key={0} value={"All"}>
-                                    All
-                                </MenuItem>
-                                <MenuItem key={1} value={"Adventure"}>
-                                    Adventure
-                                </MenuItem>
-                                <MenuItem key={2} value={"Novel"}>
-                                    Novel
-                                </MenuItem>
-                                <MenuItem key={3} value={"Short Stories"}>
-                                    Short Stories
-                                </MenuItem>
-                                <MenuItem key={4} value={"Educational"}>
-                                    Educational
-                                </MenuItem>
-                                <MenuItem key={5} value={"Religious"}>
-                                    Religious
-                                </MenuItem>
-                                <MenuItem key={6} value={"Astrology"}>
-                                    Astrology
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
+                {/* Arrow Button to Toggle Filter */}
+                <Grid container justifyContent="space-between" alignItems="center">
+                    <Grid item>
+                        <Typography variant="h6" color="Highlight" hidden={isFilterVisible}>
+                            Filter by Category, Search
+                        </Typography>
                     </Grid>
-
-                    <Grid item xs={12} sm={5} md={5}>
-                        <TextField
-                            label="Search"
-                            variant="outlined"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            fullWidth
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={3} md={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            onClick={() => {
-                                setSearch(searchTerm);
-                                setCategory(categoryTerm);
-                            }}
-                        >
-                            Apply Filters
-                        </Button>
+                    <Grid item>
+                        <Box display="flex" justifyContent="flex-end">
+                            <IconButton onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                                {isFilterVisible ? <UpOutlined /> : <DownOutlined />}
+                            </IconButton>
+                        </Box>
                     </Grid>
                 </Grid>
+                {/* Collapsible Filter Section */}
+                <Collapse in={isFilterVisible}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={4} md={4}>
+                            <FormControl variant="outlined" sx={{ minWidth: 180, width: '100%' }}>
+                                <InputLabel>Category</InputLabel>
+                                <Select
+                                    value={categoryTerm}
+                                    onChange={handleCategoryChange}
+                                    label="Category"
+                                >
+                                    <MenuItem key={0} value={"All"}>All</MenuItem>
+                                    <MenuItem key={1} value={"Adventure"}>Adventure</MenuItem>
+                                    <MenuItem key={2} value={"Novel"}>Novel</MenuItem>
+                                    <MenuItem key={3} value={"Short Stories"}>Short Stories</MenuItem>
+                                    <MenuItem key={4} value={"Educational"}>Educational</MenuItem>
+                                    <MenuItem key={5} value={"Religious"}>Religious</MenuItem>
+                                    <MenuItem key={6} value={"Astrology"}>Astrology</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={5} md={5}>
+                            <TextField
+                                label="Search"
+                                variant="outlined"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} sm={3} md={3}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                onClick={() => {
+                                    setCategory(categoryTerm);
+                                    setSearch(searchTerm);
+                                }}
+                            >
+                                Apply Filters
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Collapse>
             </Box>
 
 
