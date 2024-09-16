@@ -8,6 +8,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 
 //book master
 import List from 'pages/book-management/book-master/list/List';
+import UserList from 'pages/book-management/book-master/user-list/List';
 import DisposalList from 'pages/book-management/disposal/list/List';
 import TransferBookList from 'pages/book-management/book-transfer/list/List';
 
@@ -55,6 +56,10 @@ const MainRoutes = {
             {
               path: 'book-master/list',
               element: <List />
+            },
+            {
+              path: 'book-master/user-list',
+              element: <UserList />
             },
             {
               path: 'book-disposal/list',
