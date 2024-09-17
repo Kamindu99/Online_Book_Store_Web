@@ -44,7 +44,7 @@ const List = () => {
     const [perPage, setPerPage] = useState<number>(10);
     const [direction, setDirection] = useState<"asc" | "desc">("asc");
     const [search, setSearch] = useState<string>("");
-    const [category, setCategory] = useState<string>('');
+    const [category, setCategory] = useState<string>('All');
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [categoryTerm, setCategoryTerm] = useState<string>("All"); // Category filter
@@ -213,6 +213,11 @@ const List = () => {
                             >
                                 Apply Filters
                             </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                            <Typography variant="h6" color="Highlight" hidden={!isFilterVisible}>
+                                Filter by {search ? `${search} in` : ''} "{category}" Category {totalRecords} Books Found
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Collapse>
