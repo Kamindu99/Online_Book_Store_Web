@@ -154,7 +154,7 @@ const List = () => {
             {/* Filter Bar */}
             <Box mb={3} sx={{ backgroundColor: 'white', padding: '15px' }}>
                 {/* Arrow Button to Toggle Filter */}
-                <Grid container justifyContent="space-between" alignItems="center">
+                <Grid container justifyContent="space-between" alignItems="center" onClick={() => setIsFilterVisible(!isFilterVisible)}>
                     <Grid item>
                         <Typography variant="h6" color="Highlight" hidden={isFilterVisible}>
                             Filter by Category, Search
@@ -162,7 +162,7 @@ const List = () => {
                     </Grid>
                     <Grid item>
                         <Box display="flex" justifyContent="flex-end">
-                            <IconButton onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                            <IconButton>
                                 {isFilterVisible ? <UpOutlined /> : <DownOutlined />}
                             </IconButton>
                         </Box>
