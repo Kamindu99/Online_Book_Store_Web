@@ -207,6 +207,7 @@ const List = () => {
                                 color="primary"
                                 fullWidth
                                 onClick={() => {
+                                    setPage(0);
                                     setCategory(categoryTerm);
                                     setSearch(searchTerm);
                                 }}
