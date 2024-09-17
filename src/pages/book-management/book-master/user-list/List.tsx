@@ -183,9 +183,10 @@ const List = () => {
                                     <MenuItem key={1} value={"Adventure"}>Adventure</MenuItem>
                                     <MenuItem key={2} value={"Novel"}>Novel</MenuItem>
                                     <MenuItem key={3} value={"Short Stories"}>Short Stories</MenuItem>
-                                    <MenuItem key={4} value={"Educational"}>Educational</MenuItem>
-                                    <MenuItem key={5} value={"Religious"}>Religious</MenuItem>
-                                    <MenuItem key={6} value={"Astrology"}>Astrology</MenuItem>
+                                    <MenuItem key={4} value={"Child Story"}>Child Story</MenuItem>
+                                    <MenuItem key={5} value={"Educational"}>Educational</MenuItem>
+                                    <MenuItem key={6} value={"Religious"}>Religious</MenuItem>
+                                    <MenuItem key={7} value={"Astrology"}>Astrology</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

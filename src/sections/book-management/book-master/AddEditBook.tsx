@@ -252,13 +252,16 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                             <MenuItem key={3} value={"Short Stories"}>
                                                 {"Short Stories"}
                                             </MenuItem>
-                                            <MenuItem key={4} value={"Educational"}>
+                                            <MenuItem key={4} value={"Child Story"}>
+                                                {"Child Story"}
+                                            </MenuItem>
+                                            <MenuItem key={5} value={"Educational"}>
                                                 {"Educational"}
                                             </MenuItem>
-                                            <MenuItem key={5} value={"Religious"}>
+                                            <MenuItem key={6} value={"Religious"}>
                                                 {"Religious"}
                                             </MenuItem>
-                                            <MenuItem key={6} value={"Astrology"}>
+                                            <MenuItem key={7} value={"Astrology"}>
                                                 {"Astrology"}
                                             </MenuItem>
                                         </TextField>
