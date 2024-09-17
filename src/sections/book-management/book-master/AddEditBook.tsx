@@ -116,7 +116,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const getCode = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master/get-book-code');
+            const response = await axios.get('https://book-backend-sigma.vercel.app/api/v1/book-management/book-master/get-book-code');
             formik.setFieldValue('bookCode', response.data);
         } catch (error) {
             console.error(error);
