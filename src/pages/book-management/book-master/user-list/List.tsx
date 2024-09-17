@@ -42,7 +42,7 @@ const List = () => {
 
     const [page, setPage] = useState<number>(0);
     const [perPage, setPerPage] = useState<number>(10);
-    const [direction, setDirection] = useState<"asc" | "desc">("desc");
+    const [direction, setDirection] = useState<"asc" | "desc">("asc");
     const [search, setSearch] = useState<string>("");
     const [category, setCategory] = useState<string>('All');
     const [sort, setSort] = useState<string>("_id");
