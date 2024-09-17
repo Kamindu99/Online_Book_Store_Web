@@ -206,7 +206,7 @@ const TransferBookList = () => {
                     accessor: 'person'
                 },
                 {
-                    Header: 'Transfer Date',
+                    Header: 'Borrow Date',
                     accessor: 'transferedate',
                 },
                 // {

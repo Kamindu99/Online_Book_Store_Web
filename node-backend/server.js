@@ -29,3 +29,6 @@ app.use("/api/v1/book-management/book-master", bookRoute);
 
 const booktransferRoute = require('./routes/BookTransferRoutes');
 app.use("/api/v1/book-management/book-transfer", booktransferRoute);
+
+const userAuth = require('./routes/UserRoutes');
+app.use("/api/v1/book-management/auth", userAuth);

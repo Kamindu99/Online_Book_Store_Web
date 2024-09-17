@@ -57,7 +57,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
         const serviceToken = window.localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
+          const response = await axios.get('/api/v1/book-management/auth/account/me');
           const { user } = response.data;
           dispatch({
             type: LOGIN,
@@ -83,7 +83,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', { email, password });
+    const response = await axios.post('/api/v1/book-management/auth/login', { email, password });
     const { serviceToken, user } = response.data;
     setSession(serviceToken);
     dispatch({
@@ -98,8 +98,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
     // todo: this flow need to be recode as it not verified
     const id = chance.bb_pin();
-    const response = await axios.post('/api/account/register', {
-      id,
+    const response = await axios.post('/api/v1/book-management/auth/register', {
       email,
       password,
       firstName,
@@ -128,9 +127,9 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
     dispatch({ type: LOGOUT });
   };
 
-  const resetPassword = async (email: string) => {};
+  const resetPassword = async (email: string) => { };
 
-  const updateProfile = () => {};
+  const updateProfile = () => { };
 
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;

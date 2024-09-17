@@ -51,7 +51,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
+          email: 'kamidugayantha123@gmail.com',
           password: '123456',
           submit: null
         }}
