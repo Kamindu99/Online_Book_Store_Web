@@ -15,6 +15,7 @@ const initialState: DefaultRootStateProps['book'] = {
     success: null,
     booksList: null,
     booksFdd: null,
+    booksCount: null,
     isLoading: false
 };
 
@@ -51,6 +52,12 @@ const slice = createSlice({
         // GET BOOKS FDD
         getBooksFddSuccess(state, action) {
             state.booksFdd = action.payload;
+            state.success = null;
+        },
+
+        // GET BOOKS Count
+        getBooksCountSuccess(state, action) {
+            state.booksCount = action.payload;
             state.success = null;
         },
 
@@ -106,6 +113,20 @@ export function getBooksFdd() {
         try {
             const response = await axios.get('/api/v1/book-management/book-master/fdd');
             dispatch(slice.actions.getBooksFddSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+export function getBooksCount() {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+        try {
+            const response = await axios.get('/api/v1/book-management/book-master/dashboard-count');
+            dispatch(slice.actions.getBooksCountSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

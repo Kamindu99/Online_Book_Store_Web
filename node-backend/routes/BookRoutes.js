@@ -69,6 +69,37 @@ router.route("/").get(async (req, res) => {
     }
 });
 
+router.route("/dashboard-count").get(async (req, res) => {
+    try {
+        // Fetch total number of books
+        const totalBooks = await Product.countDocuments();
+
+        // Fetch count of books by category using aggregation
+        const categoryCounts = await Product.aggregate([
+            {
+                $group: {
+                    _id: "$category", // Group by the "category" field
+                    count: { $sum: 1 } // Count the number of books in each category
+                }
+            }
+        ]);
+
+        // Format the response with totalBooks and category counts
+        const response = {
+            totalBooks: totalBooks,
+            category: categoryCounts.map(cat => ({
+                categoryName: cat._id,  // The category name
+                count: cat.count        // Number of books in that category
+            }))
+        };
+
+        res.json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+});
+
 router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
     Product.find({ isActive: true })
