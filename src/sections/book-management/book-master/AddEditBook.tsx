@@ -32,8 +32,9 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { createBook, getBookCode, toInitialState, updateBook } from 'store/reducers/book-master';
+import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
 import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
+import axios from 'axios';
 
 // types
 
@@ -66,7 +67,7 @@ export interface Props {
 const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
-    const { bookCode, error, isLoading, success } = useSelector(state => state.book)
+    const { error, isLoading, success } = useSelector(state => state.book)
 
     const isCreating = !book;
 
@@ -112,15 +113,21 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
-    useEffect(() => {
-        dispatch(getBookCode());
-    }, [])
+
+    const getCode = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/v1/book-management/book-master/get-book-code');
+            formik.setFieldValue('bookCode', response.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            dispatch(toInitialState());
+        }
+    }
 
     useEffect(() => {
-        if (bookCode) {
-            formik.setFieldValue('bookCode', bookCode);
-        }
-    }, [bookCode])
+        getCode()
+    }, [])
 
 
     useEffect(() => {
