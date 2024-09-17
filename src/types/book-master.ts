@@ -38,6 +38,7 @@ export interface BookStateProps {
     booksList: BooksList | null;
     booksFdd: Books[] | null;
     booksCount: BooksCount | null;
+    bookCode: string | null;
     error: object | string | null;
     success: object | string | null;
     isLoading: boolean

@@ -32,7 +32,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
+import { createBook, getBookCode, toInitialState, updateBook } from 'store/reducers/book-master';
 import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 
 // types
@@ -66,7 +66,7 @@ export interface Props {
 const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
-    const { error, isLoading, success } = useSelector(state => state.book)
+    const { bookCode, error, isLoading, success } = useSelector(state => state.book)
 
     const isCreating = !book;
 
@@ -111,6 +111,17 @@ const AddEditBook = ({ book, onCancel }: Props) => {
     });
 
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+
+    useEffect(() => {
+        dispatch(getBookCode());
+    }, [])
+
+    useEffect(() => {
+        if (bookCode) {
+            formik.setFieldValue('bookCode', bookCode);
+        }
+    }, [bookCode])
+
 
     useEffect(() => {
         if (error != null) {

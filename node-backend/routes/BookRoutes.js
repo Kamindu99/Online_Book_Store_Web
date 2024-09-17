@@ -100,6 +100,20 @@ router.route("/dashboard-count").get(async (req, res) => {
     }
 });
 
+router.route("/get-book-code").get(async (req, res) => {
+    try {
+        // Fetch total number of books
+        const totalBooks = await Product.countDocuments();
+
+        const response = `${totalBooks + 1}`;
+
+        res.json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+});
+
 router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
     Product.find({ isActive: true })
