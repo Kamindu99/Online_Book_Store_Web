@@ -2,12 +2,77 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/BookTransferModel')
 const BookModel = require('../models/BookModel');
+const UserModel = require('../models/UserModel');
+const nodemailer = require('nodemailer');
+
+// Configure your SMTP transport
+const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: "wanigasinghebookcollection@gmail.com",
+        pass: 'rkpc rkjt uhth fiak'
+    },
+});
 
 router.post("/", async (req, res) => {
     // Step 1: Save the product
     try {
         const product = new Product(req.body); // Create a new product instance from request body
         const savedProduct = await product.save(); // Save the product to the database
+        const userDetails = await UserModel.findById(product.userId);
+        const bookDetails = await BookModel.findById(product.bookId);
+
+        const base64ToBuffer = (base64Image) => {
+            const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
+            return Buffer.from(base64Data, 'base64');
+        };
+
+        // Email details
+        const mailOptions = {
+            from: 'wanigasinghebookcollection@gmail.com',
+            to: userDetails.email,
+            subject: 'Book Borrowed Successfully!',
+            html: `
+                        <div style="font-family: Arial, sans-serif; color: #333;">
+                            <h2 style="color: #4CAF50;">Hello ${userDetails.firstName} ${userDetails.lastName},</h2>
+                            <p>You have successfully borrowed a book from Wanigasinghe Books Collection.</p>
+                            <p>Book details:</p>
+                            <ul>
+                                <li style="list-style: none;">
+                                    <img
+                                        src="cid:bookImage" 
+                                        alt="Book Image"
+                                        style=" height: 100px; border-radius: 5px;" 
+                                    />
+                                </li>
+                                <li>Book Code: ${bookDetails.bookCode}</li>
+                                <li>Book Name: ${bookDetails.bookName}</li>
+                                <li>Borrow Date: ${req.body.transferedate}</li>   
+                            </ul>
+                            <p>Thank you for using Wanigasinghe Books Collection.</p>
+                            <br/>
+                            <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
+                            <div>
+                                <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
+                            </div>
+                            <br/>
+                            <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
+                        </div>
+                    `,
+            attachments: [
+                {
+                    filename: 'bookImage.jpg',
+                    content: base64ToBuffer(bookDetails.imageUrl), // The buffer content
+                    cid: 'bookImage' // Content-ID reference to use in the HTML
+                }
+            ]
+        };
 
         // Step 2: Update the book status (if bookId exists)
         if (req.body?.bookId) {
@@ -23,10 +88,18 @@ router.post("/", async (req, res) => {
                 }
 
                 // Step 3: Send final response with saved product and updated book details
-                res.status(200).json({
-                    status: "Book transfer saved and book status updated",
-                    savedProduct,
-                    updatedBook
+                // Send the email
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.error('Email sending failed:', error);
+                        return res.status(500).json({ message: 'Email sending failed.' });
+                    }
+                    console.log('Email sent successfully:', info.response);
+                    res.status(200).json({
+                        status: "Book transfer saved and book status updated",
+                        savedProduct,
+                        updatedBook
+                    });
                 });
             } catch (err) {
                 // Error handling for book update failure
@@ -48,7 +121,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = 'bookId', direction = 'asc' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -78,11 +151,16 @@ router.route("/").get(async (req, res) => {
         const results = await Promise.all(products.map(async (product) => {
             // Fetch the book details from the BookModel using the bookId
             const bookDetails = await BookModel.findById(product.bookId);
+            const userDetails = await UserModel.findById(product.userId);
 
             // Return the product with the embedded book details (bmBook)
             return {
                 ...product.toObject(), // Convert Mongoose object to plain JavaScript object
-                bmBook: bookDetails // Add book details here
+                bmBook: bookDetails,// Add book details here
+                umUser: {
+                    id: userDetails._id,
+                    name: `${userDetails.firstName} ${userDetails.lastName}`
+                }
             };
         }));
 
@@ -118,10 +196,10 @@ router.route("/fdd").get((req, res) => {
 
 router.route("/:id").put(async (req, res) => {
     let productId = req.params.id;
-    const { bookId, person, transferedate } = req.body;
+    const { bookId, userId, transferedate } = req.body;
     const updatedProduct = {
         bookId,
-        person,
+        userId,
         transferedate
     };
 
@@ -142,6 +220,61 @@ router.route("/return/:id/:bookId").put(async (req, res) => {
     try {
         // Update the product to set `isActive` to false
         const updatedProduct = await Product.findByIdAndUpdate(transferId, { isActive: false }, { new: true });
+        const product = await Product.findById(transferId);
+        const userDetails = await UserModel.findById(product.userId);
+        const bookDetails = await BookModel.findById(bookId);
+
+        const base64ToBuffer = (base64Image) => {
+            const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
+            return Buffer.from(base64Data, 'base64');
+        };
+
+        const currentDate = new Date()?.toDateString();
+
+        // Email details
+        const mailOptions = {
+            from: 'wanigasinghebookcollection@gmail.com',
+            to: userDetails.email,
+            subject: 'Book Returned Successfully!',
+            html: `
+                        <div style="font-family: Arial, sans-serif; color: #333;">
+                            <h2 style="color: #4CAF50;">Hello ${userDetails.firstName} ${userDetails.lastName},</h2>
+                            <p>You have successfully returned a book to Wanigasinghe Books Collection.</p>
+                            <p>Book details:</p>
+                            <ul>
+                                <li style="list-style: none;">
+                                    <img
+                                        src="cid:bookImage" 
+                                        alt="Book Image"
+                                        style=" height: 100px; border-radius: 5px;" 
+                                    />
+                                </li>
+                                <li>Book Code: ${bookDetails.bookCode}</li>
+                                <li>Book Name: ${bookDetails.bookName}</li>
+                                <li>Borrow Date: ${product.transferedate}</li>
+                                 <li><strong>Return Date:</strong> ${currentDate}</li>
+                            </ul>
+                            <p>Thank you for using Wanigasinghe Books Collection.</p>
+                            <br/>
+                            <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
+                            <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
+                            <div>
+                                <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
+                            </div>
+                            <br/>
+                            <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
+                        </div>
+                    `,
+            attachments: [
+                {
+                    filename: 'bookImage.jpg',
+                    content: base64ToBuffer(bookDetails.imageUrl), // The buffer content
+                    cid: 'bookImage' // Content-ID reference to use in the HTML
+                }
+            ]
+        };
 
         if (!updatedProduct) {
             return res.status(404).json({ status: "Book Transfer not found" });
@@ -162,10 +295,17 @@ router.route("/return/:id/:bookId").put(async (req, res) => {
                 }
 
                 // Step 3: Send final response with updated product and book
-                return res.status(200).json({
-                    status: "Book returned and book status updated",
-                    updatedProduct,
-                    updatedBook
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.error('Email sending failed:', error);
+                        return res.status(500).json({ message: 'Email sending failed.' });
+                    }
+                    console.log('Email sent successfully:', info.response);
+                    res.status(200).json({
+                        status: "Book returned and book status updated",
+                        updatedProduct,
+                        updatedBook
+                    });
                 });
             } catch (bookError) {
                 return res.status(500).json({ status: "Error updating book status", error: bookError.message });

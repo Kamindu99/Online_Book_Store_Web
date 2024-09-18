@@ -6,7 +6,7 @@ const transferbookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    person: {
+    userId: {
         type: String,
         required: true
     },

@@ -14,6 +14,7 @@ import kanban from './kanban';
 import invoice from './invoice';
 import book from './book-master';
 import bookTransfer from './book-transfer';
+import users from './users';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -34,7 +35,8 @@ const reducers = combineReducers({
   kanban,
   invoice,
   book,
-  bookTransfer
+  bookTransfer,
+  users
 });
 
 export default reducers;

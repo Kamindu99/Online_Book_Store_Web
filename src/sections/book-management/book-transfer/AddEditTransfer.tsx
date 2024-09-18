@@ -31,6 +31,8 @@ import { dispatch, useSelector } from 'store';
 import { getBooksFdd } from 'store/reducers/book-master';
 import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-transfer';
 import { Books } from 'types/book-master';
+import { getUsersFdd } from 'store/reducers/users';
+import { Users } from 'types/users';
 
 // types
 
@@ -40,7 +42,7 @@ const getInitialValues = (booktransfer: FormikValues | null) => {
     const newBooktransfer = {
         bookId: '',
         transferedate: new Date().toISOString().split('T')[0],
-        person: '',
+        userId: '',
     };
 
     if (booktransfer) {
@@ -64,7 +66,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
 
     const BooktransferSchema = Yup.object().shape({
         transferedate: Yup.string().max(255).required('Transfer date is required'),
-        person: Yup.string().max(255).required('Transferd person is required')
+        userId: Yup.string().max(255).required('Borrow person is required')
     });
 
     const formik = useFormik({
@@ -79,7 +81,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                     dispatch(createBooktransfer({
                         bookId: values.bookId,
                         transferedate: values.transferedate,
-                        person: values.person
+                        userId: values.userId
                     }));
                 }
                 resetForm()
@@ -97,6 +99,12 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
 
     useEffect(() => {
         dispatch(getBooksFdd());
+    }, [])
+
+    const { usersFdd } = useSelector(state => state.users)
+
+    useEffect(() => {
+        dispatch(getUsersFdd());
     }, [])
 
     const [bookList, setBookList] = useState<Books[]>([]);
@@ -168,14 +176,27 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="person">Transfered Person</InputLabel>
-                                        <TextField
+                                        <InputLabel htmlFor="userId">
+                                            Borrow Person<span style={{ color: 'red' }}>*</span>
+                                        </InputLabel>
+                                        <Autocomplete
                                             fullWidth
-                                            id="person"
-                                            placeholder="Enter Transfered Person"
-                                            {...getFieldProps('person')}
-                                            error={Boolean(touched.person && errors.person)}
-                                            helperText={touched.person && errors.person}
+                                            id="userId"
+                                            value={usersFdd?.find((option) => option._id === formik.values.userId) || null}
+                                            onChange={(event: any, newValue: Users | null) => {
+                                                formik.setFieldValue('userId', newValue?._id);
+                                            }}
+                                            options={usersFdd || []}
+                                            getOptionLabel={(item) => `${item.name}`}
+                                            renderInput={(params) => {
+                                                return (
+                                                    <TextField
+                                                        {...params}
+                                                        placeholder="Select User"
+                                                        sx={{ '& .MuiAutocomplete-input.Mui-disabled': { WebkitTextFillColor: theme.palette.text.primary } }}
+                                                    />
+                                                )
+                                            }}
                                         />
                                     </Stack>
                                 </Grid>

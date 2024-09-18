@@ -203,7 +203,7 @@ const TransferBookList = () => {
                 },
                 {
                     Header: 'Person',
-                    accessor: 'person'
+                    accessor: 'umUser.name'
                 },
                 {
                     Header: 'Borrow Date',

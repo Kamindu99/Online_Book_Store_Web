@@ -12,7 +12,7 @@ export type Bookstransfer = {
     // imageUrl?: string;
     // status?: string;
     bookId?: string;
-    person?: string;
+    userId?: string;
     transferedate?: string;
     bmBook?: Books
 };
