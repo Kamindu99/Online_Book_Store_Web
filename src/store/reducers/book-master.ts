@@ -28,6 +28,7 @@ const slice = createSlice({
         hasInitialState(state) {
             state.error = null;
             state.success = null;
+            state.booksFdd = null;
             state.isLoading = false;
         },
 
@@ -114,11 +115,11 @@ export function getBooks(query: listParametersType) {
     };
 }
 
-export function getBooksFdd() {
+export function getBooksFdd(category?: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get('/api/v1/book-management/book-master/fdd');
+            const response = await axios.get('/api/v1/book-management/book-master/fdd', { params: { category: category } });
             dispatch(slice.actions.getBooksFddSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));

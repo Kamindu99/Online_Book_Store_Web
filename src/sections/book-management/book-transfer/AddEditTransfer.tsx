@@ -10,6 +10,7 @@ import {
     Divider,
     Grid,
     InputLabel,
+    MenuItem,
     Stack,
     TextField,
     useTheme
@@ -28,7 +29,7 @@ import * as Yup from 'yup';
 import { dispatch, useSelector } from 'store';
 
 // assets
-import { getBooksFdd } from 'store/reducers/book-master';
+import { getBooksFdd, toInitialState } from 'store/reducers/book-master';
 import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-transfer';
 import { Books } from 'types/book-master';
 import { getUsersFdd } from 'store/reducers/users';
@@ -43,6 +44,7 @@ const getInitialValues = (booktransfer: FormikValues | null) => {
         bookId: '',
         transferedate: new Date().toISOString().split('T')[0],
         userId: '',
+        category: ''
     };
 
     if (booktransfer) {
@@ -85,6 +87,8 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                     }));
                 }
                 resetForm()
+                getInitialValues(null)
+                dispatch(toInitialState());
                 setSubmitting(false);
                 onCancel();
             } catch (error) {
@@ -98,8 +102,12 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
     const { booksFdd } = useSelector(state => state.book)
 
     useEffect(() => {
-        dispatch(getBooksFdd());
-    }, [])
+        if (formik.values.category === '') {
+            setBookList([])
+            return
+        };
+        dispatch(getBooksFdd(formik.values.category));
+    }, [formik.values.category])
 
     const { usersFdd } = useSelector(state => state.users)
 
@@ -133,7 +141,44 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
 
-                                <Grid item xs={12} md={12}>
+                                <Grid item xs={12} lg={6}>
+                                    <Stack spacing={1.25}>
+                                        <InputLabel htmlFor="category">Category</InputLabel>
+                                        <TextField
+                                            fullWidth
+                                            id="category"
+                                            select
+                                            placeholder="Enter Book Category"
+                                            {...getFieldProps('category')}
+                                            error={Boolean(touched.category && errors.category)}
+                                            helperText={touched.category && errors.category}
+                                        >
+                                            <MenuItem key={1} value={"Adventure"}>
+                                                {"Adventure"}
+                                            </MenuItem>
+                                            <MenuItem key={2} value={"Novel"}>
+                                                {"Novel"}
+                                            </MenuItem>
+                                            <MenuItem key={3} value={"Short Stories"}>
+                                                {"Short Stories"}
+                                            </MenuItem>
+                                            <MenuItem key={4} value={"Child Story"}>
+                                                {"Child Story"}
+                                            </MenuItem>
+                                            <MenuItem key={5} value={"Educational"}>
+                                                {"Educational"}
+                                            </MenuItem>
+                                            <MenuItem key={6} value={"Religious"}>
+                                                {"Religious"}
+                                            </MenuItem>
+                                            <MenuItem key={7} value={"Astrology"}>
+                                                {"Astrology"}
+                                            </MenuItem>
+                                        </TextField>
+                                    </Stack>
+                                </Grid>
+
+                                <Grid item xs={12} md={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="bookId">
                                             Book Name <span style={{ color: 'red' }}>*</span>

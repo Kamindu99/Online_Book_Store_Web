@@ -364,18 +364,20 @@ const TransferBookList = () => {
                         data={bookList} handleAddEdit={handleAdd} />
                 </ScrollX>
             </MainCard>
-            <Dialog
-                maxWidth="sm"
-                TransitionComponent={PopupTransition}
-                keepMounted
-                fullWidth
-                onClose={handleAdd}
-                open={add}
-                sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <AddEditTransfer booktransfer={customer} onCancel={handleAdd} />
-            </Dialog>
+            {add &&
+                <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleAdd}
+                    open={add}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <AddEditTransfer booktransfer={customer} onCancel={handleAdd} />
+                </Dialog>
+            }
             {/* alert model */}
             {bookTransferId && bookId && <AlertBookDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={bookTransferId} bookId={bookId} />}
         </>

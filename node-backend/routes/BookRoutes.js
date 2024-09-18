@@ -116,7 +116,14 @@ router.route("/get-book-code").get(async (req, res) => {
 
 router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
-    Product.find({ isActive: true })
+    const { category = '' } = req.query;
+    let searchQuery = {
+        isActive: true
+    };
+    if (category) {
+        searchQuery.category = category;
+    }
+    Product.find(searchQuery)
         .then((products) => {
             res.json(
                 products.map((product) => {
