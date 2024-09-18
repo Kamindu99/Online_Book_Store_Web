@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent, useEffect } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -18,33 +18,27 @@ import {
 } from '@mui/material';
 
 // project import
-import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
+import MainCard from 'components/MainCard';
 
 import { dispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { isNumber, isLowercaseChar, isUppercaseChar, isSpecialChar, minLength } from 'utils/password-validation';
+import { isLowercaseChar, isNumber, isSpecialChar, isUppercaseChar, minLength } from 'utils/password-validation';
 
 // third party
-import * as Yup from 'yup';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 // assets
-import { CheckOutlined, EyeOutlined, EyeInvisibleOutlined, LineOutlined } from '@ant-design/icons';
-import { passwordChangeForms } from 'types/password-change';
-import { PasswordChangeSuccess, toInitialState } from 'store/reducers/password-change';
+import { CheckOutlined, EyeInvisibleOutlined, EyeOutlined, LineOutlined } from '@ant-design/icons';
 import useAuth from 'hooks/useAuth';
+import { PasswordChangeSuccess, toInitialState } from 'store/reducers/password-change';
 
 import { APP_DEFAULT_PATH } from 'config';
 
-interface PasswordChangeFormProps {
-  PasswordChangeFormData: passwordChangeForms;
-  setPasswordChangeFormData: (d: passwordChangeForms) => void;
-}
-
 // ==============================|| TAB - PASSWORD CHANGE ||============================== //
 
-const PasswordChange = ({ PasswordChangeFormData, setPasswordChangeFormData }: PasswordChangeFormProps) => {
+const PasswordChange = () => {
   const handleCancel = () => {
     window.location.href = APP_DEFAULT_PATH;
   };
@@ -108,8 +102,11 @@ const PasswordChange = ({ PasswordChangeFormData, setPasswordChangeFormData }: P
         })
       );
       dispatch(toInitialState());
-      window.location.replace('https://finco.dev.cobas.lk/');
-      // setOpenAlert(true);
+      localStorage.removeItem('serviceToken');
+      localStorage.removeItem('user');
+      setTimeout(() => {
+        window.location.replace('https://online-library-webapp.netlify.app/login');
+      }, 1500);
     }
   }, [success]);
 

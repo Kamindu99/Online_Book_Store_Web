@@ -157,4 +157,26 @@ router.route("/update/:id").put(async (req, res) => {
     }
 });
 
+router.route("/password-reset/:id").put(async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if (user.password === req.body.currentPassword) {
+            if (req.body.newPassword === req.body.reNewPassword) {
+                const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, {
+                    password: req.body.newPassword
+                }, { new: true });
+                res.json({
+                    message: 'Password updated successfully'
+                });
+            } else {
+                res.status(400).json({ message: 'New passwords do not match' });
+            }
+        } else {
+            res.status(400).json({ message: 'Current password is incorrect' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;

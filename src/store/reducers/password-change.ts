@@ -73,7 +73,7 @@ export function PasswordChangeSuccess(pwChange: PwChangePostReq) {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axiosServices.post(`/user/password-reset/${pwChange?.userName}`, pwChange?.reqBody);
+            const response = await axiosServices.put(`/api/v1/book-management/auth/password-reset/${pwChange?.userName}`, pwChange?.reqBody);
             dispatch(slice.actions.PwChangeSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
