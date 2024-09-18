@@ -27,6 +27,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { listParametersType } from 'types/book-master';
 import BookCard from './book-card';
 import { dataProps } from './types/types';
+import { Loading } from 'utils/loading';
 
 // ==============================|| List ||============================== //
 
@@ -146,7 +147,7 @@ const List = () => {
     };
 
     if (isLoading) {
-        return <>Loading...</>
+        return <Loading />
     }
 
     return (

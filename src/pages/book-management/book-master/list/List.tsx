@@ -39,6 +39,7 @@ import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books, listParametersType } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
+import { Loading } from 'utils/loading';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -393,7 +394,7 @@ const List = () => {
     }, [success])
 
     if (isLoading) {
-        return <>Loading...</>
+        return <Loading />
     }
 
     return (

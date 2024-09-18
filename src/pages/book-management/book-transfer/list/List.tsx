@@ -40,6 +40,7 @@ import { Books } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
 import { Bookstransfer } from 'types/book-transfer';
 import AlertBookDelete from 'sections/book-management/book-transfer/AlertTransferDelete';
+import { Loading } from 'utils/loading';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -356,7 +357,7 @@ const TransferBookList = () => {
     }, [success])
 
     if (isLoading) {
-        return <>Loading...</>
+        return <Loading />
     }
 
     return (

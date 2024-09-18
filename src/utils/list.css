@@ -1,0 +1,21 @@
+.zoom-logo {
+    width: 150px;
+    height: 150px;
+    animation: zoomInOut 2s infinite ease-in-out;
+}
+
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+        /* Zoom in */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Zoom out */
+    }
+}
