@@ -192,7 +192,7 @@ const TabProfile = () => {
                                             )}
                                         </Stack>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Stack spacing={1}>
                                             <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
                                             <OutlinedInput
