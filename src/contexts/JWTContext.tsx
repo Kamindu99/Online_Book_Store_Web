@@ -95,14 +95,16 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
     });
   };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string) => {
+  const register = async (email: string, password: string, firstName: string, lastName: string, occupation: string, profileImage?: string) => {
     // todo: this flow need to be recode as it not verified
     const id = chance.bb_pin();
     const response = await axios.post('/api/v1/book-management/auth/register', {
       email,
       password,
       firstName,
-      lastName
+      lastName,
+      occupation,
+      profileImage
     });
     let users = response.data;
 
@@ -124,6 +126,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
 
   const logout = () => {
     setSession(null);
+    window.localStorage.removeItem('users');
     dispatch({ type: LOGOUT });
   };
 

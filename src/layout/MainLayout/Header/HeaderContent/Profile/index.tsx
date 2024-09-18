@@ -1,21 +1,20 @@
-import { useRef, useState, ReactNode, SyntheticEvent } from 'react';
+import { ReactNode, SyntheticEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, Stack, Tab, Tabs, Tooltip, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // project import
+import Avatar from 'components/@extended/Avatar';
+import IconButton from 'components/@extended/IconButton';
+import Transitions from 'components/@extended/Transitions';
+import MainCard from 'components/MainCard';
+import useAuth from 'hooks/useAuth';
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
-import Avatar from 'components/@extended/Avatar';
-import MainCard from 'components/MainCard';
-import Transitions from 'components/@extended/Transitions';
-import IconButton from 'components/@extended/IconButton';
-import useAuth from 'hooks/useAuth';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 // types
@@ -108,7 +107,7 @@ const Profile = () => {
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-          <Avatar alt="profile user" src={avatar1} size="xs" />
+          <Avatar alt="profile user" src={user?.profileImage} size="xs" />
           <Typography variant="subtitle1">{user?.name}</Typography>
         </Stack>
       </ButtonBase>
@@ -149,11 +148,11 @@ const Profile = () => {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                          <Avatar alt="profile user" src={user?.profileImage} sx={{ width: 32, height: 32 }} />
                           <Stack>
                             <Typography variant="h6">{user?.name}</Typography>
                             <Typography variant="body2" color="textSecondary">
-                              UI/UX Designer
+                              {user?.occupation}
                             </Typography>
                           </Stack>
                         </Stack>

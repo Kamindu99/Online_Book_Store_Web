@@ -30,11 +30,14 @@ router.route("/login").post(async (req, res) => {
                 user: {
                     id: users[0]._id,
                     email: users[0].email,
-                    name: `${users[0].firstName} ${users[0].lastName}`
+                    name: `${users[0].firstName} ${users[0].lastName}`,
+                    occupation: users[0].occupation,
+                    profileImage: users[0].profileImage
                 }
             });
         } else {
-            res.json({ success: false, message: "Invalid Username or Password" });
+            // Return a 401 response if the email or password is incorrect
+            return res.status(401).json({ success: false, message: "Invalid Username or Password" });
         }
     } catch (err) {
         console.log(err);
@@ -51,7 +54,9 @@ router.route("/account/me").get(async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: `${user.firstName} ${user.lastName}`
+                name: `${user.firstName} ${user.lastName}`,
+                occupation: user.occupation,
+                profileImage: user.profileImage
             }
         });
     } catch (err) {
