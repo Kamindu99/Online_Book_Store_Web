@@ -1,161 +1,101 @@
 import {
+    Box,
     Button,
+    Divider,
+    FormHelperText,
     Grid,
     InputLabel,
+    OutlinedInput,
     Stack,
-    TextField
+    Typography
 } from '@mui/material';
-
-// third party
-import { FormikValues, useFormik } from 'formik';
-
-// project import
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import MainCard from 'components/MainCard';
+import AvatarUpload from 'components/third-party/dropzone/Avatar';
+import { Form, FormikProvider, FormikValues, useFormik } from 'formik';
 import useAuth from 'hooks/useAuth';
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'store';
+import { useEffect } from 'react';
+import { dispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getDefaultBranchUserById, toInitialState, updateUserSuccess } from 'store/reducers/user';
-import { UserDefaultBranch } from 'types/user';
-import { UserRequestDto } from './types/types';
-
+import { getUserById, updateUser } from 'store/reducers/users';
+import { UserGetById } from 'types/users';
 
 const getInitialValues = (userById: FormikValues | null) => {
 
     const newUser = {
-        userId: undefined,
-        userName: '',
-        password: '',
-        rePassword: '',
-        description: '',
-        userStatus: '',
-        accountOptionLink: false,
-        accountOptionManual: false,
-        forceChangePassword: false,
-        generateOnetimePassword: false,
-        statusId: undefined,
-        userRoleId: undefined,
-        branchId: undefined,
-        departmentId: undefined,
+        _id: '',
+        firstName: '',
+        lastName: '',
         email: '',
-        mobileNumber: '',
-        nic: '',
-        designation: '',
-        fullName: ''
+        occupation: '',
+        profileImage: '',
+        imageUrl: '',
+        isActive: false
     }
 
     if (userById) {
-        return _.merge({}, newUser, userById);
+        return _.merge({}, newUser, {
+            _id: userById._id,
+            firstName: userById.firstName,
+            lastName: userById.lastName,
+            email: userById.email,
+            occupation: userById.occupation,
+            profileImage: userById.profileImage,
+            imageUrl: userById.profileImage,
+            isActive: userById.isActive
+        });
     }
 
     return newUser;
 };
 
-export interface Props {
-    userById?: UserDefaultBranch
-}
-export interface dataProps extends UserDefaultBranch { }
-
-const TabProfile = ({ }: Props) => {
-
-    const { user } = useAuth()
-    const [data, setData] = useState<dataProps>()
-    console.log(data);
-
-    const dispatch = useDispatch();
-    const { userDefaultBranchById, error, EditProfileSuccess } = useSelector(state => state.user)
-
+const TabProfile = () => {
+    const { user } = useAuth();
+    const { userGetById } = useSelector((state) => state.users);
+    // Load user data on mount
     useEffect(() => {
-        dispatch(getDefaultBranchUserById(user?.id!))
-    }, [user])
+        if (typeof user?.id === 'undefined') return;
+        dispatch(getUserById(user?.id!));
+    }, [user?.id]);
 
+    // Update local state when user data changes
     useEffect(() => {
-        if (!userDefaultBranchById) {
-            setData(undefined)
-            return
+        if (userGetById) {
+            //@ts-ignore
+            formik.setValues(userGetById!);
         }
-        if (userDefaultBranchById == null) {
-            setData(undefined)
-            return
-        }
-        setData(userDefaultBranchById)
-    }, [userDefaultBranchById])
-
-    useEffect(() => {
-        if (error != null) {
-
-            let defaultErrorMessage = "ERROR";
-            // @ts-ignore
-            const errorExp = error as Template1Error
-            if (errorExp.message) {
-                defaultErrorMessage = errorExp.message
-            }
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: defaultErrorMessage,
-                    variant: 'alert',
-                    alert: {
-                        color: 'error'
-                    },
-                    close: true
-                })
-            );
-            dispatch(toInitialState());
-        }
-    }, [error]);
-
-    useEffect(() => {
-        if (EditProfileSuccess != null) {
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: EditProfileSuccess,
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: true
-                })
-            );
-            dispatch(toInitialState());
-        }
-    }, [EditProfileSuccess])
-    // ----------------------- | API Call - Edit Profile | ---------------------
+    }, [userGetById]);
 
     const formik = useFormik({
-        initialValues: getInitialValues(userDefaultBranchById!),
+        initialValues: getInitialValues(userGetById!),
         enableReinitialize: true,
-        onSubmit: (values, { setSubmitting, resetForm }) => {
+        onSubmit: async (values, { setSubmitting, resetForm }) => {
             try {
-                if (userDefaultBranchById) {
-
-                    let userRequestDto: UserRequestDto = {
-                        userId: values?.userId,
-                        userName: values?.userName,
-                        password: values?.password,
-                        rePassword: values?.rePassword,
-                        description: values?.description,
-                        userStatus: "A",
-                        accountOptionLink: values?.accountOptionLink,
-                        accountOptionManual: values?.accountOptionManual,
-                        forceChangePassword: values?.forceChangePassword,
-                        generateOnetimePassword: values?.generateOnetimePassword,
-                        statusId: values?.statusId,
-                        userRoleId: values?.userRoleId,
-                        branchId: values?.branchId,
-                        departmentId: values?.departmentId,
-                        email: values?.email,
-                        mobileNumber: values?.mobileNumber,
-                        nic: values?.nic,
-                        designation: values?.designation,
-                        fullName: values?.fullName
-                    }
-
-                    // PUT API
-                    dispatch(updateUserSuccess(userRequestDto))
+                let userRequestDto: UserGetById = {
+                    _id: values._id,
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    email: values.email,
+                    occupation: values.occupation,
+                    profileImage: values.imageUrl
                 }
+                // PUT API
+                await dispatch(updateUser(userRequestDto))
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Your profile has been updated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    }));
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
                 resetForm()
                 setSubmitting(false);
             } catch (error) {
@@ -164,126 +104,131 @@ const TabProfile = ({ }: Props) => {
         }
     });
 
-    const { getFieldProps, isSubmitting, handleSubmit } = formik;
+    const { errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue } = formik;
 
     return (
+        <FormikProvider value={formik}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+                    <Grid container justifyContent="center" alignItems="center" xs={12} sm={12} md={12} lg={12}>
+                        <Grid item xs={12} sm={12} md={12} lg={8}>
+                            <MainCard>
+                                <Box display="flex" justifyContent="center" mb={3}>
+                                    <AvatarUpload
+                                        //@ts-ignore
+                                        file={values.imageUrl!}
+                                        sx={{ width: 150, height: 150, border: '4px solid', borderColor: 'primary.main' }}
+                                        setFieldValue={setFieldValue}
+                                        error={touched.imageUrl && Boolean(errors.imageUrl)}
+                                    />
+                                </Box>
+                                <Typography variant="h4" align="center" gutterBottom>
+                                    {userGetById?.firstName} {userGetById?.lastName}
+                                </Typography>
+                                <Divider sx={{ my: 3 }} />
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} md={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="firstName-signup">First Name*</InputLabel>
+                                            <OutlinedInput
+                                                id="firstName-login"
+                                                type="firstName"
+                                                value={values.firstName}
+                                                name="firstName"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                placeholder="Enter First Name"
+                                                fullWidth
+                                                error={Boolean(touched.firstName && errors.firstName)}
+                                            />
+                                            {touched.firstName && errors.firstName && (
+                                                <FormHelperText error id="helper-text-firstName-signup">
+                                                    {errors.firstName}
+                                                </FormHelperText>
+                                            )}
+                                        </Stack>
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="lastName-signup">Last Name*</InputLabel>
+                                            <OutlinedInput
+                                                fullWidth
+                                                error={Boolean(touched.lastName && errors.lastName)}
+                                                id="lastName-signup"
+                                                type="lastName"
+                                                value={values.lastName}
+                                                name="lastName"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                placeholder="Enter Last Name"
+                                                inputProps={{}}
+                                            />
+                                            {touched.lastName && errors.lastName && (
+                                                <FormHelperText error id="helper-text-lastName-signup">
+                                                    {errors.lastName}
+                                                </FormHelperText>
+                                            )}
+                                        </Stack>
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="occupation-signup">Occupation*</InputLabel>
+                                            <OutlinedInput
+                                                fullWidth
+                                                error={Boolean(touched.occupation && errors.occupation)}
+                                                id="occupation-signup"
+                                                type="occupation"
+                                                value={values.occupation}
+                                                name="occupation"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                placeholder="Enter Occupation"
+                                                inputProps={{}}
+                                            />
+                                            {touched.occupation && errors.occupation && (
+                                                <FormHelperText error id="helper-text-occupation-signup">
+                                                    {errors.occupation}
+                                                </FormHelperText>
+                                            )}
+                                        </Stack>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
+                                            <OutlinedInput
+                                                fullWidth
+                                                error={Boolean(touched.email && errors.email)}
+                                                id="email-login"
+                                                type="email"
+                                                value={values.email}
+                                                name="email"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                placeholder="Enter Email Address"
+                                                inputProps={{}}
+                                            />
+                                            {touched.email && errors.email && (
+                                                <FormHelperText error id="helper-text-email-signup">
+                                                    {errors.email}
+                                                </FormHelperText>
+                                            )}
+                                        </Stack>
+                                    </Grid>
+                                </Grid>
 
-        <Grid item xs={12} sm={6} spacing={2}>
-            <MainCard title="Edit Profile Details">
-                <form noValidate onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="nic">NIC</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter NIC"
-                                    id="nic"
-                                    {...getFieldProps('nic')}
-                                    disabled
-                                />
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="fronturl-global">Mobile Number</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter Mobile No"
-                                    id="mobileNumber"
-                                    {...getFieldProps('mobileNumber')}
-                                    onChange={(event) => {
-                                        formik.setFieldValue('mobileNumber', event.target.value);
-                                    }}
-                                />
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="fronturl-global">First Name</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter First Name"
-                                    id="fullName"
-                                    disabled
-                                    {...getFieldProps('fullName')}
-                                    onChange={(event) => {
-                                        formik.setFieldValue('fullName', event.target.value);
-                                    }}
-                                />
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="fronturl-global">Designation</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    disabled
-                                    placeholder="Enter Designation"
-                                    id="designation"
-                                    {...getFieldProps('designation')}
-                                    onChange={(event) => {
-                                        formik.setFieldValue('designation', event.target.value);
-                                    }}
-                                />
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="footertitle-global">Email Address</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter Email"
-                                    id="email"
-                                    {...getFieldProps('email')}
-                                    onChange={(event) => {
-                                        formik.setFieldValue('email', event.target.value);
-                                    }}
-                                />
+                                <Divider sx={{ my: 3 }} />
 
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="domaindescription-global">User Name</InputLabel>
-                                <TextField
-                                    fullWidth
-                                    disabled
-                                    placeholder="Enter User Name"
-                                    id="userName"
-                                    {...getFieldProps('userName')}
-                                    onChange={(event) => {
-                                        formik.setFieldValue('userName', event.target.value);
-                                    }}
-                                />
-                            </Stack>
+                                <Box display="flex" justifyContent="center">
+                                    <Button variant="contained" color="primary" type='submit'>
+                                        Update Changes
+                                    </Button>
+                                </Box>
+                            </MainCard>
                         </Grid>
                     </Grid>
-                    <Grid container justifyContent="space-between" alignItems="center" style={{ marginTop: '20px' }}>
-                        <Grid item xs={6}>
-                        </Grid>
-                        <Grid item xs={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <Stack direction="row" spacing={2} alignItems="center">
-                                <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                    Update
-                                </Button>
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </form>
-                {/* <Grid container justifyContent="space-between" alignItems="center" style={{ marginTop: '20px' }}>
-                    <Grid item xs={6}>
-                    </Grid>
-                    <Grid item xs={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Stack direction="row" spacing={2} alignItems="center">
-                            <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                Update
-                            </Button>
-                        </Stack>
-                    </Grid>
-                </Grid> */}
-            </MainCard>
-        </Grid>
+                </Form>
+            </LocalizationProvider>
+        </FormikProvider>
     );
 };
 

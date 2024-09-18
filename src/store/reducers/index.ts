@@ -16,7 +16,6 @@ import book from './book-master';
 import bookTransfer from './book-transfer';
 import users from './users';
 import passwordChange from './password-change';
-import user from './user';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -40,7 +39,6 @@ const reducers = combineReducers({
   bookTransfer,
   users,
   passwordChange,
-  user
 });
 
 export default reducers;

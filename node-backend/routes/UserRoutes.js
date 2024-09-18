@@ -142,4 +142,19 @@ router.route("/fdd").get((req, res) => {
         });
 });
 
+router.route("/update/:id").put(async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndUpdate(req.params.id, {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            occupation: req.body.occupation,
+            profileImage: req.body.profileImage
+        }, { new: true });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;

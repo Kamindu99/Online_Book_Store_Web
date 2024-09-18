@@ -3,8 +3,20 @@ export type Users = {
     name?: string;
 };
 
+export interface UserGetById {
+    _id?: string;
+    email?: string;
+    isActive?: boolean;
+    createdDate?: string;
+    firstName?: string;
+    lastName?: string;
+    occupation?: string;
+    profileImage?: string;
+};
+
 export interface UserStateProps {
     usersFdd: Users[] | null;
+    userGetById: UserGetById | null;
     error: object | string | null;
     success: object | string | null;
     isLoading: boolean
