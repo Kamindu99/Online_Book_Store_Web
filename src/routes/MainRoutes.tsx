@@ -7,10 +7,15 @@ import MainLayout from 'layout/MainLayout';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
 //book master
-import List from 'pages/book-management/book-master/list/List';
-import UserList from 'pages/book-management/book-master/user-list/List';
-import DisposalList from 'pages/book-management/disposal/list/List';
-import TransferBookList from 'pages/book-management/book-transfer/list/List';
+const List = Loadable(lazy(() => import('pages/book-management/book-master/list/List')));
+const UserList = Loadable(lazy(() => import('pages/book-management/book-master/user-list/List')));
+const DisposalList = Loadable(lazy(() => import('pages/book-management/disposal/list/List')));
+const TransferBookList = Loadable(lazy(() => import('pages/book-management/book-transfer/list/List')));
+
+//user management
+const ViewProfile = Loadable(lazy(() => import('pages/user-management/profile-view/ViewProfile')));
+const EditProfile = Loadable(lazy(() => import('pages/user-management/profile-edit/EditProfile')));
+const PasswordChange = Loadable(lazy(() => import('pages/user-management/password-change/PasswordChange')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -69,6 +74,23 @@ const MainRoutes = {
               path: 'book-transfer/list',
               element: <TransferBookList />
             }
+          ]
+        },
+        {
+          path: 'user-management',
+          children: [
+            {
+              path: 'view-profile',
+              element: <ViewProfile />
+            },
+            {
+              path: 'edit-profile',
+              element: <EditProfile />
+            },
+            {
+              path: 'password-change',
+              element: <PasswordChange />
+            },
           ]
         }
       ]

@@ -20,7 +20,7 @@ import {
 
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { EmptyTable, HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 
 import {
@@ -118,25 +118,29 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps }: ReactTable
                         ))}
                     </TableHead>
                     <TableBody {...getTableBodyProps()}>
-                        {page.map((row: Row, i: number) => {
-                            prepareRow(row);
-                            return (
-                                <Fragment key={i}>
-                                    <TableRow
-                                        {...row.getRowProps()}
-                                        onClick={() => {
-                                            row.toggleRowSelected();
-                                        }}
-                                        sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                                    >
-                                        {row.cells.map((cell: Cell) => (
-                                            <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                                        ))}
-                                    </TableRow>
-                                    {/* {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns, expanded })} */}
-                                </Fragment>
-                            );
-                        })}
+                        {page.length > 0 ? (
+                            page.map((row: Row, i: number) => {
+                                prepareRow(row);
+                                return (
+                                    <Fragment key={i}>
+                                        <TableRow
+                                            {...row.getRowProps()}
+                                            onClick={() => {
+                                                row.toggleRowSelected();
+                                            }}
+                                            sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
+                                        >
+                                            {row.cells.map((cell: Cell) => (
+                                                <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                                            ))}
+                                        </TableRow>
+                                        {/* {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns, expanded })} */}
+                                    </Fragment>
+                                );
+                            })
+                        ) : (
+                            <EmptyTable msg="No Data" colSpan={12} />
+                        )}
                         <TableRow>
                             <TableCell sx={{ p: 2 }} colSpan={12}>
                                 <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />

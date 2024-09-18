@@ -111,6 +111,17 @@ router.route("/account/me").get(async (req, res) => {
     }
 });
 
+router.route("/get/:id").get(async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.id);
+        res.json(
+            user
+        );
+    } catch (err) {
+        res.json({ success: false, message: "An error occurred during login" });
+    }
+});
+
 router.route("/fdd").get((req, res) => {
     // Fetch UserModel where isActive is true
     UserModel.find({ isActive: true })

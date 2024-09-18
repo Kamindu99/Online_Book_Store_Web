@@ -56,12 +56,12 @@ const slice = createSlice({
 
         // POST BOOK
         createBookSuccess(state, action) {
-            state.success = "Book transfer created successfully";
+            state.success = "Book borrowed successfully";
         },
 
         // PUT BOOK
         updateBookSuccess(state, action) {
-            state.success = "Book transfer Update successfully";
+            state.success = "Book borrowed Update successfully";
         },
 
         // PUT BOOK RETURN
@@ -71,7 +71,7 @@ const slice = createSlice({
 
         // DELETE BOOK
         deleteBookSuccess(state, action) {
-            state.success = "Book transfer Delete successfully";
+            state.success = "Book borrow Deleted successfully";
         },
     }
 });
@@ -174,8 +174,3 @@ export function deleteBooktransfer(bookId: string) {
         }
     };
 }
-
-
-
-
-
