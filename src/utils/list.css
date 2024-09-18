@@ -1,21 +1,20 @@
-.zoom-logo {
-    width: 150px;
-    height: 150px;
-    animation: zoomInOut 2s infinite ease-in-out;
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
-@keyframes zoomInOut {
-    0% {
-        transform: scale(1);
-    }
+.loading-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    50% {
-        transform: scale(1.2);
-        /* Zoom in */
-    }
-
-    100% {
-        transform: scale(1);
-        /* Zoom out */
-    }
+.zoom-logo {
+    height: 150px;
 }
