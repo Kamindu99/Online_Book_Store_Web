@@ -8,7 +8,7 @@ import { Theme } from '@mui/material/styles';
 // import Customization from './Customization';
 //import Localization from './Localization';
 // import Message from './Message';
-import MobileSection from './MobileSection';
+//import MobileSection from './MobileSection';
 // import Notification from './Notification';
 import Profile from './Profile';
 import Search from './Search';
@@ -39,8 +39,7 @@ const HeaderContent = () => {
       {/* <Notification />
       <Message /> */}
       {/* <Customization /> */}
-      {!downLG && <Profile />}
-      {downLG && <MobileSection />}
+      {<Profile />}
     </>
   );
 };
