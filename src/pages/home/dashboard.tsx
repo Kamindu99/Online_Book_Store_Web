@@ -24,7 +24,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid container rowSpacing={1.5} columnSpacing={2.75}>
                 <Grid item xs={6} sm={6} md={4} lg={4}>
                     <AnalyticsDataCard title="Total Users" count={booksCount?.totalUsers?.toString()!} children={undefined} />
                 </Grid>
