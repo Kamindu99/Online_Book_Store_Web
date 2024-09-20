@@ -140,5 +140,6 @@
   "book-management": "Book Management",
   "master-list": "Books List",
   "disposal-list": "Disposal List",
-  "transfer-list": "Borrow List"
+  "transfer-list": "Borrow List",
+  "my-transfer-list": "My Borrow List"
 }

@@ -38,6 +38,13 @@ const bookmanagement: NavItemType = {
             url: '/book-management/book-transfer/list',
             icon: icons.SyncOutlined,
         },
+        {
+            id: 'my-transfer-list',
+            title: <FormattedMessage id="my-transfer-list" />,
+            type: 'item',
+            url: '/book-management/my-book-transfer/list',
+            icon: icons.SyncOutlined,
+        },
         // {
         //     id: 'master-list',
         //     title: <FormattedMessage id="master-list" />,

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/BookModel')
+const UserModel = require('../models/UserModel')
+const TransferBooks = require('../models/BookTransferModel')
 
 router.post("/", async (req, res) => {
     const product = new Product(req.body);
@@ -73,6 +75,8 @@ router.route("/dashboard-count").get(async (req, res) => {
     try {
         // Fetch total number of books
         const totalBooks = await Product.countDocuments();
+        const totalUsers = await UserModel.countDocuments();
+        const totalTransfers = await TransferBooks.countDocuments({ isActive: true });
 
         // Fetch count of books by category using aggregation
         const categoryCounts = await Product.aggregate([
@@ -87,6 +91,8 @@ router.route("/dashboard-count").get(async (req, res) => {
         // Format the response with totalBooks and category counts
         const response = {
             totalBooks: totalBooks,
+            totalUsers: totalUsers,
+            totalTransfers: totalTransfers,
             category: categoryCounts.map(cat => ({
                 categoryName: cat._id,  // The category name
                 count: cat.count        // Number of books in that category

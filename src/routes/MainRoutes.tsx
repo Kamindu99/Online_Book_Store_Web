@@ -11,6 +11,7 @@ const List = Loadable(lazy(() => import('pages/book-management/book-master/list/
 const UserList = Loadable(lazy(() => import('pages/book-management/book-master/user-list/List')));
 const DisposalList = Loadable(lazy(() => import('pages/book-management/disposal/list/List')));
 const TransferBookList = Loadable(lazy(() => import('pages/book-management/book-transfer/list/List')));
+const MyTransferBookList = Loadable(lazy(() => import('pages/book-management/my-books/list/List')));
 
 //user management
 const ViewProfile = Loadable(lazy(() => import('pages/user-management/profile-view/ViewProfile')));
@@ -73,6 +74,10 @@ const MainRoutes = {
             {
               path: 'book-transfer/list',
               element: <TransferBookList />
+            },
+            {
+              path: 'my-book-transfer/list',
+              element: <MyTransferBookList />
             }
           ]
         },

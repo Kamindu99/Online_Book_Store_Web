@@ -7,7 +7,7 @@ import { GenericCardProps } from 'types/root';
 
 // ==============================|| REPORT CARD ||============================== //
 
-interface EcommerceMetrixProps extends GenericCardProps {}
+interface EcommerceMetrixProps extends GenericCardProps { }
 
 const EcommerceMetrix = ({ primary, secondary, content, iconPrimary, color }: EcommerceMetrixProps) => {
   const IconPrimary = iconPrimary!;

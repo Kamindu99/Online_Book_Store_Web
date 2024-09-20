@@ -47,4 +47,5 @@ export interface queryStringParams {
     per_page?: number;
     search?: string;
     sort?: string;
+    userId?: string;
 }
