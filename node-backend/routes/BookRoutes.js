@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('../models/BookModel')
 const UserModel = require('../models/UserModel')
 const TransferBooks = require('../models/BookTransferModel')
+const BookFavo = require('../models/FavouriteModel')
 
 router.post("/", async (req, res) => {
     const product = new Product(req.body);
@@ -17,7 +18,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', category = '' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', category = '', userId = '' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -41,6 +42,17 @@ router.route("/").get(async (req, res) => {
             searchQuery.category = category;
         }
 
+        // Build search query
+        let searchQueryFavo = { isActive: true };
+
+        // If a category is provided, filter by category
+        if (userId) {
+            searchQueryFavo.userId = userId;
+        }
+
+        // Fetch paginated and sorted products
+        const favoBooks = await BookFavo.find(searchQueryFavo)
+
         // Fetch total number of matching products
         const total = await Product.countDocuments(searchQuery);
 
@@ -49,6 +61,14 @@ router.route("/").get(async (req, res) => {
             .sort(sortObj)
             .skip(pageNumber * pageSize)
             .limit(pageSize);
+
+        const results = await Promise.all(products.map(async (product) => {
+
+            return {
+                ...product.toObject(),
+                isFavourite: favoBooks.some((favo) => favo.bookId === product._id.toString())
+            };
+        }));
 
         // Calculate total pages
         const totalPages = Math.ceil(total / pageSize);
@@ -61,10 +81,11 @@ router.route("/").get(async (req, res) => {
                 total: total,
                 totalPages: totalPages
             },
-            result: products
+            result: results
         };
 
         res.json(response);
+
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: 'An error occurred' });

@@ -28,6 +28,8 @@ import { listParametersType } from 'types/book-master';
 import BookCard from './book-card';
 import { dataProps } from './types/types';
 import { Loading } from 'utils/loading';
+import { toInitialState as toInitialStateFavourite } from 'store/reducers/favourite-book';
+import useAuth from 'hooks/useAuth';
 
 // ==============================|| List ||============================== //
 
@@ -35,9 +37,10 @@ const List = () => {
 
     const dispatch = useDispatch();
     const { booksList, error, isLoading, success } = useSelector(state => state.book)
-
+    const { success: favoSuccess, error: errorfavo, isLoading: isLoadingFavo } = useSelector(state => state.favouriteBook)
     const [bookList, setBookList] = useState<dataProps[]>([]);
 
+    const { user } = useAuth()
 
     // ----------------------- | API Call - Roles | ---------------------
 
@@ -74,10 +77,11 @@ const List = () => {
             direction: direction,
             sort: sort,
             category: category === 'All' ? '' : category,
-            search: search
+            search: search,
+            userId: user?.id
         };
         dispatch(getBooks(listParameters));
-    }, [dispatch, success, page, perPage, direction, sort, search, category]);
+    }, [dispatch, success, favoSuccess, page, perPage, direction, sort, search, category]);
 
     useEffect(() => {
         if (!booksList) {
@@ -113,7 +117,27 @@ const List = () => {
             );
             dispatch(toInitialState());
         }
-    }, [error]);
+        if (errorfavo != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = errorfavo as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialStateFavourite());
+        }
+    }, [error, errorfavo]);
 
     useEffect(() => {
         if (success != null) {
@@ -130,13 +154,21 @@ const List = () => {
             );
             dispatch(toInitialState());
         }
-    }, [success])
-
-    const handleBorrow = (bookId: string) => {
-        // Handle the borrow action
-        console.log(`Borrowing book with id ${bookId}`);
-    };
-
+        if (favoSuccess != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: favoSuccess,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialStateFavourite());
+        }
+    }, [success, favoSuccess])
 
     const handleCategoryChange = (event: any) => {
         setCategoryTerm(event.target.value as string);
@@ -146,7 +178,7 @@ const List = () => {
         setSearchTerm(event.target.value);
     };
 
-    if (isLoading) {
+    if (isLoading || isLoadingFavo) {
         return <Loading />
     }
 
@@ -236,7 +268,8 @@ const List = () => {
                             noOfPages={book.noOfPages!}
                             category={book.category!}
                             isActive={book.isActive!}
-                            onBorrow={() => handleBorrow(book._id!)}
+                            isFavourite={book.isFavourite!}
+                            bookId={book._id!}
                         />
                     </Grid>
 

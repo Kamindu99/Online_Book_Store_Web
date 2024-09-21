@@ -57,4 +57,5 @@ export interface listParametersType {
     search?: string;
     category?: string;
     sort?: string;
+    userId?: string;
 }

@@ -117,7 +117,7 @@ const TabProfile = () => {
                                     <AvatarUpload
                                         //@ts-ignore
                                         file={values.imageUrl!}
-                                        sx={{ width: 150, height: 150, border: '4px solid', borderColor: 'primary.main' }}
+                                        sx={{ width: 150, height: 150, border: '2px dashed', borderColor: 'primary.main' }}
                                         setFieldValue={setFieldValue}
                                         error={touched.imageUrl && Boolean(errors.imageUrl)}
                                     />

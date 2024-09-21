@@ -1,10 +1,10 @@
 // components/BookCard.tsx
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { HeartFilled } from '@ant-design/icons';
 import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import useAuth from 'hooks/useAuth';
 import React from 'react';
 import { dispatch } from 'store';
-import { createBookfavourite, deleteBookfavourite } from 'store/reducers/favourite-book';
+import { deleteBookfavourite } from 'store/reducers/favourite-book';
 
 interface BookCardProps {
     imageUrl: string;
@@ -14,21 +14,16 @@ interface BookCardProps {
     author: string;
     noOfPages: number;
     bookId: string;
-    isFavourite?: boolean;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, bookId, isFavourite }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, bookId }) => {
 
     const { user } = useAuth()
 
     const handleBorrow = () => {
         // Handle the borrow action
         if (user) {
-            if (!isFavourite) {
-                dispatch(createBookfavourite({ bookId, userId: user.id }))
-            } else {
-                dispatch(deleteBookfavourite(bookId, user.id))
-            }
+            dispatch(deleteBookfavourite(bookId, user.id))
         }
     };
 
@@ -135,7 +130,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                     }}
                     onClick={handleBorrow}
                 >
-                    {isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+                    <HeartFilled style={{ color: 'red' }} />
                 </IconButton>
             </CardContent>
         </Card >

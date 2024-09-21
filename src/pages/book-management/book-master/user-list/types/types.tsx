@@ -1,7 +1,9 @@
 import { Column, HeaderGroup } from 'react-table';
 import { Books } from 'types/book-master';
 
-export interface dataProps extends Books { }
+export interface dataProps extends Books {
+    isFavourite?: boolean
+}
 
 export interface ReactTableProps {
     columns: Column[]
