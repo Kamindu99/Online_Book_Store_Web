@@ -65,7 +65,7 @@ const TransferBookList = () => {
                 search: search,
                 sort: sort,
                 userId: user?.id,
-                isActive: true
+                isActive: false
             }
         ))
     }, [dispatch, success, page, perPage, direction, sort, search]);

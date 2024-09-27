@@ -45,6 +45,13 @@ const bookmanagement: NavItemType = {
             url: '/book-management/my-book-transfer/list',
             icon: icons.SyncOutlined,
         },
+        {
+            id: 'past-read-list',
+            title: <FormattedMessage id="past-read-list" />,
+            type: 'item',
+            url: '/book-management/past-read-books/list',
+            icon: icons.SyncOutlined,
+        },
         // {
         //     id: 'master-list',
         //     title: <FormattedMessage id="master-list" />,

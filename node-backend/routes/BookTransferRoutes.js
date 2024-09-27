@@ -20,7 +20,14 @@ const transporter = nodemailer.createTransport({
 router.post("/", async (req, res) => {
     // Step 1: Save the product
     try {
-        const product = new Product(req.body); // Create a new product instance from request body
+        const product = new Product({
+            bookId: req.body.bookId,
+            userId: req.body.userId,
+            transferedate: req.body.transferedate,
+            //returnDate - set to 7 days from transfer date (in yyyy-mm-dd format)
+            returnDate: new Date(new Date(req.body.transferedate).getTime() + 7 * 24 * 60 * 60 * 1000)?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+            isActive: true
+        }); // Create a new product instance from request body
         const savedProduct = await product.save(); // Save the product to the database
         const userDetails = await UserModel.findById(product.userId);
         const bookDetails = await BookModel.findById(product.bookId);
@@ -121,7 +128,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', userId = '' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', userId = '', isActive = true } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -135,7 +142,7 @@ router.route("/").get(async (req, res) => {
         // Build search query (assuming search on bookName, you can add more fields as needed)
 
         // Build search query
-        let searchQuery = { isActive: true };
+        let searchQuery = { isActive: isActive };
 
         // If a search term is provided, search by bookName
         if (search) {

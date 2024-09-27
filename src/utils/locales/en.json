@@ -141,5 +141,6 @@
   "master-list": "Books List",
   "disposal-list": "Disposal List",
   "transfer-list": "Borrow List",
-  "my-transfer-list": "My Borrow List"
+  "my-transfer-list": "My Borrow List",
+  "past-read-list": "Past Read List"
 }

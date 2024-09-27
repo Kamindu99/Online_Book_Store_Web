@@ -214,6 +214,10 @@ const TransferBookList = () => {
                     Header: 'Borrow Date',
                     accessor: 'transferedate',
                 },
+                {
+                    Header: 'Return Date',
+                    accessor: 'returnDate',
+                },
                 // {
                 //     Header: 'Status',
                 //     accessor: 'status',
@@ -299,7 +303,8 @@ const TransferBookList = () => {
                 page: 0,
                 per_page: 10,
                 search: '',
-                sort: "_id"
+                sort: "_id",
+                isActive: true
             }
         ))
     }, [success])

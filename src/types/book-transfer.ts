@@ -14,6 +14,7 @@ export type Bookstransfer = {
     bookId?: string;
     userId?: string;
     transferedate?: string;
+    returnDate?: string;
     bmBook?: Books
 };
 
@@ -48,4 +49,5 @@ export interface queryStringParams {
     search?: string;
     sort?: string;
     userId?: string;
+    isActive?: boolean;
 }
