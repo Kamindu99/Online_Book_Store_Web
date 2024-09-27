@@ -48,7 +48,7 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                     <Box
                         sx={{
                             width: '400px',
-                            height: '250px',
+                            height: { xs: '200px', sm: '250px' }, // Set height to 200px on small screens
                             borderRadius: '8px',
                             border: `1px solid ${colors.blue[6]}`,
                             boxShadow: 3,
@@ -61,7 +61,7 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                         <Box
                             sx={{
                                 width: '100%',
-                                height: '100px',
+                                height: { xs: '65px', sm: '100px' }, // Set height to 50px on small screens
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
@@ -74,11 +74,11 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                             <Box
                                 sx={{
                                     position: 'absolute',
-                                    top: 15,
+                                    top: { xs: 10, sm: 15 },
                                     left: 10,
                                     right: 0,
-                                    height: '63%', // Set height to 50% of the parent
-                                    width: '65%', // Set width to 100%
+                                    height: { xs: '65%', sm: '63%' }, // Set height to 100px on small screens
+                                    width: { xs: '57%', sm: '65%' }, // Set width to 100px on small screens
                                     backgroundImage: 'url(https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png)',
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
@@ -93,7 +93,11 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                                 <Avatar
                                     src={userGetById?.profileImage}
                                     alt="Profile"
-                                    sx={{ width: 90, height: 90, border: '1px solid', borderColor: 'primary.main' }}
+                                    sx={{
+                                        width: { xs: 60, sm: 90 },
+                                        height: { xs: 60, sm: 90 },
+                                        border: '1px solid', borderColor: 'primary.main'
+                                    }}
                                 />
                             </Box>
                         </Box>
@@ -101,11 +105,20 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                             <Typography variant="h5">{`${userGetById?.firstName} ${userGetById?.lastName}`}</Typography>
                             <Typography variant="subtitle1" color="textSecondary">{userGetById?.occupation}</Typography>
                             <Grid container spacing={2} mt={0}>
-                                <Grid item xs={5} mt={2}>
-                                    <Typography variant="body2">Library ID: {userGetById?._id?.slice(0, 10)}</Typography>
-                                    <Typography variant="body2">Joined Date: {userGetById?.createdDate?.slice(0, 10)}</Typography>
+                                <Grid item xs={5} sx={{
+                                    marginTop: { xs: 0, sm: 2 }
+                                }}>
+                                    <Typography sx={{
+                                        fontSize: { xs: '9px', sm: '12px' },
+                                    }}
+                                    >Library ID: {userGetById?._id?.slice(0, 10)}</Typography>
+                                    <Typography sx={{
+                                        fontSize: { xs: '9px', sm: '12px' },
+                                    }}>Joined Date: {userGetById?.createdDate?.slice(0, 10)}</Typography>
                                 </Grid>
-                                <Grid item xs={4} mt={2} ml={2}>
+                                <Grid item xs={4} sx={{
+                                    marginTop: { xs: 0, sm: 2 }
+                                }} ml={2}>
                                     <Typography variant="body2" >__________________</Typography>
                                     <Typography variant="body2" align='center' ml={3}>Signature</Typography>
                                 </Grid>
@@ -114,10 +127,10 @@ const MembershipCard = ({ userGetById, onCancel }: { userGetById: UserGetById; o
                         <Box
                             sx={{
                                 position: 'absolute',
-                                bottom: '50px',
-                                right: '10px',
-                                width: '80px',
-                                height: '80px',
+                                bottom: { xs: '70px', sm: '60px' },
+                                right: { xs: '10px', sm: '20px' },
+                                width: { xs: '50px', sm: '70px' },
+                                height: { xs: '50px', sm: '70px' },
                                 borderRadius: '4px',
                                 overflow: 'hidden',
                                 backgroundColor: 'white',

@@ -1,3 +1,4 @@
+import { Theme, useMediaQuery } from '@mui/material';
 import QRCode from 'react-qr-code';
 
 const QrGenerator = ({ qrValue }: { qrValue: string }) => {
@@ -61,12 +62,14 @@ const QrGenerator = ({ qrValue }: { qrValue: string }) => {
     //     }
     // };
 
+    const xs = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
     return (
         <div id="qr-gen"
         // style={{ cursor: 'pointer' }}
         // onClick={handleDownload}
         >
-            <QRCode value={qrValue} size={70} />
+            <QRCode value={qrValue} size={xs ? 40 : 60} />
         </div>
     );
 };
