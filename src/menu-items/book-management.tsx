@@ -52,6 +52,13 @@ const bookmanagement: NavItemType = {
             url: '/book-management/past-read-books/list',
             icon: icons.SyncOutlined,
         },
+        {
+            id: 'Scan QR Code',
+            title: <FormattedMessage id="Scan QR Code" />,
+            type: 'item',
+            url: '/book-management/qr-scan',
+            icon: icons.SyncOutlined,
+        },
         // {
         //     id: 'master-list',
         //     title: <FormattedMessage id="master-list" />,

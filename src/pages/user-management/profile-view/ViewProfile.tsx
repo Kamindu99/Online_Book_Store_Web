@@ -1,18 +1,22 @@
 import {
+    Avatar,
+    Box,
+    Button,
+    Dialog,
+    Divider,
     Grid,
     InputLabel,
     OutlinedInput,
     Stack,
-    Typography,
-    Avatar,
-    Divider,
-    Box
+    Typography
 } from '@mui/material';
-import { useEffect } from 'react';
-import { dispatch, useSelector } from 'store';
+import { PopupTransition } from 'components/@extended/Transitions';
 import MainCard from 'components/MainCard';
 import useAuth from 'hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { dispatch, useSelector } from 'store';
 import { getUserById } from 'store/reducers/users';
+import MembershipCard from './member-card';
 
 const TabProfile = () => {
 
@@ -25,10 +29,22 @@ const TabProfile = () => {
         dispatch(getUserById(user?.id!));
     }, [user?.id]);
 
+    const [add, setAdd] = useState<boolean>(false);
+
+    const handleAdd = () => {
+        setAdd(!add);
+    };
+
     return (
         <Grid container justifyContent="center" alignItems="center" xs={12} sm={12} md={12} lg={12}>
             <Grid item xs={12} sm={12} md={12} lg={8}>
                 <MainCard>
+                    <Box display="flex" justifyContent="flex-end" mb={2} sx={{ height: '0px' }}>
+                        <Button onClick={handleAdd} variant="contained" color="primary" sx={{ padding: '10px' }}>
+                            Member Card
+                        </Button>
+                    </Box>
+
                     <Box display="flex" justifyContent="center" mb={3}>
                         <Avatar
                             src={userGetById?.profileImage}
@@ -36,7 +52,6 @@ const TabProfile = () => {
                             sx={{ width: 150, height: 150, border: '4px solid', borderColor: 'primary.main' }}
                         />
                     </Box>
-
                     <Typography variant="h4" align="center" gutterBottom>
                         {userGetById?.firstName} {userGetById?.lastName}
                     </Typography>
@@ -105,6 +120,20 @@ const TabProfile = () => {
                     </Typography>
                 </MainCard>
             </Grid>
+            {add &&
+                <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleAdd}
+                    open={add}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <MembershipCard userGetById={userGetById!} onCancel={handleAdd} />
+                </Dialog>
+            }
         </Grid>
     );
 };

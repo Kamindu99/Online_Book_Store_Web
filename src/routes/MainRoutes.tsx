@@ -5,6 +5,7 @@ import Loadable from 'components/Loadable';
 import CommonLayout from 'layout/CommonLayout';
 import MainLayout from 'layout/MainLayout';
 import AuthGuard from 'utils/route-guard/AuthGuard';
+import QRScanner from 'pages/book-management/user-scan/user-scan';
 
 //book master
 const List = Loadable(lazy(() => import('pages/book-management/book-master/list/List')));
@@ -89,6 +90,10 @@ const MainRoutes = {
               path: 'favourite',
               element: <MyFavoBookList />
             },
+            {
+              path: 'qr-scan',
+              element: <QRScanner />
+            }
           ]
         },
         {
