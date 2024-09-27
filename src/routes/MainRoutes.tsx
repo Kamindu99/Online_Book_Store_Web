@@ -5,7 +5,6 @@ import Loadable from 'components/Loadable';
 import CommonLayout from 'layout/CommonLayout';
 import MainLayout from 'layout/MainLayout';
 import AuthGuard from 'utils/route-guard/AuthGuard';
-import QRScanner from 'pages/book-management/user-scan/user-scan';
 
 //book master
 const List = Loadable(lazy(() => import('pages/book-management/book-master/list/List')));
@@ -20,6 +19,7 @@ const MyFavoBookList = Loadable(lazy(() => import('pages/book-management/favouri
 const ViewProfile = Loadable(lazy(() => import('pages/user-management/profile-view/ViewProfile')));
 const EditProfile = Loadable(lazy(() => import('pages/user-management/profile-edit/EditProfile')));
 const PasswordChange = Loadable(lazy(() => import('pages/user-management/password-change/PasswordChange')));
+const QRScanner = Loadable(lazy(() => import('pages/user-management/user-scan/user-scan')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
