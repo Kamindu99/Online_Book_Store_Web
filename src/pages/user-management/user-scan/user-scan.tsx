@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Dialog, Grid, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { PopupTransition } from 'components/@extended/Transitions';
 import QrReader from 'components/third-party/QrScaner';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import ProfileTabs from 'sections/user-management/user-scan/ProfileTabs';
 import ProfileTabsMobile from 'sections/user-management/user-scan/ProfileTabsMobile';
 import { dispatch, useSelector } from 'store';
 import { getUserById } from 'store/reducers/users';
+import { Loading } from 'utils/loading';
 
 function Userscan() {
 
@@ -31,7 +32,7 @@ function Userscan() {
         }
     }, [scannedResult]);
 
-    const { userGetById } = useSelector((state) => state.users);
+    const { userGetById, isLoading } = useSelector((state) => state.users);
 
     // Default Branch Set API
     useEffect(() => {
@@ -40,6 +41,9 @@ function Userscan() {
     }, [scannedResult]);
 
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+    if (isLoading) {
+        return <Loading />
+    }
     return (
         <div>
             <div hidden={showProfile}>
@@ -79,7 +83,21 @@ function Userscan() {
                     <Grid item xs={12} md={9}>
                         <CustomerFormWizard userId={scannedResult!} />
                     </Grid>
-
+                    <Grid container justifyContent="space-between" alignItems="center" mt={1}>
+                        <Grid item>
+                        </Grid>
+                        <Grid item>
+                            <Stack direction="row" spacing={2} alignItems="center">
+                                <Button variant="contained" onClick={() => {
+                                    setShowProfile(false);
+                                    setScannedResult(null);
+                                    handleAdd();
+                                }}>
+                                    Scan Another
+                                </Button>
+                            </Stack>
+                        </Grid>
+                    </Grid>
                 </Grid>
             }
         </div>
