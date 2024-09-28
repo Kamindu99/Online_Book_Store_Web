@@ -1,16 +1,19 @@
-import { Box, Button, Dialog, Grid } from '@mui/material';
+import { Box, Button, Dialog, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { PopupTransition } from 'components/@extended/Transitions';
 import QrReader from 'components/third-party/QrScaner';
 import { useEffect, useState } from 'react';
+import CustomerFormWizard from 'sections/user-management/user-scan';
 import ProfileTabs from 'sections/user-management/user-scan/ProfileTabs';
-import TabPersonal from 'sections/user-management/user-scan/TabPersonal';
+import ProfileTabsMobile from 'sections/user-management/user-scan/ProfileTabsMobile';
 import { dispatch, useSelector } from 'store';
 import { getUserById } from 'store/reducers/users';
 
 function Userscan() {
 
+    const theme = useTheme();
+
     const [add, setAdd] = useState<boolean>(false);
-    const [showProfile, setShowProfile] = useState(false); // State to control ProfileTabs rendering
+    const [showProfile, setShowProfile] = useState(true); // State to control ProfileTabs rendering
 
     const handleAdd = () => {
         setAdd(!add);
@@ -36,6 +39,7 @@ function Userscan() {
         dispatch(getUserById(scannedResult!));
     }, [scannedResult]);
 
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     return (
         <div>
             <div hidden={showProfile}>
@@ -64,12 +68,16 @@ function Userscan() {
             }
             {showProfile &&
                 <Grid container spacing={3}>
-
-                    <Grid item xs={12} md={3}>
-                        <ProfileTabs userGetById={userGetById!} />
-                    </Grid>
+                    {matchDownMd ?
+                        <Grid item xs={12} md={3}>
+                            <ProfileTabsMobile userGetById={userGetById!} />
+                        </Grid>
+                        : <Grid item xs={12} md={3}>
+                            <ProfileTabs userGetById={userGetById!} />
+                        </Grid>
+                    }
                     <Grid item xs={12} md={9}>
-                        <TabPersonal />
+                        <CustomerFormWizard userId={scannedResult!} />
                     </Grid>
 
                 </Grid>

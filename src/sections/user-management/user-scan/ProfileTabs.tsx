@@ -51,8 +51,8 @@ const ProfileTabs = ({ userGetById }: Props) => {
                         </Stack>
                     </Stack>
                 </Grid>
-                <Grid item sm={3} sx={{ display: { sm: 'block', md: 'none' } }} />
-                <Grid item xs={12} sm={6} md={12}>
+
+                <Grid item xs={12} sm={6} md={12} sx={{ marginTop: { xs: 0, sm: 1, md: 1 } }}>
                     <Stack direction="row" justifyContent="space-around" alignItems="center" mb={3}>
                         <Stack spacing={0.5} alignItems="center">
                             <Typography variant="h5">E-mail</Typography>
