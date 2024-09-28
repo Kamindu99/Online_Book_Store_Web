@@ -78,8 +78,8 @@ const QrReader = ({ setScannedResult }: any) => {
                 <img
                     src={QrFrame}
                     alt="Qr Frame"
-                    width={256}
-                    height={256}
+                    width='80%'
+                    height='80%'
                     className="qr-frame"
                 />
             </div>

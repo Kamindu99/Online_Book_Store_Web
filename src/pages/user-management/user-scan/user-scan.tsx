@@ -1,4 +1,4 @@
-import { Dialog, Grid } from '@mui/material';
+import { Box, Button, Dialog, Grid } from '@mui/material';
 import { PopupTransition } from 'components/@extended/Transitions';
 import QrReader from 'components/third-party/QrScaner';
 import { useEffect, useState } from 'react';
@@ -38,12 +38,16 @@ function Userscan() {
 
     return (
         <div>
-            <button
-                onClick={() => { handleAdd(); setScannedResult(null) }}
-                hidden={showProfile}
-            >
-                Scan QR Code- {scannedResult}
-            </button>
+            <div hidden={showProfile}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                    <img src="https://media.lordicon.com/icons/wired/flat/1686-scan-qr-code.svg"
+                        alt="qr-code" style={{ cursor: 'pointer', height: '400px' }} />
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={handleAdd}>Scan QR Code</Button>
+                </Box>
+            </div>
+
             {add &&
                 <Dialog
                     maxWidth="sm"
