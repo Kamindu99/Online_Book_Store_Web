@@ -66,7 +66,7 @@ function Userscan() {
                     <QrReader setScannedResult={setScannedResult} />
                 </Dialog>
             }
-            {showProfile &&
+            {showProfile && userGetById &&
                 <Grid container spacing={3}>
                     {matchDownMd ?
                         <Grid item xs={12} md={3}>

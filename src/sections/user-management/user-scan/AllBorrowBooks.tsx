@@ -11,7 +11,6 @@ import { TablePagination, TableParamsType } from 'components/third-party/ReactTa
 
 // project import
 import { Card, CardMedia, Typography } from '@mui/material';
-import useAuth from 'hooks/useAuth';
 import { useDispatch, useSelector } from 'store';
 import { getBookstransfer, toInitialState } from 'store/reducers/book-transfer';
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -54,8 +53,6 @@ const AllBorrowBooksList = ({ userId }: { userId: string }) => {
         pageCount: totalRecords
     }
 
-    const { user } = useAuth()
-
     useEffect(() => {
         dispatch(getBookstransfer(
             {
@@ -64,11 +61,11 @@ const AllBorrowBooksList = ({ userId }: { userId: string }) => {
                 per_page: perPage,
                 search: search,
                 sort: sort,
-                userId: user?.id,
+                userId: userId,
                 isActive: false
             }
         ))
-    }, [dispatch, success, page, perPage, direction, sort, search]);
+    }, [dispatch, success, page, perPage, direction, sort, search, userId]);
 
     useEffect(() => {
         if (!bookstransferList) {
