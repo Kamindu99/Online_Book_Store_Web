@@ -205,7 +205,7 @@ router.route("/:id").delete(async (req, res) => {
 router.route("/:id").get(async (req, res) => {
     let productId = req.params.id;
     await Product.findById(productId).then((response) => {
-        res.status(200).send({ status: "fetched", response });
+        res.status(200).send(response);
 
     }).catch((err) => {
         res.status(500).send({ status: "error in fetch", err });

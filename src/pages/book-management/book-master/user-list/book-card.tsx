@@ -3,6 +3,7 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import useAuth from 'hooks/useAuth';
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { dispatch } from 'store';
 import { createBookfavourite, deleteBookfavourite } from 'store/reducers/favourite-book';
 
@@ -20,8 +21,11 @@ interface BookCardProps {
 const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, bookId, isFavourite }) => {
 
     const { user } = useAuth()
+    const Navigate = useNavigate();
 
-    const handleBorrow = () => {
+    const handleBorrow = (event: React.MouseEvent) => {
+        // Prevent the event from propagating to the Card's onClick
+        event.stopPropagation();
         // Handle the borrow action
         if (user) {
             if (!isFavourite) {
@@ -32,20 +36,29 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
         }
     };
 
+    const handleCardClick = () => {
+        if (isActive) {
+            Navigate(`/book-management/book-master/view-book/${bookId}`)
+        }
+    };
+
     return (
         <Card sx={{
             maxWidth: 345,
             margin: 0,
             transition: '0.3s',
             opacity: isActive ? 1 : 0.8,
-            cursor: 'pointer',
+            cursor: isActive ? 'pointer' : 'not-allowed',
             position: 'relative',
+            zIndex: 1,
             '&:hover': isActive ? {
                 boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
                 scale: '1.02'
             }
                 : {}
-        }}>
+        }}
+            onClick={handleCardClick}
+        >
             {/* Conditionally render the "Booked" banner */}
             {
                 !isActive && (
@@ -77,7 +90,6 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 borderRadius: '0.3rem 0 0 0.3rem',
                 color: 'black',
                 fontWeight: 'bold',
-                zIndex: 1,
                 backgroundColor: '#c0db88',
             }}>
                 {category}
@@ -134,6 +146,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                         color: 'black'
                     }}
                     onClick={handleBorrow}
+                    disabled={!isActive}
                 >
                     {isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
                 </IconButton>

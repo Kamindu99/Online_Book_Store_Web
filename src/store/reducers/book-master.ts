@@ -17,6 +17,7 @@ const initialState: DefaultRootStateProps['book'] = {
     booksFdd: null,
     booksCount: null,
     bookCode: null,
+    bookById: null,
     isLoading: false
 };
 
@@ -66,6 +67,12 @@ const slice = createSlice({
         // GET BOOKS Count
         getBooksCountSuccess(state, action) {
             state.booksCount = action.payload;
+            state.success = null;
+        },
+
+        // GET BOOK BY ID
+        getBooksByIdSuccess(state, action) {
+            state.bookById = action.payload;
             state.success = null;
         },
 
@@ -191,6 +198,20 @@ export function deleteBook(bookId: string) {
         try {
             const response = await axios.delete(`/api/v1/book-management/book-master/${bookId}`);
             dispatch(slice.actions.deleteBookSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+export function getBookById(bookId: string) {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+        try {
+            const response = await axios.get(`/api/v1/book-management/book-master/${bookId}`);
+            dispatch(slice.actions.getBooksByIdSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {
