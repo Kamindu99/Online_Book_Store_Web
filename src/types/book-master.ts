@@ -10,6 +10,7 @@ export type Books = {
     imageUrl?: string;
     status?: string;
     isActive?: boolean;
+    isFavourite?: boolean;
 };
 
 export type PaginationDTO = {
@@ -59,4 +60,5 @@ export interface listParametersType {
     category?: string;
     sort?: string;
     userId?: string;
+    bookId?: string;
 }

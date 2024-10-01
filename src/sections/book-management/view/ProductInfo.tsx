@@ -5,77 +5,67 @@ import { useNavigate } from 'react-router-dom';
 import {
     Button,
     Chip,
+    IconButton,
     Stack,
     Typography
 } from '@mui/material';
 
-// third-party
-
-// types
-
-// project imports
-//import { useDispatch } from 'store';
-
 // assets
-import useAuth from 'hooks/useAuth';
 import { Books } from 'types/book-master';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
-const ProductInfo = ({ product }: { product: Books }) => {
+const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: (event: React.MouseEvent) => void }) => {
 
     const [value] = useState<number>(1);
-    const { user } = useAuth()
-    // const dispatch = useDispatch();
     const Navigate = useNavigate();
-
-    const handleBorrow = (event: React.MouseEvent) => {
-        // Prevent the event from propagating to the Card's onClick
-        event.stopPropagation();
-        // Handle the borrow action
-        if (user) {
-            // if (!product?.isFavourite) {
-            //     dispatch(createBookfavourite({ bookId, userId: user.id }))
-            // } else {
-            //     dispatch(deleteBookfavourite(bookId, user.id))
-            // }
-        }
-    };
 
     return (
         <Stack spacing={1}>
-            <Typography variant="h3">{product.bookName}</Typography>
-            <Chip
-                size="large"
-                label={product.category}
-                sx={{
-                    width: 'fit-content',
-                    borderRadius: '4px',
-                    color: product.isActive ? 'success.main' : 'error.main',
-                    bgcolor: product.isActive ? 'success.lighter' : 'error.lighter'
-                }}
-            />
-            <Typography color="CaptionText">
+            <Typography sx={{ fontSize: { xs: "20px", sm: "26px" }, fontWeight: '700' }}>{product.bookName}</Typography>
+            <Stack direction="row" spacing={2}>
+                <Chip
+                    size="large"
+                    label={product.category}
+                    sx={{
+                        width: 'fit-content',
+                        borderRadius: '4px',
+                        color: product.isActive ? 'success.main' : 'error.main',
+                        bgcolor: product.isActive ? 'success.lighter' : 'error.lighter'
+                    }}
+                />
+                <IconButton
+                    aria-label="add to favorites"
+                    sx={{
+                        backgroundColor: 'white',
+                        color: 'black'
+                    }}
+                    onClick={handleBorrow}
+                >
+                    {product.isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+                </IconButton>
+            </Stack>
+            <Typography color="CaptionText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
                 Author :- {product.author}
             </Typography>
 
-            <Typography color="CaptionText">
+            <Typography color="CaptionText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
                 Price :- {product.price}
             </Typography>
 
-            <Typography color="CaptionText">
+            <Typography color="CaptionText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
                 No of Pages :- {product.noOfPages}
             </Typography>
 
-            <Typography color="textSecondary">
-                එයා ආපු කෙනා පමණයි. ඉතින් ආපු කෙනා නෙමෙයිද යන්න ඕනි කෙනා? ආපු
-                කෙනා නේන්නම් යන්න ඕනි කෙනා. ඒ හින්දම එයා ඇවිත් ගිය කෙනා. මම හිටපු කෙනා.
-                හිටපු කෙනා තමයි ඉන්න කෙනා වෙන්නෙත්.ඒ හින්ද මං තාමත් ඉන්න කෙනා. ඒත් බැරිවෙලාවත්
-                මං ආපු කෙනා උනානම්,කොහොමටවත් මං ගිය කෙනා වෙන්නෙනම් නෑ. එදාටත් මං ඉන්න කෙනා විතරම යි..
-
+            <Typography color="GrayText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
+                {product.bookName} ග්‍රන්ථය {product.category} පොත් කාණ්ඩයට  අදාල පොතකි. එය {product.author} විසින් ලියන ලදී.
+                මෙම පොතෙහි පිටු {product.noOfPages}ක් ඇත. පොත් කියවිමේ ආශාව ඇතිකර ගැනිමෙනුත්, කියවිමට සුදුසු පොත් තෝරා
+                ගැනිමෙනුත් හැම කෙනකුටම තම ජිවිතය සාර්ථක කර ගැනිමට හැකියාව ලැබේ. කියවීම ඉතා වටිනා ගුණාංගයකි.
+                එමඟින් සැලසෙන යහපතක් නම් අපේ භාෂා හැකියාව දියුණුවීම යි.
             </Typography>
-
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ position: { xs: '', sm: 'absolute' }, bottom: 20, width: { xs: "100%", sm: "55%" } }}>
+            <br />
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ position: { xs: '', sm: 'absolute' }, bottom: 20, width: { xs: "100%", sm: "55%" } }}>
                 <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="primary" variant="contained" size="large"
                     onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
                     {!product.isActive ? 'Sold Out' : 'Back'}
@@ -83,7 +73,7 @@ const ProductInfo = ({ product }: { product: Books }) => {
 
                 {product.isActive && value > 0 && (
                     <Button fullWidth color="secondary" variant="outlined" size="large" onClick={handleBorrow}>
-                        Add to Favourite
+                        {product?.isFavourite ? 'Not Favourite' : 'Add to Favourite'}
                     </Button>
                 )}
             </Stack>

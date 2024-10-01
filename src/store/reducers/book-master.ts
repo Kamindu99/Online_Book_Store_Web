@@ -206,11 +206,11 @@ export function deleteBook(bookId: string) {
     };
 }
 
-export function getBookById(bookId: string) {
+export function getBookById(query: listParametersType) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get(`/api/v1/book-management/book-master/${bookId}`);
+            const response = await axios.get(`/api/v1/book-management/book-master/${query?.bookId}`, { params: { userId: query?.userId } });
             dispatch(slice.actions.getBooksByIdSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));

@@ -12,6 +12,10 @@ import ProductImages from 'sections/book-management/view/ProductImages';
 import ProductInfo from 'sections/book-management/view/ProductInfo';
 import { useDispatch, useSelector } from 'store';
 import { getBookById } from 'store/reducers/book-master';
+import useAuth from 'hooks/useAuth';
+import { createBookfavourite, deleteBookfavourite, toInitialState } from 'store/reducers/favourite-book';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { Loading } from 'utils/loading';
 
 // ==============================|| PRODUCT DETAILS - MAIN ||============================== //
 
@@ -19,16 +23,74 @@ const ProductDetails = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
+    const { user } = useAuth()
 
     const { bookById } = useSelector(state => state.book)
+    const { success, error, isLoading } = useSelector(state => state.favouriteBook)
 
     useEffect(() => {
-        dispatch(getBookById(id!));
-    }, [id, dispatch]);
+        dispatch(getBookById({
+            bookId: id!,
+            userId: user?.id!
+        }));
+    }, [id, dispatch, success]);
 
-    // const handleFavourite = () => {
-    //     // Add to favorite logic here
-    // };
+    const handleBorrow = (event: React.MouseEvent) => {
+        // Prevent the event from propagating to the Card's onClick
+        event.stopPropagation();
+        // Handle the borrow action
+        if (user && bookById) {
+            if (!bookById?.isFavourite) {
+                dispatch(createBookfavourite({ bookId: bookById?._id, userId: user.id }))
+            } else {
+                dispatch(deleteBookfavourite(bookById?._id, user.id))
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (error != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = error as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (success != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: success,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialState());
+        }
+    }, [success])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <>
@@ -41,7 +103,7 @@ const ProductDetails = () => {
                                     <ProductImages image={bookById?.imageUrl!} />
                                 </Grid>
                                 <Grid item xs={12} sm={7.2}>
-                                    <ProductInfo product={bookById} />
+                                    <ProductInfo product={bookById} handleBorrow={handleBorrow} />
                                 </Grid>
                             </Grid>
                         </MainCard>
