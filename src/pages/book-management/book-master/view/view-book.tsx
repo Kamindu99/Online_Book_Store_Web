@@ -7,7 +7,6 @@ import { Grid } from '@mui/material';
 // types
 
 // project imports
-import FloatingCart from 'components/cards/e-commerce/FloatingCart';
 import MainCard from 'components/MainCard';
 import ProductImages from 'sections/book-management/view/ProductImages';
 import ProductInfo from 'sections/book-management/view/ProductInfo';
@@ -49,7 +48,6 @@ const ProductDetails = () => {
                     </Grid>
                 </Grid>
             )}
-            <FloatingCart />
         </>
     );
 };

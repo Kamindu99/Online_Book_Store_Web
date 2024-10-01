@@ -5,108 +5,49 @@ import { useNavigate } from 'react-router-dom';
 import {
     Button,
     Chip,
-    Rating,
     Stack,
     Typography
 } from '@mui/material';
 
 // third-party
-import { Form, FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
 
 // types
 
 // project imports
-import { useDispatch } from 'store';
-import { openSnackbar } from 'store/reducers/snackbar';
+//import { useDispatch } from 'store';
 
 // assets
-import { StarFilled, StarOutlined } from '@ant-design/icons';
+import useAuth from 'hooks/useAuth';
 import { Books } from 'types/book-master';
-
-// types
-
-
-const validationSchema = yup.object({
-    color: yup.string().required('Color selection is required')
-});
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
 const ProductInfo = ({ product }: { product: Books }) => {
 
     const [value] = useState<number>(1);
-    const dispatch = useDispatch();
-    const history = useNavigate();
+    const { user } = useAuth()
+    // const dispatch = useDispatch();
+    const Navigate = useNavigate();
 
-    const formik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            id: product._id,
-            name: product.bookName,
-            image: product.imageUrl,
-            salePrice: product.author,
-            offerPrice: product.author,
-            color: '',
-            size: '',
-            quantity: 1
-        },
-        validationSchema,
-        onSubmit: (values) => {
-            values.quantity = value;
-            // dispatch(addProduct(values, cart.checkout.products));
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Submit Success',
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
-
-            history('/apps/e-commerce/checkout');
+    const handleBorrow = (event: React.MouseEvent) => {
+        // Prevent the event from propagating to the Card's onClick
+        event.stopPropagation();
+        // Handle the borrow action
+        if (user) {
+            // if (!product?.isFavourite) {
+            //     dispatch(createBookfavourite({ bookId, userId: user.id }))
+            // } else {
+            //     dispatch(deleteBookfavourite(bookId, user.id))
+            // }
         }
-    });
-
-    const { values, handleSubmit } = formik;
-
-    const addCart = () => {
-        values.color = values.color ? values.color : 'primaryDark';
-        values.quantity = value;
-        // dispatch(addProduct(values, cart.checkout.products));
-        dispatch(
-            openSnackbar({
-                open: true,
-                message: 'Add To Cart Success',
-                variant: 'alert',
-                alert: {
-                    color: 'success'
-                },
-                close: false
-            })
-        );
     };
 
     return (
         <Stack spacing={1}>
-            <Stack direction="row" spacing={1} alignItems="center">
-                <Rating
-                    name="simple-controlled"
-                    value={product.price}
-                    icon={<StarFilled style={{ fontSize: 'inherit' }} />}
-                    emptyIcon={<StarOutlined style={{ fontSize: 'inherit' }} />}
-                    precision={0.1}
-                    readOnly
-                />
-                <Typography color="textSecondary">({product.price?.toFixed(1)})</Typography>
-            </Stack>
             <Typography variant="h3">{product.bookName}</Typography>
             <Chip
-                size="small"
-                label={product.isActive ? 'In Stock' : 'Out of Stock'}
+                size="large"
+                label={product.category}
                 sx={{
                     width: 'fit-content',
                     borderRadius: '4px',
@@ -114,23 +55,38 @@ const ProductInfo = ({ product }: { product: Books }) => {
                     bgcolor: product.isActive ? 'success.lighter' : 'error.lighter'
                 }}
             />
-            <Typography color="textSecondary">This watch from Apple is highly known for its features, like you can control your apple smartphone with this watch and you can do everything you would want to do on smartphone</Typography>
-            <FormikProvider value={formik}>
-                <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <Typography color="CaptionText">
+                Author :- {product.author}
+            </Typography>
 
-                    <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 4 }}>
-                        <Button type="submit" fullWidth disabled={value < 1 || !product.isActive} color="primary" variant="contained" size="large">
-                            {!product.isActive ? 'Sold Out' : 'Buy Now'}
-                        </Button>
+            <Typography color="CaptionText">
+                Price :- {product.price}
+            </Typography>
 
-                        {product.isActive && value > 0 && (
-                            <Button fullWidth color="secondary" variant="outlined" size="large" onClick={addCart}>
-                                Add to Cart
-                            </Button>
-                        )}
-                    </Stack>
-                </Form>
-            </FormikProvider>
+            <Typography color="CaptionText">
+                No of Pages :- {product.noOfPages}
+            </Typography>
+
+            <Typography color="textSecondary">
+                එයා ආපු කෙනා පමණයි. ඉතින් ආපු කෙනා නෙමෙයිද යන්න ඕනි කෙනා? ආපු
+                කෙනා නේන්නම් යන්න ඕනි කෙනා. ඒ හින්දම එයා ඇවිත් ගිය කෙනා. මම හිටපු කෙනා.
+                හිටපු කෙනා තමයි ඉන්න කෙනා වෙන්නෙත්.ඒ හින්ද මං තාමත් ඉන්න කෙනා. ඒත් බැරිවෙලාවත්
+                මං ආපු කෙනා උනානම්,කොහොමටවත් මං ගිය කෙනා වෙන්නෙනම් නෑ. එදාටත් මං ඉන්න කෙනා විතරම යි..
+
+            </Typography>
+
+            <Stack direction="row" alignItems="center" spacing={2} sx={{ position: { xs: '', sm: 'absolute' }, bottom: 20, width: { xs: "100%", sm: "55%" } }}>
+                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="primary" variant="contained" size="large"
+                    onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
+                    {!product.isActive ? 'Sold Out' : 'Back'}
+                </Button>
+
+                {product.isActive && value > 0 && (
+                    <Button fullWidth color="secondary" variant="outlined" size="large" onClick={handleBorrow}>
+                        Add to Favourite
+                    </Button>
+                )}
+            </Stack>
         </Stack>
     );
 };
