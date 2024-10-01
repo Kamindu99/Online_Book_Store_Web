@@ -203,10 +203,26 @@ router.route("/:id").delete(async (req, res) => {
 })
 
 router.route("/:id").get(async (req, res) => {
+
+    const { userId = '' } = req.query;
+
+    // Build search query
+    let searchQueryFavo = { isActive: true };
+
+    // If a category is provided, filter by category
+    if (userId) {
+        searchQueryFavo.userId = userId;
+    }
+
+    // Fetch paginated and sorted products
+    const favoBooks = await BookFavo.find(searchQueryFavo)
+
     let productId = req.params.id;
     await Product.findById(productId).then((response) => {
-        res.status(200).send(response);
-
+        res.status(200).send({
+            ...response.toObject(),
+            isFavourite: favoBooks.some((favo) => favo.bookId === response._id.toString())
+        });
     }).catch((err) => {
         res.status(500).send({ status: "error in fetch", err });
 

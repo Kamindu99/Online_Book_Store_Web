@@ -60,7 +60,7 @@ const ProductImages = ({ image }: { image: string }) => {
                                             component="img"
                                             image={image}
                                             title="Scroll Zoom"
-                                            sx={{ borderRadius: `4px`, position: 'relative', height: { xs: '400px', sm: '550px' } }}
+                                            sx={{ borderRadius: `4px`, position: 'relative', height: { xs: '400px', sm: '450px' } }}
                                         />
                                     </TransformComponent>
                                     <Stack direction="row" className="tools" sx={{ position: 'absolute', bottom: 10, right: { xs: 10, sm: 60 }, zIndex: 1, backgroundColor: 'black' }}>
