@@ -1,66 +1,57 @@
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'store';
-import { getBookById } from 'store/reducers/book-master'; // assuming you have a fetch function
 
-const ViewBook = () => {
-    const dispatch = useDispatch();
+// material-ui
+import { Grid } from '@mui/material';
+
+// types
+
+// project imports
+import FloatingCart from 'components/cards/e-commerce/FloatingCart';
+import MainCard from 'components/MainCard';
+import ProductImages from 'sections/book-management/view/ProductImages';
+import ProductInfo from 'sections/book-management/view/ProductInfo';
+import { useDispatch, useSelector } from 'store';
+import { getBookById } from 'store/reducers/book-master';
+
+// ==============================|| PRODUCT DETAILS - MAIN ||============================== //
+
+const ProductDetails = () => {
     const { id } = useParams();
+
+    const dispatch = useDispatch();
+
     const { bookById } = useSelector(state => state.book)
 
     useEffect(() => {
         dispatch(getBookById(id!));
     }, [id, dispatch]);
 
-    const handleFavourite = () => {
-        // Add to favorite logic here
-    };
+    // const handleFavourite = () => {
+    //     // Add to favorite logic here
+    // };
 
     return (
-        <Grid container spacing={4} className="view-book-container" alignItems="center">
-            {/* Book Image Section */}
-            <Grid item xs={12} md={5} className="book-image-container">
-                <Box display="flex" justifyContent="center">
-                    <img
-                        src={bookById?.imageUrl}
-                        alt={bookById?.bookName}
-                        className="book-image"
-                    />
-                </Box>
-            </Grid>
-
-            {/* Book Details Section */}
-            <Grid item xs={12} md={7}>
-                <Stack spacing={2}>
-                    <Typography variant="h4">{bookById?.bookName}</Typography>
-                    <Typography variant="h6" color="textSecondary">
-                        Price: ${bookById?.price}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                        Category: {bookById?.category}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" paragraph>
-                        This book is written by {bookById?.author} and has {bookById?.noOfPages} pages.
-                        Now available for purchase. Grab your copy now! 📚.
-                    </Typography>
-
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        {/* Favorite Button */}
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleFavourite}
-                            startIcon={bookById?.isActive ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
-                        >
-                            {bookById?.isActive ? 'Remove from Favorites' : 'Add to Favorites'}
-                        </Button>
-                    </Stack>
-                </Stack>
-            </Grid>
-        </Grid>
+        <>
+            {bookById && bookById._id === id && (
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <MainCard>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={4.8}>
+                                    <ProductImages image={bookById?.imageUrl!} />
+                                </Grid>
+                                <Grid item xs={12} sm={7.2}>
+                                    <ProductInfo product={bookById} />
+                                </Grid>
+                            </Grid>
+                        </MainCard>
+                    </Grid>
+                </Grid>
+            )}
+            <FloatingCart />
+        </>
     );
 };
 
-export default ViewBook;
+export default ProductDetails;

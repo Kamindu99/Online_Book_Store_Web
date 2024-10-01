@@ -14,6 +14,7 @@ import {
     TableHead,
     TableRow,
     Tooltip,
+    Typography,
     useMediaQuery,
     useTheme
 } from '@mui/material';
@@ -40,6 +41,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { Books, listParametersType } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
 import { Loading } from 'utils/loading';
+import Avatar from 'components/@extended/Avatar';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -213,7 +215,25 @@ const List = () => {
                 },
                 {
                     Header: 'Name',
-                    accessor: 'bookName'
+                    accessor: 'bookName',
+                    Cell: ({ row }: { row: Row }) => {
+
+                        const values: Books = row?.original;
+                        return (
+                            <Stack direction="row" spacing={1.5} alignItems="center">
+                                <Avatar
+                                    variant="rounded"
+                                    alt={values.bookName}
+                                    color="secondary"
+                                    size="sm"
+                                    src={values.imageUrl}
+                                />
+                                <Stack spacing={0}>
+                                    <Typography variant="subtitle1">{values.bookName}</Typography>
+                                </Stack>
+                            </Stack>
+                        );
+                    }
                 },
                 {
                     Header: 'Author',
