@@ -66,16 +66,15 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
             </Typography>
             <br />
             <Stack direction="row" alignItems="center" spacing={1} sx={{ position: { xs: '', sm: 'absolute' }, bottom: 20, width: { xs: "100%", sm: "55%" } }}>
-                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="primary" variant="contained" size="large"
-                    onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
-                    {!product.isActive ? 'Sold Out' : 'Back'}
-                </Button>
-
                 {product.isActive && value > 0 && (
-                    <Button fullWidth color="secondary" variant="outlined" size="large" onClick={handleBorrow}>
+                    <Button fullWidth color="primary" variant="contained" size="large" onClick={handleBorrow}>
                         {product?.isFavourite ? 'Not Favourite' : 'Add to Favourite'}
                     </Button>
                 )}
+                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
+                    onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
+                    {!product.isActive ? 'Sold Out' : 'Back'}
+                </Button>
             </Stack>
         </Stack>
     );
