@@ -22,6 +22,9 @@ const EditProfile = Loadable(lazy(() => import('pages/user-management/profile-ed
 const PasswordChange = Loadable(lazy(() => import('pages/user-management/password-change/PasswordChange')));
 const QRScanner = Loadable(lazy(() => import('pages/user-management/user-scan/user-scan')));
 
+//parameter management
+const CategoryCode = Loadable(lazy(() => import('pages/parameter-management/category-code/List')));
+
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
 const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
@@ -116,6 +119,15 @@ const MainRoutes = {
               path: 'password-change',
               element: <PasswordChange />
             },
+          ]
+        },
+        {
+          path: 'parameter-management',
+          children: [
+            {
+              path: 'category-code',
+              element: <CategoryCode />
+            }
           ]
         }
       ]

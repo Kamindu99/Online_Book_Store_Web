@@ -39,7 +39,8 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
                     aria-label="add to favorites"
                     sx={{
                         backgroundColor: 'white',
-                        color: 'black'
+                        color: 'black',
+                        fontSize: '1.5rem',
                     }}
                     onClick={handleBorrow}
                 >

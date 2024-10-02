@@ -142,5 +142,7 @@
   "disposal-list": "Disposal List",
   "transfer-list": "Borrow List",
   "my-transfer-list": "My Borrow List",
-  "past-read-list": "Past Read List"
+  "past-read-list": "Past Read List",
+  "parameter-management": "Paramater Management",
+  "category-code": "Category List"
 }

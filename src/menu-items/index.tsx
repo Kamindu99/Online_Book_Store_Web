@@ -7,6 +7,7 @@ import homeAdmin from './admin-menu/home';
 
 // types
 import { NavItemType } from 'types/menu';
+import paramatermanagement from './admin-menu/parameter-management';
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -15,7 +16,7 @@ const MenuItems = (): { items: NavItemType[] } => {
   const { user } = useAuth();
 
   return {
-    items: user?.email === 'kamidugayantha123@gmail.com' ? [homeAdmin, bookmanagementAdmin] : [home, bookmanagement]
+    items: user?.email === 'kamidugayantha123@gmail.com' ? [homeAdmin, bookmanagementAdmin, paramatermanagement] : [home, bookmanagement]
   };
 };
 

@@ -35,3 +35,6 @@ app.use("/api/v1/book-management/auth", userAuth);
 
 const favouriteBook = require('./routes/FavouritRoute');
 app.use("/api/v1/book-management/favourite", favouriteBook);
+
+const category = require('./routes/CategoryRoutes');
+app.use("/api/v1/parameter-management/category", category);
