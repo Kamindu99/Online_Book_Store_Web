@@ -27,7 +27,7 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
             <Stack direction="row" spacing={2}>
                 <Chip
                     size="large"
-                    label={product.category}
+                    label={product.categoryName}
                     sx={{
                         width: 'fit-content',
                         borderRadius: '4px',
@@ -60,7 +60,7 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
             </Typography>
 
             <Typography color="GrayText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
-                {product.bookName} ග්‍රන්ථය {product.category} පොත් කාණ්ඩයට  අදාල පොතකි. එය {product.author} විසින් ලියන ලදී.
+                {product.bookName} ග්‍රන්ථය {product.categoryName} පොත් කාණ්ඩයට  අදාල පොතකි. එය {product.author} විසින් ලියන ලදී.
                 මෙම පොතෙහි පිටු {product.noOfPages}ක් ඇත. පොත් කියවිමේ ආශාව ඇතිකර ගැනිමෙනුත්, කියවිමට සුදුසු පොත් තෝරා
                 ගැනිමෙනුත් හැම කෙනකුටම තම ජිවිතය සාර්ථක කර ගැනිමට හැකියාව ලැබේ. කියවීම ඉතා වටිනා ගුණාංගයකි.
                 එමඟින් සැලසෙන යහපතක් නම් අපේ භාෂා හැකියාව දියුණුවීම යි.

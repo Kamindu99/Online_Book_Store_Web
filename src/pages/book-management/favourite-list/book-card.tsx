@@ -10,13 +10,13 @@ interface BookCardProps {
     imageUrl: string;
     bookName: string;
     isActive: boolean;
-    category: string;
+    categoryName: string;
     author: string;
     noOfPages: number;
     bookId: string;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, bookId }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, categoryName, noOfPages, bookId }) => {
 
     const { user } = useAuth()
 
@@ -75,7 +75,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 zIndex: 1,
                 backgroundColor: '#c0db88',
             }}>
-                {category}
+                {categoryName}
             </Box>
             <CardMedia
                 component="img"

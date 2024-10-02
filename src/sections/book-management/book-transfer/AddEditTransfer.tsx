@@ -34,6 +34,7 @@ import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-tran
 import { Books } from 'types/book-master';
 import { getUsersFdd } from 'store/reducers/users';
 import { Users } from 'types/users';
+import { getCateogyCodesFdd } from 'store/reducers/category-code';
 
 // types
 
@@ -44,7 +45,7 @@ const getInitialValues = (booktransfer: FormikValues | null) => {
         bookId: '',
         transferedate: new Date().toISOString().split('T')[0],
         userId: '',
-        category: ''
+        categoryId: ''
     };
 
     if (booktransfer) {
@@ -100,19 +101,21 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
     const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
     const { booksFdd } = useSelector(state => state.book)
+    const { categoryCodeFdd } = useSelector(state => state.categoryCode)
 
     useEffect(() => {
-        if (formik.values.category === '') {
+        if (formik.values.categoryId === '') {
             setBookList([])
             return
         };
-        dispatch(getBooksFdd(formik.values.category));
-    }, [formik.values.category])
+        dispatch(getBooksFdd(formik.values.categoryId));
+    }, [formik.values.categoryId])
 
     const { usersFdd } = useSelector(state => state.users)
 
     useEffect(() => {
         dispatch(getUsersFdd());
+        dispatch(getCateogyCodesFdd());
     }, [])
 
     const [bookList, setBookList] = useState<Books[]>([]);
@@ -143,37 +146,19 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
 
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="category">Category</InputLabel>
+                                        <InputLabel htmlFor="categoryId">Category</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="category"
+                                            id="categoryId"
                                             select
                                             placeholder="Enter Book Category"
-                                            {...getFieldProps('category')}
-                                            error={Boolean(touched.category && errors.category)}
-                                            helperText={touched.category && errors.category}
+                                            {...getFieldProps('categoryId')}
+                                            error={Boolean(touched.categoryId && errors.categoryId)}
+                                            helperText={touched.categoryId && errors.categoryId}
                                         >
-                                            <MenuItem key={1} value={"Adventure"}>
-                                                {"Adventure"}
-                                            </MenuItem>
-                                            <MenuItem key={2} value={"Novel"}>
-                                                {"Novel"}
-                                            </MenuItem>
-                                            <MenuItem key={3} value={"Short Stories"}>
-                                                {"Short Stories"}
-                                            </MenuItem>
-                                            <MenuItem key={4} value={"Child Story"}>
-                                                {"Child Story"}
-                                            </MenuItem>
-                                            <MenuItem key={5} value={"Educational"}>
-                                                {"Educational"}
-                                            </MenuItem>
-                                            <MenuItem key={6} value={"Religious"}>
-                                                {"Religious"}
-                                            </MenuItem>
-                                            <MenuItem key={7} value={"Astrology"}>
-                                                {"Astrology"}
-                                            </MenuItem>
+                                            {categoryCodeFdd?.map((category) => (
+                                                <MenuItem key={category._id} value={category._id}>{category.categoryName}</MenuItem>
+                                            ))}
                                         </TextField>
                                     </Stack>
                                 </Grid>

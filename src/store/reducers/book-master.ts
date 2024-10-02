@@ -122,11 +122,11 @@ export function getBooks(query: listParametersType) {
     };
 }
 
-export function getBooksFdd(category?: string) {
+export function getBooksFdd(categoryId?: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.get('/api/v1/book-management/book-master/fdd', { params: { category: category } });
+            const response = await axios.get('/api/v1/book-management/book-master/fdd', { params: { categoryId: categoryId } });
             dispatch(slice.actions.getBooksFddSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));

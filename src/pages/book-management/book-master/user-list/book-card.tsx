@@ -11,14 +11,14 @@ interface BookCardProps {
     imageUrl: string;
     bookName: string;
     isActive: boolean;
-    category: string;
+    categoryName: string;
     author: string;
     noOfPages: number;
     bookId: string;
     isFavourite?: boolean;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, category, noOfPages, bookId, isFavourite }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, categoryName, noOfPages, bookId, isFavourite }) => {
 
     const { user } = useAuth()
     const Navigate = useNavigate();
@@ -92,7 +92,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 fontWeight: 'bold',
                 backgroundColor: '#c0db88',
             }}>
-                {category}
+                {categoryName}
             </Box>
             <CardMedia
                 component="img"

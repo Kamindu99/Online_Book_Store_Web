@@ -241,7 +241,7 @@ const List = () => {
                 },
                 {
                     Header: 'Category',
-                    accessor: 'category'
+                    accessor: 'categoryName'
                 },
                 {
                     Header: 'Price',

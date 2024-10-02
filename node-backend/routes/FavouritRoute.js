@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/FavouriteModel')
 const BookModel = require('../models/BookModel')
+const Category = require('../models/CategoryModel')
 
 router.post("/", async (req, res) => {
     const product = new Product(req.body);
@@ -21,7 +22,7 @@ router.route("/").get(async (req, res) => {
         // Build search query
         let searchQuery = { isActive: true };
 
-        // If a category is provided, filter by category
+        // If a userId is provided, filter by userId
         if (userId) {
             searchQuery.userId = userId;
         }
@@ -32,9 +33,13 @@ router.route("/").get(async (req, res) => {
         // Fetch the book details for each product
         const results = await Promise.all(products.map(async (product) => {
             const bookDetails = await BookModel.findById(product.bookId);
+            const categoryDetails = await Category.findById(bookDetails?.categoryId);
             return {
                 ...product.toObject(),
-                bmBook: bookDetails
+                bmBook: {
+                    ...bookDetails.toObject(),
+                    categoryName: categoryDetails?.categoryName
+                }
             };
         }));
 

@@ -81,7 +81,7 @@ const TabProfile = () => {
                             bookName={book.bmBook?.bookName!}
                             author={book.bmBook?.author!}
                             noOfPages={book.bmBook?.noOfPages!}
-                            category={book.bmBook?.category!}
+                            categoryName={book.bmBook?.categoryName!}
                             isActive={book.bmBook?.isActive!}
                             bookId={book.bmBook?._id!}
                         />

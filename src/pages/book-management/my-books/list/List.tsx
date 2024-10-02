@@ -161,7 +161,7 @@ const TransferBookList = () => {
                                         color="text.secondary"
                                         component="div"
                                     >
-                                        {book?.bmBook?.category!}
+                                        {book?.bmBook?.categoryName!}
                                     </Typography>
                                     <div style={{ bottom: 20, position: 'absolute', zIndex: 1 }}>
                                         <Typography

@@ -204,7 +204,7 @@ const TransferBookList = () => {
                 },
                 {
                     Header: 'Category',
-                    accessor: 'bmBook.category'
+                    accessor: 'bmBook.categoryName'
                 },
                 {
                     Header: 'Person',

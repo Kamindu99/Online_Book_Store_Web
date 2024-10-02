@@ -4,6 +4,7 @@ const Product = require('../models/BookModel')
 const UserModel = require('../models/UserModel')
 const TransferBooks = require('../models/BookTransferModel')
 const BookFavo = require('../models/FavouriteModel')
+const Category = require('../models/CategoryModel')
 
 router.post("/", async (req, res) => {
     const product = new Product(req.body);
@@ -18,7 +19,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', category = '', userId = '' } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', categoryId = '', userId = '' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -37,15 +38,15 @@ router.route("/").get(async (req, res) => {
             searchQuery.bookName = new RegExp(search, 'i'); // Case-insensitive search
         }
 
-        // If a category is provided, filter by category
-        if (category) {
-            searchQuery.category = category;
+        // If a categoryId is provided, filter by categoryId
+        if (categoryId) {
+            searchQuery.categoryId = categoryId;
         }
 
         // Build search query
         let searchQueryFavo = { isActive: true };
 
-        // If a category is provided, filter by category
+        // If a categoryId is provided, filter by categoryId
         if (userId) {
             searchQueryFavo.userId = userId;
         }
@@ -63,9 +64,10 @@ router.route("/").get(async (req, res) => {
             .limit(pageSize);
 
         const results = await Promise.all(products.map(async (product) => {
-
+            const categoryDetails = await Category.findById(product.categoryId);
             return {
                 ...product.toObject(),
+                categoryName: categoryDetails ? categoryDetails?.categoryName : {},
                 isFavourite: favoBooks.some((favo) => favo.bookId === product._id.toString())
             };
         }));
@@ -99,24 +101,28 @@ router.route("/dashboard-count").get(async (req, res) => {
         const totalUsers = await UserModel.countDocuments();
         const totalTransfers = await TransferBooks.countDocuments({ isActive: true });
 
-        // Fetch count of books by category using aggregation
+        // Fetch count of books by categoryId using aggregation
         const categoryCounts = await Product.aggregate([
             {
                 $group: {
-                    _id: "$category", // Group by the "category" field
-                    count: { $sum: 1 } // Count the number of books in each category
+                    _id: "$categoryId", // Group by the "categoryId" field
+                    count: { $sum: 1 } // Count the number of books in each categoryId
                 }
             }
         ]);
 
-        // Format the response with totalBooks and category counts
+        // Format the response with totalBooks and categoryId counts
         const response = {
             totalBooks: totalBooks,
             totalUsers: totalUsers,
             totalTransfers: totalTransfers,
-            category: categoryCounts.map(cat => ({
-                categoryName: cat._id,  // The category name
-                count: cat.count        // Number of books in that category
+            category: await Promise.all(categoryCounts.map(async (cat) => {
+                const categoryDetails = await Category.findById(cat._id);
+                return {
+                    categoryId: cat._id,  // Assuming you want to return the original categoryId
+                    categoryName: categoryDetails ? categoryDetails.categoryName : {},  // Use categoryDetails
+                    count: cat.count
+                };
             }))
         };
 
@@ -143,12 +149,12 @@ router.route("/get-book-code").get(async (req, res) => {
 
 router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
-    const { category = '' } = req.query;
+    const { categoryId = '' } = req.query;
     let searchQuery = {
         isActive: true
     };
-    if (category) {
-        searchQuery.category = category;
+    if (categoryId) {
+        searchQuery.categoryId = categoryId;
     }
     Product.find(searchQuery)
         .then((products) => {
@@ -171,13 +177,13 @@ router.route("/fdd").get((req, res) => {
 
 router.route("/:id").put(async (req, res) => {
     let productId = req.params.id;
-    const { bookCode, bookName, price, author, imageUrl, category, noOfPages } = req.body;
+    const { bookCode, bookName, price, author, imageUrl, categoryId, noOfPages } = req.body;
     const updatedProduct = {
         bookCode,
         bookName,
         price,
         author,
-        category,
+        categoryId,
         noOfPages,
         imageUrl
     };
@@ -204,29 +210,35 @@ router.route("/:id").delete(async (req, res) => {
 
 router.route("/:id").get(async (req, res) => {
 
-    const { userId = '' } = req.query;
+    try {
+        const { userId = '' } = req.query;
 
-    // Build search query
-    let searchQueryFavo = { isActive: true };
+        // Build search query
+        let searchQueryFavo = { isActive: true };
 
-    // If a category is provided, filter by category
-    if (userId) {
-        searchQueryFavo.userId = userId;
+        // If a categoryId is provided, filter by categoryId
+        if (userId) {
+            searchQueryFavo.userId = userId;
+        }
+
+        // Fetch paginated and sorted products
+        const favoBooks = await BookFavo.find(searchQueryFavo)
+
+        let productId = req.params.id;
+        const product = await Product.findById(productId)
+        const categoryDetails = await Category.findById(product.categoryId);
+
+        const response = {
+            ...product.toObject(),
+            categoryName: categoryDetails ? categoryDetails.categoryName : {},
+            isFavourite: favoBooks.some((favo) => favo.bookId === product._id.toString())
+        };
+
+        res.json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'An error occurred' });
     }
-
-    // Fetch paginated and sorted products
-    const favoBooks = await BookFavo.find(searchQueryFavo)
-
-    let productId = req.params.id;
-    await Product.findById(productId).then((response) => {
-        res.status(200).send({
-            ...response.toObject(),
-            isFavourite: favoBooks.some((favo) => favo.bookId === response._id.toString())
-        });
-    }).catch((err) => {
-        res.status(500).send({ status: "error in fetch", err });
-
-    })
-})
+});
 
 module.exports = router;

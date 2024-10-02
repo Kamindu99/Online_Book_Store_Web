@@ -30,6 +30,7 @@ import { dataProps } from './types/types';
 import { Loading } from 'utils/loading';
 import { toInitialState as toInitialStateFavourite } from 'store/reducers/favourite-book';
 import useAuth from 'hooks/useAuth';
+import { getCateogyCodesFdd } from 'store/reducers/category-code';
 
 // ==============================|| List ||============================== //
 
@@ -38,6 +39,7 @@ const List = () => {
     const dispatch = useDispatch();
     const { booksList, error, isLoading, success } = useSelector(state => state.book)
     const { success: favoSuccess, error: errorfavo, isLoading: isLoadingFavo } = useSelector(state => state.favouriteBook)
+    const { success: successCat, error: errorCat, isLoading: isLoadingCat, categoryCodeFdd } = useSelector(state => state.categoryCode)
     const [bookList, setBookList] = useState<dataProps[]>([]);
 
     const { user } = useAuth()
@@ -49,9 +51,11 @@ const List = () => {
     const [direction, setDirection] = useState<"asc" | "desc">("asc");
     const [search, setSearch] = useState<string>("");
     const [category, setCategory] = useState<string>('All');
+    const [categoryName, setCategoryName] = useState<string>('All');
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [categoryTerm, setCategoryTerm] = useState<string>("All"); // Category filter
+    const [categoryTermName, setCategoryTermName] = useState<string>("All"); // Category filter
     const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
 
     const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -76,7 +80,7 @@ const List = () => {
             per_page: perPage,
             direction: direction,
             sort: sort,
-            category: category === 'All' ? '' : category,
+            categoryId: category === 'All' ? '' : category,
             search: search,
             userId: user?.id
         };
@@ -137,7 +141,7 @@ const List = () => {
             );
             dispatch(toInitialStateFavourite());
         }
-    }, [error, errorfavo]);
+    }, [error, errorfavo, errorCat]);
 
     useEffect(() => {
         if (success != null) {
@@ -168,17 +172,22 @@ const List = () => {
             );
             dispatch(toInitialStateFavourite());
         }
-    }, [success, favoSuccess])
+    }, [success, favoSuccess, successCat])
 
     const handleCategoryChange = (event: any) => {
         setCategoryTerm(event.target.value as string);
+        setCategoryTermName(categoryCodeFdd?.find((category) => category._id === event.target.value)?.categoryName!);
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    if (isLoading || isLoadingFavo) {
+    useEffect(() => {
+        dispatch(getCateogyCodesFdd());
+    }, []);
+
+    if (isLoading || isLoadingFavo || isLoadingCat) {
         return <Loading />
     }
 
@@ -213,13 +222,9 @@ const List = () => {
                                     label="Category"
                                 >
                                     <MenuItem key={0} value={"All"}>All</MenuItem>
-                                    <MenuItem key={1} value={"Adventure"}>Adventure</MenuItem>
-                                    <MenuItem key={2} value={"Novel"}>Novel</MenuItem>
-                                    <MenuItem key={3} value={"Short Stories"}>Short Stories</MenuItem>
-                                    <MenuItem key={4} value={"Child Story"}>Child Story</MenuItem>
-                                    <MenuItem key={5} value={"Educational"}>Educational</MenuItem>
-                                    <MenuItem key={6} value={"Religious"}>Religious</MenuItem>
-                                    <MenuItem key={7} value={"Astrology"}>Astrology</MenuItem>
+                                    {categoryCodeFdd?.map((category) => (
+                                        <MenuItem key={category._id} value={category._id}>{category.categoryName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -242,6 +247,7 @@ const List = () => {
                                 onClick={() => {
                                     setPage(0);
                                     setCategory(categoryTerm);
+                                    setCategoryName(categoryTermName);
                                     setSearch(searchTerm);
                                 }}
                             >
@@ -250,7 +256,7 @@ const List = () => {
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
                             <Typography variant="h6" color="Highlight" hidden={!isFilterVisible}>
-                                Filter by {search ? `${search} in` : ''} "{category}" Category {totalRecords} Books Found
+                                Filter by {search ? `${search} in` : ''} "{categoryName}" Category {totalRecords} Books Found
                             </Typography>
                         </Grid>
                     </Grid>
@@ -266,7 +272,7 @@ const List = () => {
                             bookName={book.bookName!}
                             author={book.author!}
                             noOfPages={book.noOfPages!}
-                            category={book.category!}
+                            categoryName={book.categoryName!}
                             isActive={book.isActive!}
                             isFavourite={book.isFavourite!}
                             bookId={book._id!}

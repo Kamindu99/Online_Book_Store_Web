@@ -4,6 +4,7 @@ const Product = require('../models/BookTransferModel')
 const BookModel = require('../models/BookModel');
 const UserModel = require('../models/UserModel');
 const nodemailer = require('nodemailer');
+const Category = require('../models/CategoryModel')
 
 // Configure your SMTP transport
 const transporter = nodemailer.createTransport({
@@ -149,7 +150,7 @@ router.route("/").get(async (req, res) => {
             searchQuery.bookName = new RegExp(search, 'i'); // Case-insensitive search
         }
 
-        // If a category is provided, filter by category
+        // If a userId is provided, filter by userId
         if (userId) {
             searchQuery.userId = userId;
         }
@@ -168,11 +169,15 @@ router.route("/").get(async (req, res) => {
             // Fetch the book details from the BookModel using the bookId
             const bookDetails = await BookModel.findById(product.bookId);
             const userDetails = await UserModel.findById(product.userId);
+            const categoryDetails = await Category.findById(bookDetails?.categoryId);
 
             // Return the product with the embedded book details (bmBook)
             return {
                 ...product.toObject(), // Convert Mongoose object to plain JavaScript object
-                bmBook: bookDetails,// Add book details here
+                bmBook: {
+                    ...bookDetails.toObject(), // Convert Mongoose object to plain JavaScript object
+                    categoryName: categoryDetails?.categoryName
+                },// Add book details here
                 umUser: {
                     id: userDetails._id,
                     name: `${userDetails.firstName} ${userDetails.lastName}`

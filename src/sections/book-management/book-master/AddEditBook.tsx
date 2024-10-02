@@ -35,6 +35,7 @@ import { DeleteFilled } from '@ant-design/icons';
 import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
 import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 import axios from 'axios';
+import { getCateogyCodesFdd } from 'store/reducers/category-code';
 
 // types
 
@@ -45,7 +46,7 @@ const getInitialValues = (book: FormikValues | null) => {
         bookName: '',
         bookCode: '',
         author: '',
-        category: '',
+        categoryId: '',
         price: '',
         noOfPages: '',
         imageUrl: '',
@@ -68,13 +69,13 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
     const { error, isLoading, success } = useSelector(state => state.book)
-
+    const { categoryCodeFdd } = useSelector(state => state.categoryCode)
     const isCreating = !book;
 
     const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
         author: Yup.string().max(255).required('Author is required'),
-        category: Yup.string().max(255).required('Category is required'),
+        categoryId: Yup.string().max(255).required('Category is required'),
         price: Yup.string().max(5).required('Price is required'),
         noOfPages: Yup.string().max(5).required('No of Page is required'),
     });
@@ -127,8 +128,8 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     useEffect(() => {
         getCode()
+        dispatch(getCateogyCodesFdd());
     }, [])
-
 
     useEffect(() => {
         if (error != null) {
@@ -251,37 +252,19 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                 </Grid>
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
-                                        <InputLabel htmlFor="category">Category</InputLabel>
+                                        <InputLabel htmlFor="categoryId">Category</InputLabel>
                                         <TextField
                                             fullWidth
-                                            id="category"
+                                            id="categoryId"
                                             select
                                             placeholder="Enter Book Category"
-                                            {...getFieldProps('category')}
-                                            error={Boolean(touched.category && errors.category)}
-                                            helperText={touched.category && errors.category}
+                                            {...getFieldProps('categoryId')}
+                                            error={Boolean(touched.categoryId && errors.categoryId)}
+                                            helperText={touched.categoryId && errors.categoryId}
                                         >
-                                            <MenuItem key={1} value={"Adventure"}>
-                                                {"Adventure"}
-                                            </MenuItem>
-                                            <MenuItem key={2} value={"Novel"}>
-                                                {"Novel"}
-                                            </MenuItem>
-                                            <MenuItem key={3} value={"Short Stories"}>
-                                                {"Short Stories"}
-                                            </MenuItem>
-                                            <MenuItem key={4} value={"Child Story"}>
-                                                {"Child Story"}
-                                            </MenuItem>
-                                            <MenuItem key={5} value={"Educational"}>
-                                                {"Educational"}
-                                            </MenuItem>
-                                            <MenuItem key={6} value={"Religious"}>
-                                                {"Religious"}
-                                            </MenuItem>
-                                            <MenuItem key={7} value={"Astrology"}>
-                                                {"Astrology"}
-                                            </MenuItem>
+                                            {categoryCodeFdd?.map((category) => (
+                                                <MenuItem key={category._id} value={category._id}>{category.categoryName}</MenuItem>
+                                            ))}
                                         </TextField>
                                     </Stack>
                                 </Grid>

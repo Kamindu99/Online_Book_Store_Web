@@ -3,7 +3,8 @@ export type Books = {
     bookCode?: string;
     bookName?: string;
     author?: string;
-    category?: string;
+    categoryId?: string;
+    categoryName?: string;
     price?: number;
     noOfPages?: number;
     createdDate?: string;
@@ -26,6 +27,7 @@ export type BooksList = {
 };
 
 export type CategoryDTO = {
+    categoryId?: string,
     categoryName?: string,
     count?: number
 }
@@ -57,7 +59,7 @@ export interface listParametersType {
     page?: number;
     per_page?: number;
     search?: string;
-    category?: string;
+    categoryId?: string;
     sort?: string;
     userId?: string;
     bookId?: string;
