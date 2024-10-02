@@ -32,14 +32,14 @@ import {
 import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import AddEditCategoryCode from 'sections/parameter-management/category-code/AddEditDisposal';
+import AddEditCategoryCode from 'sections/parameter-management/category-code/AddEditCategory';
 import { useDispatch, useSelector } from 'store';
 import { getCateogyCodeList, toInitialState } from 'store/reducers/category-code';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { CategoryCodeDTO, queryStringParams } from 'types/category-code';
 import { Loading } from 'utils/loading';
 import { ReactTableProps, dataProps } from './types/types';
-import AlertCategoryDelete from 'sections/parameter-management/category-code/AlertDisposalDelete';
+import AlertCategoryDelete from 'sections/parameter-management/category-code/AlertCategoryDelete';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -173,7 +173,7 @@ const CategoryCodeList = () => {
 
     const handleAdd = () => {
         setAdd(!add);
-        if (category && !add) setCategory([]);
+        if (category && !add) setCategory(null);
     };
 
     //alert model
@@ -231,11 +231,10 @@ const CategoryCodeList = () => {
                     id: "actions",
                     Header: 'Actions',
                     accessor: 'actions',
-                    className: 'cell-center',
                     Cell: ({ row }: { row: Row }) => {
                         return (
                             <>
-                                <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+                                <Stack direction="row" alignItems="" justifyContent="" spacing={0}>
                                     <Tooltip title="Edit">
                                         <IconButton
                                             color="primary"

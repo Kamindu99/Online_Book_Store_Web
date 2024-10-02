@@ -93,4 +93,31 @@ router.route("/:id").get(async (req, res) => {
     }
 });
 
+router.route("/:id").put(async (req, res) => {
+    let productId = req.params.id;
+    const { categoryCode, categoryName } = req.body;
+    const updatedProduct = {
+        categoryCode,
+        categoryName
+    };
+
+    const update = await CategoryModel.findByIdAndUpdate(productId, updatedProduct).then((response) => {
+        res.status(200).send({ status: "Updated", response });
+
+    }).catch((err) => {
+        res.status(500).send({ status: "error in update", err });
+
+    })
+})
+
+router.route("/:id").delete(async (req, res) => {
+    let productId = req.params.id;
+    await CategoryModel.findByIdAndDelete(productId).then(() => {
+        res.status(200).send({ status: "deleted" });
+    }).catch((err) => {
+        res.status(500).send({ status: "error in delete", err });
+
+    })
+})
+
 module.exports = router;
