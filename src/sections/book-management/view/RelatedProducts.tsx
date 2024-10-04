@@ -165,7 +165,7 @@ const RelatedProducts = ({ id }: { id?: string }) => {
         <Stack>
           {productResult}
           <Button color="secondary" variant="outlined" sx={{ mx: 2, my: 4, textTransform: 'none' }}>
-            View all Products
+            View all Books
           </Button>
         </Stack>
       </Grid>

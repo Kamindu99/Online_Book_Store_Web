@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Box, Button, Grid, Stack, TextField } from '@mui/material';
+import { Box, Button, Chip, Grid, Stack, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // types
@@ -14,8 +14,8 @@ import ProductReview from './ProductReviewForm';
 // assets
 import { FileAddOutlined, SmileOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
 import IconButton from 'components/@extended/IconButton';
-import { createBookReviews, deleteBookReviews, getBookReviewsList, toInitialState } from 'store/reducers/book-reviews';
 import useAuth from 'hooks/useAuth';
+import { createBookReviews, deleteBookReviews, getBookReviewsList, toInitialState } from 'store/reducers/book-reviews';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
 
@@ -125,6 +125,11 @@ const ProductReviews = ({ product }: { product: string }) => {
           <Button variant="text" sx={{ textTransform: 'none' }} onClick={() => { bookReviewsList?.pagination?.total! > perPage! ? setPerPage(perPage + 3) : setPerPage(3) }}>
             {bookReviewsList?.pagination?.total! > perPage! ? ' View more comments' : 'less comments'}
           </Button>
+        </Stack>
+      </Grid>
+      <Grid item xs={12} hidden={bookReviewsList?.pagination?.total !== 0}>
+        <Stack direction="row" >
+          <Chip label="No comments" sx={{ width: '100%', background: "#cdecfa" }} />
         </Stack>
       </Grid>
       <Grid item xs={12}>
