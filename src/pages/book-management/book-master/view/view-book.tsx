@@ -16,6 +16,8 @@ import useAuth from 'hooks/useAuth';
 import { createBookfavourite, deleteBookfavourite, toInitialState } from 'store/reducers/favourite-book';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
+import ProductReview from 'sections/book-management/view/ProductReview';
+import RelatedProducts from 'sections/book-management/view/RelatedProducts';
 
 // ==============================|| PRODUCT DETAILS - MAIN ||============================== //
 
@@ -88,6 +90,29 @@ const ProductDetails = () => {
         }
     }, [success])
 
+    const products = {
+        id: 1,
+        image: "string",
+        name: "string",
+        brand: "string",
+        offer: "string",
+        description: "string",
+        about: "string",
+        quantity: 1,
+        rating: 1,
+        discount: 1,
+        salePrice: 1,
+        offerPrice: 1,
+        gender: "string",
+        categories: ["string"],
+        colors: ["string"],
+        popularity: 1,
+        date: 1,
+        created: new Date(),
+        isStock: true,
+        new: 1
+    }
+
     if (isLoading) {
         return <Loading />
     }
@@ -108,7 +133,28 @@ const ProductDetails = () => {
                             </Grid>
                         </MainCard>
                     </Grid>
+                    <Grid item xs={12} md={7} xl={8}>
+                        <MainCard>
+                            <ProductReview product={products} />
+                        </MainCard>
+                    </Grid>
+                    <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>
+                        <MainCard
+                            title="Related Products"
+                            sx={{
+                                height: 'calc(100% - 16px)',
+                                position: { xs: 'relative', md: 'absolute' },
+                                top: '16px',
+                                left: { xs: 0, md: 16 },
+                                right: 0
+                            }}
+                            content={false}
+                        >
+                            <RelatedProducts id={id} />
+                        </MainCard>
+                    </Grid>
                 </Grid>
+
             )}
         </>
     );

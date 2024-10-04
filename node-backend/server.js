@@ -38,3 +38,6 @@ app.use("/api/v1/book-management/favourite", favouriteBook);
 
 const category = require('./routes/CategoryRoutes');
 app.use("/api/v1/parameter-management/category", category);
+
+const bookreviews = require('./routes/BookReviewRoutes');
+app.use("/api/v1/book-management/reviews", bookreviews);
