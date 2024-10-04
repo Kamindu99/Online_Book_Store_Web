@@ -53,7 +53,7 @@ const ProductReviews = ({ product }: { product: string }) => {
   }
 
   const RemoveReview = (deletBooKId: string) => {
-    if (deletBooKId === "" || deletBooKId !== user?.id) return;
+    if (deletBooKId === "") return;
     dispatch(deleteBookReviews(deletBooKId));
   }
 
@@ -120,7 +120,7 @@ const ProductReviews = ({ product }: { product: string }) => {
             </MainCard>
           </Grid>
         ))}
-      <Grid item xs={12} hidden={bookReviewsList?.pagination?.total === 0 || bookReviewsList === null}>
+      <Grid item xs={12} hidden={bookReviewsList?.pagination?.total === 0 || bookReviewsList === null || bookReviewsList?.pagination?.total! < 4}>
         <Stack direction="row" justifyContent="center">
           <Button variant="text" sx={{ textTransform: 'none' }} onClick={() => { bookReviewsList?.pagination?.total! > perPage! ? setPerPage(perPage + 3) : setPerPage(3) }}>
             {bookReviewsList?.pagination?.total! > perPage! ? ' View more comments' : 'less comments'}

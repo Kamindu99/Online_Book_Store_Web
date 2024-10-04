@@ -41,10 +41,12 @@ const ProductReview = ({ reviewId, avatar, date, name, review, removeReview, can
           position: 'absolute',
           top: 10,
           right: 10,
-          color: 'black'
+          color: 'black',
+          display: !canDelete ? 'none' : ''
         }}
         onClick={() => removeReview(reviewId)}
         disabled={!canDelete}
+        hidden={!canDelete}
       >
         <DeleteOutlined style={{ color: 'red' }} />
       </IconButton>
