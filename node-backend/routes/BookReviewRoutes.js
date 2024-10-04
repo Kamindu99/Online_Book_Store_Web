@@ -56,7 +56,8 @@ router.route("/").get(async (req, res) => {
                 ...product.toObject(), // Convert Mongoose object to plain JavaScript object
                 umUser: {
                     id: userDetails._id,
-                    name: `${userDetails.firstName} ${userDetails.lastName}`
+                    name: `${userDetails.firstName} ${userDetails.lastName}`,
+                    profileImage: userDetails.profileImage
                 }
             };
         }));
