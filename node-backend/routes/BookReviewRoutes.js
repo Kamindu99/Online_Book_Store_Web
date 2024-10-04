@@ -83,4 +83,14 @@ router.route("/").get(async (req, res) => {
     }
 });
 
+router.route("/:id").delete(async (req, res) => {
+    let productId = req.params.id;
+    await BookReviewModel.findByIdAndDelete(productId).then(() => {
+        res.status(200).send({ status: "deleted" });
+    }).catch((err) => {
+        res.status(500).send({ status: "error in delete", err });
+
+    })
+})
+
 module.exports = router;

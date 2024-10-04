@@ -90,29 +90,6 @@ const ProductDetails = () => {
         }
     }, [success])
 
-    const products = {
-        id: 1,
-        image: "string",
-        name: "string",
-        brand: "string",
-        offer: "string",
-        description: "string",
-        about: "string",
-        quantity: 1,
-        rating: 1,
-        discount: 1,
-        salePrice: 1,
-        offerPrice: 1,
-        gender: "string",
-        categories: ["string"],
-        colors: ["string"],
-        popularity: 1,
-        date: 1,
-        created: new Date(),
-        isStock: true,
-        new: 1
-    }
-
     if (isLoading) {
         return <Loading />
     }
@@ -135,7 +112,7 @@ const ProductDetails = () => {
                     </Grid>
                     <Grid item xs={12} md={7} xl={8}>
                         <MainCard>
-                            <ProductReview product={products} />
+                            <ProductReview product={id!} />
                         </MainCard>
                     </Grid>
                     <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>

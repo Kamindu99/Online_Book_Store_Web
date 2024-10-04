@@ -13,14 +13,13 @@ interface ReviewProps {
   avatar: string;
   date: Date | string;
   name: string;
-  rating: number;
   review: string;
 }
 
-const ProductReview = ({ avatar, date, name, rating, review }: ReviewProps) => (
+const ProductReview = ({ avatar, date, name, review }: ReviewProps) => (
   <Grid item xs={12}>
     <Stack direction="row" spacing={1}>
-      <Avatar alt={name} src={avatar && ''} />
+      <Avatar alt={name} src={avatar && avatar} />
       <Stack spacing={2}>
         <Stack>
           <Typography variant="subtitle1" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>

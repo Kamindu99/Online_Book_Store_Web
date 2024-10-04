@@ -5,91 +5,117 @@ import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // types
-import { Products, Reviews } from 'types/e-commerce';
 
 // project imports
 import MainCard from 'components/MainCard';
 import { useDispatch, useSelector } from 'store';
-import { getProductReviews } from 'store/reducers/product';
 import ProductReview from './ProductReviewForm';
 
 // assets
 import { FileAddOutlined, SmileOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
 import IconButton from 'components/@extended/IconButton';
+import { createBookReviews, getBookReviewsList, toInitialState } from 'store/reducers/book-reviews';
+import useAuth from 'hooks/useAuth';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { Loading } from 'utils/loading';
 
 
 // ==============================|| PRODUCT DETAILS - REVIEWS ||============================== //
 
-const ProductReviews = ({ product }: { product: Products }) => {
+const ProductReviews = ({ product }: { product: string }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [reviews] = useState<Reviews[]>([
-    {
-      "id": "1",
-      "rating": 4.0367,
-      "review": "Ceraruz obihagali ve otabiho owa kuuvo le ca uhe jaato obune vib. Uf ithigi wal goscok loh izusabem zacu gatbini ce gihhaf ce kim rec sib icwop.",
-      "date": "2024-10-04T18:36:42.567Z",
-      "profile": {
-        "avatar": "avatar-1.png",
-        "name": "Marion Murray",
-        "status": true
+  const { user } = useAuth()
+
+  const { bookReviewsList, error, isLoading, success } = useSelector((state) => state.bookReview);
+
+  const [perPage, setPerPage] = useState(3);
+
+  const [review, setReview] = useState('');
+
+  useEffect(() => {
+    if (product === "" || product === undefined) return;
+    let params = {
+      bookId: product,
+      direction: 'desc',
+      per_page: perPage
+    };
+    dispatch(getBookReviewsList(params));
+  }, [product, perPage, success]);
+
+  const AddReview = () => {
+    if (review === "") return;
+    dispatch(createBookReviews({
+      userId: user?.id!,
+      bookId: product!,
+      comment: review
+    }));
+  }
+
+  useEffect(() => {
+    if (error != null) {
+      let defaultErrorMessage = "ERROR";
+      // @ts-ignore
+      const errorExp = error as Template1Error
+      if (errorExp.message) {
+        defaultErrorMessage = errorExp.message
       }
-    },
-    {
-      "id": "2",
-      "rating": 2.8111,
-      "review": "Sivwu cupjene nusfun ci puedco macvag jewdub bo heojabe ijocehcoj funvehfu zilzifo. Heeva wagun bupsuku nuvapo pac gakfo dofguwut nethugun men de la uhere fen oteroodo pus ezhirep.",
-      "date": "2024-09-29T07:26:42.569Z",
-      "profile": {
-        "avatar": "avatar-2.png",
-        "name": "Lucas Little",
-        "status": true
-      }
-    },
-    {
-      "id": "3",
-      "rating": 3.4368,
-      "review": "Gijah gi kowjawgi vi viwite otvitfo hoibibo peusvoj roj li vil dawjefco huv tupotlin taud wuzogefi. Tasev efasilov jo tah ucwo jocofcuc copwew fa zarzu guwuh rih wez mu ekmishu tupparap nu vipigafu.",
-      "date": "2024-09-26T14:01:42.570Z",
-      "profile": {
-        "avatar": "avatar-3.png",
-        "name": "Eula Williamson",
-        "status": true
-      }
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: defaultErrorMessage,
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: true
+        })
+      );
+      dispatch(toInitialState());
     }
-  ]);
-  const productState = useSelector((state) => state.product);
+  }, [error]);
 
   useEffect(() => {
-    ///setReviews(productState.reviews);
-  }, [productState]);
+    if (success != null) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: success,
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: true
+        })
+      );
+      dispatch(toInitialState());
+      setReview('');
+    }
+  }, [success])
 
-  useEffect(() => {
-    dispatch(getProductReviews());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <Grid container spacing={3}>
-      {reviews &&
-        reviews.map((review, index) => (
+      {bookReviewsList?.result &&
+        bookReviewsList?.result?.map((review, index) => (
           <Grid item xs={12} key={index}>
             <MainCard sx={{ bgcolor: theme.palette.grey.A50 }}>
               <ProductReview
-                avatar={review.profile.avatar}
-                date={review.date}
-                name={review.profile.name}
-                rating={review.rating}
-                review={review.review}
+                avatar={review.umUser?.profileImage!}
+                date={review?.createdDate?.split('T')[0]!}
+                name={review?.umUser?.name!}
+                review={review?.comment!}
               />
             </MainCard>
           </Grid>
         ))}
-      <Grid item xs={12}>
+      <Grid item xs={12} hidden={bookReviewsList?.pagination?.total === 0 || bookReviewsList === null}>
         <Stack direction="row" justifyContent="center">
-          <Button variant="text" sx={{ textTransform: 'none' }}>
-            {' '}
-            View more comments{' '}
+          <Button variant="text" sx={{ textTransform: 'none' }} onClick={() => { bookReviewsList?.pagination?.total! > perPage! ? setPerPage(perPage + 3) : setPerPage(3) }}>
+            {bookReviewsList?.pagination?.total! > perPage! ? ' View more comments' : 'less comments'}
           </Button>
         </Stack>
       </Grid>
@@ -114,6 +140,8 @@ const ProductReviews = ({ product }: { product: Products }) => {
                     }
                   }
                 }}
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
               />
             </Grid>
             <Grid item>
@@ -133,7 +161,7 @@ const ProductReviews = ({ product }: { product: Products }) => {
             </Grid>
             <Grid item xs zeroMinWidth />
             <Grid item>
-              <Button size="small" variant="contained" color="primary">
+              <Button size="small" variant="contained" color="primary" onClick={AddReview}>
                 Comment
               </Button>
             </Grid>

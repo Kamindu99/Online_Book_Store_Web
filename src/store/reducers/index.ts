@@ -18,7 +18,7 @@ import users from './users';
 import passwordChange from './password-change';
 import favouriteBook from './favourite-book';
 import categoryCode from './category-code';
-
+import bookReview from './book-reviews';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -42,7 +42,8 @@ const reducers = combineReducers({
   users,
   passwordChange,
   favouriteBook,
-  categoryCode
+  categoryCode,
+  bookReview
 });
 
 export default reducers;
