@@ -1,5 +1,6 @@
 // material-ui
-import { Grid, Stack, Typography } from '@mui/material';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Grid, IconButton, Stack, Typography } from '@mui/material';
 
 // project imports
 import Avatar from 'components/@extended/Avatar';
@@ -10,13 +11,16 @@ import { ReactNode } from 'react';
 // ==============================|| PRODUCT DETAILS - REVIEW ||============================== //
 
 interface ReviewProps {
+  reviewId: string;
   avatar: string;
   date: Date | string;
   name: string;
   review: string;
+  removeReview: (deletBooKId: string) => void;
+  canDelete?: boolean;
 }
 
-const ProductReview = ({ avatar, date, name, review }: ReviewProps) => (
+const ProductReview = ({ reviewId, avatar, date, name, review, removeReview, canDelete }: ReviewProps) => (
   <Grid item xs={12}>
     <Stack direction="row" spacing={1}>
       <Avatar alt={name} src={avatar && avatar} />
@@ -31,6 +35,19 @@ const ProductReview = ({ avatar, date, name, review }: ReviewProps) => (
         </Stack>
         <Typography variant="body2">{review}</Typography>
       </Stack>
+      <IconButton
+        aria-label="add to favorites"
+        sx={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          color: 'black'
+        }}
+        onClick={() => removeReview(reviewId)}
+        disabled={!canDelete}
+      >
+        <DeleteOutlined style={{ color: 'red' }} />
+      </IconButton>
     </Stack>
   </Grid>
 );

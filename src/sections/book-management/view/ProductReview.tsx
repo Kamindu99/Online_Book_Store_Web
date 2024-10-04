@@ -14,7 +14,7 @@ import ProductReview from './ProductReviewForm';
 // assets
 import { FileAddOutlined, SmileOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
 import IconButton from 'components/@extended/IconButton';
-import { createBookReviews, getBookReviewsList, toInitialState } from 'store/reducers/book-reviews';
+import { createBookReviews, deleteBookReviews, getBookReviewsList, toInitialState } from 'store/reducers/book-reviews';
 import useAuth from 'hooks/useAuth';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
@@ -50,6 +50,11 @@ const ProductReviews = ({ product }: { product: string }) => {
       bookId: product!,
       comment: review
     }));
+  }
+
+  const RemoveReview = (deletBooKId: string) => {
+    if (deletBooKId === "" || deletBooKId !== user?.id) return;
+    dispatch(deleteBookReviews(deletBooKId));
   }
 
   useEffect(() => {
@@ -104,10 +109,13 @@ const ProductReviews = ({ product }: { product: string }) => {
           <Grid item xs={12} key={index}>
             <MainCard sx={{ bgcolor: theme.palette.grey.A50 }}>
               <ProductReview
+                reviewId={review._id!}
                 avatar={review.umUser?.profileImage!}
                 date={review?.createdDate?.split('T')[0]!}
                 name={review?.umUser?.name!}
                 review={review?.comment!}
+                removeReview={RemoveReview}
+                canDelete={user?.id === review.umUser?.id}
               />
             </MainCard>
           </Grid>
