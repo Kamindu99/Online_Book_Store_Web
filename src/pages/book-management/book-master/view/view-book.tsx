@@ -117,7 +117,7 @@ const ProductDetails = () => {
                     </Grid>
                     <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>
                         <MainCard
-                            title="Related Products"
+                            title="Related Books"
                             sx={{
                                 height: 'calc(100% - 16px)',
                                 position: { xs: 'relative', md: 'absolute' },
