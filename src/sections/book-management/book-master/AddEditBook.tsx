@@ -45,11 +45,11 @@ const getInitialValues = (book: FormikValues | null) => {
         _id: undefined,
         bookName: '',
         bookCode: '',
-        author: '',
-        categoryId: '',
-        price: '',
-        noOfPages: '',
-        imageUrl: '',
+        author: 'Unknown',
+        categoryId: '67016731b2d33cdc3a61f543',
+        price: '0',
+        noOfPages: '0',
+        imageUrl: 'https://st.depositphotos.com/1007168/1467/i/380/depositphotos_14677943-stock-illustration-text-book-cartoon-character.jpg',
         status: 'Listed'
     };
     if (book) {
@@ -74,10 +74,10 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
-        author: Yup.string().max(255).required('Author is required'),
-        categoryId: Yup.string().max(255).required('Category is required'),
-        price: Yup.string().max(5).required('Price is required'),
-        noOfPages: Yup.string().max(5).required('No of Page is required'),
+        //  author: Yup.string().max(255).required('Author is required'),
+        //  categoryId: Yup.string().max(255).required('Category is required'),
+        //  price: Yup.string().max(5).required('Price is required'),
+        //  noOfPages: Yup.string().max(5).required('No of Page is required'),
     });
 
     const [openAlert, setOpenAlert] = useState(false);
