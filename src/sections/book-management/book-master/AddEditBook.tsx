@@ -9,7 +9,7 @@ import {
     Divider,
     Grid,
     InputLabel,
-    //  MenuItem,
+    MenuItem,
     Stack,
     TextField,
     Tooltip
@@ -33,7 +33,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
-//import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
+import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 import axios from 'axios';
 import { getCateogyCodesFdd } from 'store/reducers/category-code';
 
@@ -45,11 +45,11 @@ const getInitialValues = (book: FormikValues | null) => {
         _id: undefined,
         bookName: '',
         bookCode: '',
-        author: 'Unknown',
-        categoryId: '67016731b2d33cdc3a61f543',
-        price: '0',
-        noOfPages: '0',
-        imageUrl: 'https://st.depositphotos.com/1007168/1467/i/380/depositphotos_14677943-stock-illustration-text-book-cartoon-character.jpg',
+        author: '',
+        categoryId: '',
+        price: '',
+        noOfPages: '',
+        imageUrl: '',
         status: 'Listed'
     };
     if (book) {
@@ -69,15 +69,15 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
     const { error, isLoading, success } = useSelector(state => state.book)
-    //  const { categoryCodeFdd } = useSelector(state => state.categoryCode)
+    const { categoryCodeFdd } = useSelector(state => state.categoryCode)
     const isCreating = !book;
 
     const BookSchema = Yup.object().shape({
         bookName: Yup.string().max(255).required('Name is required'),
-        //  author: Yup.string().max(255).required('Author is required'),
-        //  categoryId: Yup.string().max(255).required('Category is required'),
-        //  price: Yup.string().max(5).required('Price is required'),
-        //  noOfPages: Yup.string().max(5).required('No of Page is required'),
+        author: Yup.string().max(255).required('Author is required'),
+        categoryId: Yup.string().max(255).required('Category is required'),
+        price: Yup.string().max(5).required('Price is required'),
+        noOfPages: Yup.string().max(5).required('No of Page is required'),
     });
 
     const [openAlert, setOpenAlert] = useState(false);
@@ -209,7 +209,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                {/* <Grid item xs={12} lg={6}>
+                                <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="author">Author</InputLabel>
                                         <TextField
@@ -279,7 +279,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                             error={formik.touched.imageUrl && Boolean(formik.errors.imageUrl)}
                                         />
                                     </Stack>
-                                </Grid> */}
+                                </Grid>
                             </Grid>
                         </DialogContent>
                         <Divider />
