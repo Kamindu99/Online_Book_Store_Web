@@ -9,7 +9,7 @@ import {
     Divider,
     Grid,
     InputLabel,
-    MenuItem,
+    //  MenuItem,
     Stack,
     TextField,
     Tooltip
@@ -33,7 +33,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
-import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
+//import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 import axios from 'axios';
 import { getCateogyCodesFdd } from 'store/reducers/category-code';
 
@@ -69,7 +69,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
     const { error, isLoading, success } = useSelector(state => state.book)
-    const { categoryCodeFdd } = useSelector(state => state.categoryCode)
+    //  const { categoryCodeFdd } = useSelector(state => state.categoryCode)
     const isCreating = !book;
 
     const BookSchema = Yup.object().shape({
@@ -209,7 +209,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                         />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12} lg={6}>
+                                {/* <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="author">Author</InputLabel>
                                         <TextField
@@ -279,7 +279,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                             error={formik.touched.imageUrl && Boolean(formik.errors.imageUrl)}
                                         />
                                     </Stack>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </DialogContent>
                         <Divider />
