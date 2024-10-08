@@ -22,7 +22,7 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
     const Navigate = useNavigate();
 
     const handleRequest = () => {
-        const phoneNumber = "+94715273881"; // Your WhatsApp phone number in international format without the "+" sign
+        const phoneNumber = "94715273881"; // Your WhatsApp phone number in international format without the "+" sign
         const message = "Hello, I would like to request more information!";
         const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
