@@ -24,8 +24,7 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
     const handleRequest = () => {
         const phoneNumber = "94715273881"; // Your WhatsApp phone number in international format without the "+" sign
         const message = `Hello, I would like to request more information about this book:
-        \nBook Code: ${product.bookCode}
-        \nBook Name: ${product.bookName}
+        \n${product.bookCode} - ${product.bookName}
         \nAuthor: ${product.author}
         \nCategory: ${product.categoryName}
         \nhttps://online-library-webapp.netlify.app/book-management/book-master/view-book/${product._id} 
