@@ -27,7 +27,8 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
         \nBook Code: ${product.bookCode}
         \nBook Name: ${product.bookName}
         \nAuthor: ${product.author}
-        \nCategory: ${product.categoryName} 
+        \nCategory: ${product.categoryName}
+        \nhttps://online-library-webapp.netlify.app/book-management/book-master/view-book/${product._id} 
         
         \nThank you.
         `;
