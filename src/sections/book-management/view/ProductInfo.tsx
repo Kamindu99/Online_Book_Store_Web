@@ -27,14 +27,15 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
         \nBook Code: ${product.bookCode}
         \nBook Name: ${product.bookName}
         \nAuthor: ${product.author}
-        \nPrice: ${product.price}
-        \nNumber of Pages: ${product.noOfPages}
-        \nCategory: ${product.categoryName}`; // Assuming `imageUrl` is a field in the product object
+        \nCategory: ${product.categoryName} 
+        
+        \nThank you.
+        `;
 
         const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
         // Open WhatsApp link in a new tab
-        window.open(whatsappLink, '_blank');
+        window.location.href = whatsappLink;
     };
 
     return (
