@@ -12,7 +12,7 @@ import {
 
 // assets
 import { Books } from 'types/book-master';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined, WhatsAppOutlined } from '@ant-design/icons';
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
@@ -22,7 +22,7 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
     const Navigate = useNavigate();
 
     const handleRequest = () => {
-        const phoneNumber = "0715273881"; // Your WhatsApp phone number in international format without the "+" sign
+        const phoneNumber = "+94715273881"; // Your WhatsApp phone number in international format without the "+" sign
         const message = "Hello, I would like to request more information!";
         const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
@@ -55,6 +55,17 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
                 >
                     {product.isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
                 </IconButton>
+                <IconButton
+                    aria-label="whtsapp"
+                    sx={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        fontSize: '1.5rem',
+                    }}
+                    onClick={handleRequest}
+                >
+                    <WhatsAppOutlined style={{ color: 'green' }} />
+                </IconButton>
             </Stack>
             <Typography color="CaptionText" sx={{ fontSize: { xs: "14px", sm: "16px" } }}>
                 Author :- {product.author}
@@ -81,10 +92,6 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
                         {product?.isFavourite ? 'Not Favourite' : 'Add to Favourite'}
                     </Button>
                 )}
-                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
-                    onClick={() => { handleRequest() }}>
-                    Request
-                </Button>
                 <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
                     onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
                     {!product.isActive ? 'Sold Out' : 'Back'}
