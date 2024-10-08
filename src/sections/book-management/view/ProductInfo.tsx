@@ -23,7 +23,14 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
 
     const handleRequest = () => {
         const phoneNumber = "94715273881"; // Your WhatsApp phone number in international format without the "+" sign
-        const message = "Hello, I would like to request more information!";
+        const message = `Hello, I would like to request more information about this book:
+        \nBook Name: ${product.bookName}
+        \nAuthor: ${product.author}
+        \nPrice: ${product.price}
+        \nNumber of Pages: ${product.noOfPages}
+        \nCategory: ${product.categoryName}
+        \n\nYou can view the book's image here: ${product.imageUrl}`; // Assuming `imageUrl` is a field in the product object
+
         const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
         // Open WhatsApp link in a new tab
