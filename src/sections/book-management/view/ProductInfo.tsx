@@ -24,12 +24,12 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
     const handleRequest = () => {
         const phoneNumber = "94715273881"; // Your WhatsApp phone number in international format without the "+" sign
         const message = `Hello, I would like to request more information about this book:
-        \n${product.bookCode} - ${product.bookName}
-        \nAuthor: ${product.author}
-        \nCategory: ${product.categoryName}
-        \nhttps://online-library-webapp.netlify.app/book-management/book-master/view-book/${product._id} 
+        ${product.bookCode} - ${product.bookName}
+        Author: ${product.author}
+        Category: ${product.categoryName}
+        https://online-library-webapp.netlify.app/book-management/book-master/view-book/${product._id} 
         
-        \nThank you.
+        Thank you.
         `;
 
         const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
