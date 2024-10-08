@@ -21,6 +21,23 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
     const [value] = useState<number>(1);
     const Navigate = useNavigate();
 
+    const WhatsAppButton = () => {
+        const handleRequest = () => {
+            const phoneNumber = "0715273881"; // Your WhatsApp phone number in international format without the "+" sign
+            const message = "Hello, I would like to request more information!";
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+            // Open WhatsApp link in a new tab
+            window.open(whatsappLink, '_blank');
+        };
+
+        return (
+            <button onClick={handleRequest}>
+                Request
+            </button>
+        );
+    };
+
     return (
         <Stack spacing={1}>
             <Typography sx={{ fontSize: { xs: "20px", sm: "26px" }, fontWeight: '700' }}>{product.bookName}</Typography>
@@ -72,6 +89,10 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
                         {product?.isFavourite ? 'Not Favourite' : 'Add to Favourite'}
                     </Button>
                 )}
+                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
+                    onClick={() => { WhatsAppButton() }}>
+                    Request
+                </Button>
                 <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
                     onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
                     {!product.isActive ? 'Sold Out' : 'Back'}

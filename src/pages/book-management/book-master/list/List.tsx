@@ -30,7 +30,7 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { DeleteTwoTone, EditTwoTone, PlusOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
@@ -42,6 +42,7 @@ import { Books, listParametersType } from 'types/book-master';
 import { ReactTableProps, dataProps } from './types/types';
 import { Loading } from 'utils/loading';
 import Avatar from 'components/@extended/Avatar';
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -167,6 +168,7 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps, tableParams 
 const List = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { booksList, error, isLoading, success } = useSelector(state => state.book)
 
     const [book, setBook] = useState<dataProps>();
@@ -291,6 +293,16 @@ const List = () => {
                         return (
                             <>
                                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+                                    <Tooltip title="View">
+                                        <IconButton
+                                            color="primary"
+                                            onClick={() => {
+                                                navigate(`/book-management/book-master/view-book/${row.values._id}`);
+                                            }}
+                                        >
+                                            <EyeOutlined twoToneColor={theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
                                     <Tooltip title="Edit">
                                         <IconButton
                                             color="primary"

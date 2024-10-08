@@ -90,7 +90,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 borderRadius: '0.3rem 0 0 0.3rem',
                 color: 'black',
                 fontWeight: 'bold',
-                backgroundColor: '#c0db88',
+                backgroundColor: '#16b5c7',
             }}>
                 {categoryName}
             </Box>

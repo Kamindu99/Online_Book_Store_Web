@@ -27,7 +27,7 @@ const ProductDetails = () => {
     const dispatch = useDispatch();
     const { user } = useAuth()
 
-    const { bookById } = useSelector(state => state.book)
+    const { bookById, isLoading: isLoadingBook } = useSelector(state => state.book)
     const { success, error, isLoading } = useSelector(state => state.favouriteBook)
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const ProductDetails = () => {
         }
     }, [success])
 
-    if (isLoading) {
+    if (isLoading || isLoadingBook) {
         return <Loading />
     }
 
