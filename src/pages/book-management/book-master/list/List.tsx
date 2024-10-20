@@ -4,7 +4,6 @@ import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
-    Chip,
     Dialog,
     IconButton,
     Stack,
@@ -22,7 +21,6 @@ import {
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
 import { EmptyTable, HeaderSort, SortingSelect, TablePagination, TableParamsType } from 'components/third-party/ReactTable';
-import { NumericFormat } from 'react-number-format';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import {
     GlobalFilter,
@@ -31,18 +29,18 @@ import {
 
 // project import
 import { DeleteTwoTone, EditTwoTone, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import { useNavigate } from 'react-router-dom';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
 import { useDispatch, useSelector } from 'store';
 import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books, listParametersType } from 'types/book-master';
-import { ReactTableProps, dataProps } from './types/types';
 import { Loading } from 'utils/loading';
-import Avatar from 'components/@extended/Avatar';
-import { useNavigate } from 'react-router-dom';
+import { ReactTableProps, dataProps } from './types/types';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -193,24 +191,24 @@ const List = () => {
     const columns = useMemo(
         () =>
             [
-                {
-                    Header: '#',
-                    accessor: '_id',
-                    className: 'cell-center',
-                    Cell: ({ row }: { row: Row }) => {
-                        if (row.id === undefined || row.id === null || row.id === '') {
-                            return <>-</>
-                        }
-                        if (typeof row.id === 'string') {
-                            return <>{(parseInt(row.id) + 1).toString()}</>;
-                        }
-                        if (typeof row.id === 'number') {
-                            return <>{row.id + 1}</>;
-                        }
-                        // Handle any other data types if necessary
-                        return <>-</>;
-                    }
-                },
+                // {
+                //     Header: '#',
+                //     accessor: '_id',
+                //     className: 'cell-center',
+                //     Cell: ({ row }: { row: Row }) => {
+                //         if (row.id === undefined || row.id === null || row.id === '') {
+                //             return <>-</>
+                //         }
+                //         if (typeof row.id === 'string') {
+                //             return <>{(parseInt(row.id) + 1).toString()}</>;
+                //         }
+                //         if (typeof row.id === 'number') {
+                //             return <>{row.id + 1}</>;
+                //         }
+                //         // Handle any other data types if necessary
+                //         return <>-</>;
+                //     }
+                // },
                 {
                     Header: 'Code',
                     accessor: 'bookCode'
@@ -237,53 +235,53 @@ const List = () => {
                         );
                     }
                 },
-                {
-                    Header: 'Author',
-                    accessor: 'author'
-                },
-                {
-                    Header: 'Category',
-                    accessor: 'categoryName'
-                },
-                {
-                    Header: 'Price',
-                    accessor: 'price',
-                    className: 'cell-right',
-                    Cell: ({ value }: { value: number }) => {
-                        return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
-                    }
-                },
-                {
-                    Header: 'No of Page',
-                    accessor: 'noOfPages',
-                    className: 'cell-right',
-                    Cell: ({ value }: { value: number }) => {
-                        return <div><NumericFormat value={value} displayType="text" /></div>;
-                    }
-                },
-                {
-                    Header: 'Added Date',
-                    accessor: 'createdDate',
-                    Cell: ({ value }: { value: string }) => {
-                        return <div>{value?.split('T')[0]}</div>;
-                    }
-                },
-                {
-                    Header: 'Status',
-                    accessor: 'status',
-                    Cell: ({ value }: { value: string }) => {
-                        switch (value) {
-                            case "Out":
-                                return <Chip color="warning" label="Out" size="small" />;
-                            case "Listed":
-                                return <Chip color="success" label="Listed" size="small" />;
-                            case 'Disposal':
-                                return <Chip color="error" label="Disposal" size="small" />;
-                            default:
-                                return <Chip color="warning" label="Penging" size="small" />;
-                        }
-                    }
-                },
+                // {
+                //     Header: 'Author',
+                //     accessor: 'author'
+                // },
+                // {
+                //     Header: 'Category',
+                //     accessor: 'categoryName'
+                // },
+                // {
+                //     Header: 'Price',
+                //     accessor: 'price',
+                //     className: 'cell-right',
+                //     Cell: ({ value }: { value: number }) => {
+                //         return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
+                //     }
+                // },
+                // {
+                //     Header: 'No of Page',
+                //     accessor: 'noOfPages',
+                //     className: 'cell-right',
+                //     Cell: ({ value }: { value: number }) => {
+                //         return <div><NumericFormat value={value} displayType="text" /></div>;
+                //     }
+                // },
+                // {
+                //     Header: 'Added Date',
+                //     accessor: 'createdDate',
+                //     Cell: ({ value }: { value: string }) => {
+                //         return <div>{value?.split('T')[0]}</div>;
+                //     }
+                // },
+                // {
+                //     Header: 'Status',
+                //     accessor: 'status',
+                //     Cell: ({ value }: { value: string }) => {
+                //         switch (value) {
+                //             case "Out":
+                //                 return <Chip color="warning" label="Out" size="small" />;
+                //             case "Listed":
+                //                 return <Chip color="success" label="Listed" size="small" />;
+                //             case 'Disposal':
+                //                 return <Chip color="error" label="Disposal" size="small" />;
+                //             default:
+                //                 return <Chip color="warning" label="Penging" size="small" />;
+                //         }
+                //     }
+                // },
                 {
                     id: "actions",
                     Header: 'Actions',
