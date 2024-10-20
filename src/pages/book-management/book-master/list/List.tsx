@@ -4,6 +4,7 @@ import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
+    Chip,
     Dialog,
     Grid,
     IconButton,
@@ -23,25 +24,26 @@ import {
 // third-party
 import { PopupTransition } from 'components/@extended/Transitions';
 import { EmptyTable, HeaderSort, SortingSelect, TablePagination, TableParamsType } from 'components/third-party/ReactTable';
+import { NumericFormat } from 'react-number-format';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import {
     renderFilterTypes
 } from 'utils/react-table';
 
 // project import
-import { DeleteTwoTone, EditTwoTone, EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import Avatar from 'components/@extended/Avatar';
+import { DeleteTwoTone, EditTwoTone, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { useNavigate } from 'react-router-dom';
 import AddEditBook from 'sections/book-management/book-master/AddEditBook';
 import AlertBookDelete from 'sections/book-management/book-master/AlertBookDelete';
 import { useDispatch, useSelector } from 'store';
 import { getBooks, toInitialState } from 'store/reducers/book-master';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Books, listParametersType } from 'types/book-master';
-import { Loading } from 'utils/loading';
 import { ReactTableProps, dataProps } from './types/types';
+import { Loading } from 'utils/loading';
+import Avatar from 'components/@extended/Avatar';
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -91,29 +93,32 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps, tableParams 
                     alignItems="center"
                     sx={{ p: 3, pb: 0 }}
                 >
-                    <Grid item xs={12} sm={5} md={5}>
-                        <TextField
-                            label="Search"
-                            variant="outlined"
-                            value={tableParams?.searchParam}
-                            onChange={(e) => tableParams?.setSearchParam!(e.target.value)}
-                            fullWidth
-                        />
-                    </Grid>
+                    <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} alignItems="center">
+                        <Grid item xs={12} sm={5} md={5}>
+                            <TextField
+                                label="Search"
+                                variant="outlined"
+                                value={tableParams?.searchParam}
+                                onChange={(e) => tableParams?.setSearchParam!(e.target.value)}
+                                fullWidth
+                            />
+                        </Grid>
 
-                    <Grid item xs={12} sm={3} md={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            onClick={() => {
-                                tableParams?.setPage(0);
-                                tableParams?.setSearch!(tableParams?.searchParam!);
-                            }}
-                        >
-                            Apply Filters
-                        </Button>
-                    </Grid>
+                        <Grid item xs={12} sm={3} md={3}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                size='large'
+                                onClick={() => {
+                                    tableParams?.setPage(0);
+                                    tableParams?.setSearch!(tableParams?.searchParam!);
+                                }}
+                            >
+                                <SearchOutlined />
+                            </Button>
+                        </Grid>
+                    </Stack>
 
                     <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                         <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
@@ -226,10 +231,10 @@ const List = () => {
                         return <>-</>;
                     }
                 },
-                // {
-                //     Header: 'Code',
-                //     accessor: 'bookCode'
-                // },
+                {
+                    Header: 'Code',
+                    accessor: 'bookCode'
+                },
                 {
                     Header: 'Name',
                     accessor: 'bookName',
@@ -252,53 +257,53 @@ const List = () => {
                         );
                     }
                 },
-                // {
-                //     Header: 'Author',
-                //     accessor: 'author'
-                // },
-                // {
-                //     Header: 'Category',
-                //     accessor: 'categoryName'
-                // },
-                // {
-                //     Header: 'Price',
-                //     accessor: 'price',
-                //     className: 'cell-right',
-                //     Cell: ({ value }: { value: number }) => {
-                //         return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
-                //     }
-                // },
-                // {
-                //     Header: 'No of Page',
-                //     accessor: 'noOfPages',
-                //     className: 'cell-right',
-                //     Cell: ({ value }: { value: number }) => {
-                //         return <div><NumericFormat value={value} displayType="text" /></div>;
-                //     }
-                // },
-                // {
-                //     Header: 'Added Date',
-                //     accessor: 'createdDate',
-                //     Cell: ({ value }: { value: string }) => {
-                //         return <div>{value?.split('T')[0]}</div>;
-                //     }
-                // },
-                // {
-                //     Header: 'Status',
-                //     accessor: 'status',
-                //     Cell: ({ value }: { value: string }) => {
-                //         switch (value) {
-                //             case "Out":
-                //                 return <Chip color="warning" label="Out" size="small" />;
-                //             case "Listed":
-                //                 return <Chip color="success" label="Listed" size="small" />;
-                //             case 'Disposal':
-                //                 return <Chip color="error" label="Disposal" size="small" />;
-                //             default:
-                //                 return <Chip color="warning" label="Penging" size="small" />;
-                //         }
-                //     }
-                // },
+                {
+                    Header: 'Author',
+                    accessor: 'author'
+                },
+                {
+                    Header: 'Category',
+                    accessor: 'categoryName'
+                },
+                {
+                    Header: 'Price',
+                    accessor: 'price',
+                    className: 'cell-right',
+                    Cell: ({ value }: { value: number }) => {
+                        return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
+                    }
+                },
+                {
+                    Header: 'No of Page',
+                    accessor: 'noOfPages',
+                    className: 'cell-right',
+                    Cell: ({ value }: { value: number }) => {
+                        return <div><NumericFormat value={value} displayType="text" /></div>;
+                    }
+                },
+                {
+                    Header: 'Added Date',
+                    accessor: 'createdDate',
+                    Cell: ({ value }: { value: string }) => {
+                        return <div>{value?.split('T')[0]}</div>;
+                    }
+                },
+                {
+                    Header: 'Status',
+                    accessor: 'status',
+                    Cell: ({ value }: { value: string }) => {
+                        switch (value) {
+                            case "Out":
+                                return <Chip color="warning" label="Out" size="small" />;
+                            case "Listed":
+                                return <Chip color="success" label="Listed" size="small" />;
+                            case 'Disposal':
+                                return <Chip color="error" label="Disposal" size="small" />;
+                            default:
+                                return <Chip color="warning" label="Penging" size="small" />;
+                        }
+                    }
+                },
                 {
                     id: "actions",
                     Header: 'Actions',
