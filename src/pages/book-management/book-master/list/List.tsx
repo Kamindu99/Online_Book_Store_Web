@@ -191,28 +191,28 @@ const List = () => {
     const columns = useMemo(
         () =>
             [
-                // {
-                //     Header: '#',
-                //     accessor: '_id',
-                //     className: 'cell-center',
-                //     Cell: ({ row }: { row: Row }) => {
-                //         if (row.id === undefined || row.id === null || row.id === '') {
-                //             return <>-</>
-                //         }
-                //         if (typeof row.id === 'string') {
-                //             return <>{(parseInt(row.id) + 1).toString()}</>;
-                //         }
-                //         if (typeof row.id === 'number') {
-                //             return <>{row.id + 1}</>;
-                //         }
-                //         // Handle any other data types if necessary
-                //         return <>-</>;
-                //     }
-                // },
                 {
-                    Header: 'Code',
-                    accessor: 'bookCode'
+                    Header: '#',
+                    accessor: '_id',
+                    className: 'cell-center',
+                    Cell: ({ row }: { row: Row }) => {
+                        if (row.id === undefined || row.id === null || row.id === '') {
+                            return <>-</>
+                        }
+                        if (typeof row.id === 'string') {
+                            return <>{(parseInt(row.id) + 1).toString()}</>;
+                        }
+                        if (typeof row.id === 'number') {
+                            return <>{row.id + 1}</>;
+                        }
+                        // Handle any other data types if necessary
+                        return <>-</>;
+                    }
                 },
+                // {
+                //     Header: 'Code',
+                //     accessor: 'bookCode'
+                // },
                 {
                     Header: 'Name',
                     accessor: 'bookName',
