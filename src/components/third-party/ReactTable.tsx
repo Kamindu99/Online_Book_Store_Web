@@ -54,6 +54,8 @@ export interface TableParamsType {
   pageCount: number;
   search?: string;
   setSearch?: Dispatch<SetStateAction<string>>;
+  searchParam?: string;
+  setSearchParam?: Dispatch<SetStateAction<string>>;
 }
 
 export const HeaderSort = ({ column, sort }: HeaderSortProps) => {
