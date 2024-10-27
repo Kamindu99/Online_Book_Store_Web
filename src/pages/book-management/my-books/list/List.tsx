@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 
 // material ui
 import {
-    Grid
+    Grid,
+    Stack
 } from '@mui/material';
 
 // third-party
@@ -139,7 +140,9 @@ const TransferBookList = () => {
                         </Grid>
                     ))}
                 </> :
-                    <EmptyTable msg="No Data" colSpan={12} />
+                    <Stack spacing={2} sx={{ width: "100%" }} alignItems="center">
+                        <EmptyTable msg="No Data" colSpan={12} />
+                    </Stack>
                 }
 
                 <Grid item xs={12} sm={12} md={12}>

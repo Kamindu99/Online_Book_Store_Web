@@ -1,5 +1,6 @@
 import {
     Grid,
+    Stack,
     Typography
 } from '@mui/material';
 import MainCard from 'components/MainCard';
@@ -10,6 +11,7 @@ import { getBooksfavourite, toInitialState } from 'store/reducers/favourite-book
 import BookCard from './book-card';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
+import { EmptyTable } from 'components/third-party/ReactTable';
 
 const TabProfile = () => {
 
@@ -74,20 +76,25 @@ const TabProfile = () => {
                 Favourite Books
             </Typography>
             <Grid container spacing={2}>
-                {booksfavouriteList?.map((book) => (
-                    <Grid item xs={6} sm={6} md={2.4} key={book._id!}>
-                        <BookCard
-                            imageUrl={book.bmBook?.imageUrl!}
-                            bookName={book.bmBook?.bookName!}
-                            author={book.bmBook?.author!}
-                            noOfPages={book.bmBook?.noOfPages!}
-                            categoryName={book.bmBook?.categoryName!}
-                            isActive={book.bmBook?.isActive!}
-                            bookId={book.bmBook?._id!}
-                        />
-                    </Grid>
-                ))}
-                {/* Grid Card */}
+                {booksfavouriteList && booksfavouriteList.length !== 0 ? <>
+                    {booksfavouriteList?.map((book) => (
+                        <Grid item xs={6} sm={6} md={2.4} key={book._id!}>
+                            <BookCard
+                                imageUrl={book.bmBook?.imageUrl!}
+                                bookName={book.bmBook?.bookName!}
+                                author={book.bmBook?.author!}
+                                noOfPages={book.bmBook?.noOfPages!}
+                                categoryName={book.bmBook?.categoryName!}
+                                isActive={book.bmBook?.isActive!}
+                                bookId={book.bmBook?._id!}
+                            />
+                        </Grid>
+                    ))}
+                </> :
+                    <Stack spacing={2} sx={{ width: "100%" }} alignItems="center">
+                        <EmptyTable msg="No Data" colSpan={12} />
+                    </Stack>
+                }
 
 
                 {/* <Grid item xs={12} sm={12} md={12}>
