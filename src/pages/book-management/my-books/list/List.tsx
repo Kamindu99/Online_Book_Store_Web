@@ -7,21 +7,16 @@ import {
 } from '@mui/material';
 
 // third-party
-import { TablePagination, TableParamsType } from 'components/third-party/ReactTable';
+import { EmptyTable, TablePagination, TableParamsType } from 'components/third-party/ReactTable';
 
 // project import
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import useAuth from 'hooks/useAuth';
 import { useDispatch, useSelector } from 'store';
 import { getBookstransfer, toInitialState } from 'store/reducers/book-transfer';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
+import BookCard from './book-card';
 import { dataProps } from './types/types';
-
-// ==============================|| REACT TABLE ||============================== //
-
-
-
 
 // ==============================|| Transfer Book List ||============================== //
 
@@ -130,63 +125,22 @@ const TransferBookList = () => {
     return (
         <>
             <Grid container spacing={2}>
-                {bookList.map((book) => (
-                    <Grid item xs={12} sm={12} md={4} lg={4} xl={4} sx={{ width: "100%" }}>
-                        <Card >
-                            <Box sx={{ display: "flex" }}>
-                                <CardMedia
-                                    component="img"
-                                    image={book?.bmBook?.imageUrl!}
-                                    height="240"
-                                    width='100'
-                                    alt="Live from space album cover"
-                                />
-                                <CardContent sx={{ flex: "1 0 auto", position: 'relative' }}>
-                                    <Typography
-                                        component="div"
-                                        variant="h5"
-                                        sx={{ fontWeight: 500 }}
-                                    >
-                                        {book?.bmBook?.bookName!}
-                                    </Typography>
-                                    <Typography
-                                        variant="subtitle1"
-                                        color="text.secondary"
-                                        component="div"
-                                    >
-                                        {book?.bmBook?.author!}
-                                    </Typography>
-                                    <Typography
-                                        variant="subtitle1"
-                                        color="text.secondary"
-                                        component="div"
-                                    >
-                                        {book?.bmBook?.categoryName!}
-                                    </Typography>
-                                    <div style={{ bottom: 20, position: 'absolute', zIndex: 1 }}>
-                                        <Typography
-                                            variant="subtitle1"
-                                            color="text.secondary"
-                                            component="div"
-                                        >
-                                            Barrow -  {book?.transferedate!}
-                                        </Typography>
-                                        <Typography
-                                            variant="subtitle1"
-                                            color="text.secondary"
-                                            component="div"
-                                        >
-                                            Return -  {book?.returnDate!}
-                                        </Typography>
-                                    </div>
-
-                                </CardContent>
-                            </Box>
-                        </Card>
-                    </Grid>
-                ))}
-                {/* Grid Card */}
-
+                {bookList && bookList.length !== 0 ? <>
+                    {bookList.map((book) => (
+                        <Grid item xs={12} sm={12} md={2.4} lg={2.4} xl={2.4} sx={{ width: "100%" }}>
+                            <BookCard
+                                imageUrl={book.bmBook?.imageUrl!}
+                                bookName={book.bmBook?.bookName!}
+                                author={book.bmBook?.author!}
+                                transferedate={book?.transferedate!}
+                                returnDate={book?.returnDate!}
+                                categoryName={book.bmBook?.categoryName!}
+                            />
+                        </Grid>
+                    ))}
+                </> :
+                    <EmptyTable msg="No Data" colSpan={12} />
+                }
 
                 <Grid item xs={12} sm={12} md={12}>
                     <TablePagination
