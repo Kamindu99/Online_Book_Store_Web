@@ -16,7 +16,7 @@ const MenuItems = (): { items: NavItemType[] } => {
   const { user } = useAuth();
 
   return {
-    items: user?.email === 'kamidugayantha123@gmail.com' ? [homeAdmin, bookmanagementAdmin, paramatermanagement] : [home, bookmanagement]
+    items: user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, paramatermanagement] : [home, bookmanagement]
   };
 };
 
