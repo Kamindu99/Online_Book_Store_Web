@@ -49,7 +49,10 @@ const getInitialValues = (booktransfer: FormikValues | null) => {
     };
 
     if (booktransfer) {
-        return _.merge({}, newBooktransfer, booktransfer);
+        return _.merge({}, newBooktransfer, {
+            ...booktransfer,
+            categoryId: booktransfer.bmBook?.categoryId
+        });
     }
 
     return newBooktransfer;
@@ -121,7 +124,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
     const [bookList, setBookList] = useState<Books[]>([]);
 
     useEffect(() => {
-        if (booktransfer) {
+        if (booktransfer && booksFdd) {
             setBookList([
                 {
                     _id: booktransfer.bookId,

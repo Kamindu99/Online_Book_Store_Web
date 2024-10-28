@@ -36,7 +36,7 @@ const TransferBookList = () => {
 
     const [page, setPage] = useState<number>(0);
     const [perPage, setPerPage] = useState<number>(10);
-    const [direction, setDirection] = useState<"asc" | "desc">("asc");
+    const [direction, setDirection] = useState<"asc" | "desc">("desc");
     const [search, setSearch] = useState<string>("");
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);

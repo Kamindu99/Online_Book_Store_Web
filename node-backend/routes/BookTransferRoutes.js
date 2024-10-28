@@ -129,7 +129,7 @@ router.post("/", async (req, res) => {
 router.route("/").get(async (req, res) => {
     try {
         // Extract query parameters
-        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', userId = '', isActive = true } = req.query;
+        const { page = 0, per_page = 10, search = '', sort = '_id', direction = 'asc', userId = '', isActive = '' } = req.query;
 
         // Convert page and per_page to integers
         const pageNumber = parseInt(page);
@@ -143,7 +143,7 @@ router.route("/").get(async (req, res) => {
         // Build search query (assuming search on bookName, you can add more fields as needed)
 
         // Build search query
-        let searchQuery = { isActive: isActive };
+        let searchQuery = {};
 
         // If a search term is provided, search by bookName
         if (search) {
@@ -153,6 +153,10 @@ router.route("/").get(async (req, res) => {
         // If a userId is provided, filter by userId
         if (userId) {
             searchQuery.userId = userId;
+        }
+
+        if (isActive) {
+            searchQuery.isActive = isActive;
         }
 
         // Fetch total number of matching products
@@ -240,7 +244,10 @@ router.route("/return/:id/:bookId").put(async (req, res) => {
     // Step 1: Update the product
     try {
         // Update the product to set `isActive` to false
-        const updatedProduct = await Product.findByIdAndUpdate(transferId, { isActive: false }, { new: true });
+        const updatedProduct = await Product.findByIdAndUpdate(transferId, {
+            isActive: false,
+            returnDate: new Date().toISOString().slice(0, 10)
+        }, { new: true });
         const product = await Product.findById(transferId);
         const userDetails = await UserModel.findById(product.userId);
         const bookDetails = await BookModel.findById(bookId);

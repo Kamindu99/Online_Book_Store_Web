@@ -4,6 +4,7 @@ import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 // material ui
 import {
     Button,
+    Chip,
     Dialog,
     IconButton,
     Stack,
@@ -218,22 +219,20 @@ const TransferBookList = () => {
                     Header: 'Return Date',
                     accessor: 'returnDate',
                 },
-                // {
-                //     Header: 'Status',
-                //     accessor: 'status',
-                //     Cell: ({ value }: { value: string }) => {
-                //         switch (value) {
-                //             case "Out":
-                //                 return <Chip color="warning" label="Out" size="small" />;
-                //             case "Listed":
-                //                 return <Chip color="success" label="Listed" size="small" />;
-                //             case 'Disposal':
-                //                 return <Chip color="error" label="Disposal" size="small" />;
-                //             default:
-                //                 return <Chip color="warning" label="Penging" size="small" />;
-                //         }
-                //     }
-                // },
+                {
+                    Header: 'Status',
+                    accessor: 'isActive',
+                    Cell: ({ value }: { value: boolean }) => {
+                        switch (value) {
+                            case true:
+                                return <Chip color="warning" label="Not Returned" size="small" />;
+                            case false:
+                                return <Chip color="success" label="Returned" size="small" />;
+                            default:
+                                return <Chip color="success" label="Returned" size="small" />;
+                        }
+                    }
+                },
                 {
                     id: "actions",
                     Header: 'Actions',
@@ -252,7 +251,7 @@ const TransferBookList = () => {
                                                 setCustomer({ ...data });
                                                 handleAdd();
                                             }}
-                                            disabled={row.values?.statusId === 2}
+                                            disabled={row.values?.isActive === false}
                                         >
                                             <EditTwoTone twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
@@ -268,7 +267,7 @@ const TransferBookList = () => {
                                                 setOpenAlert(true)
 
                                             }}
-                                            disabled={row.values?.statusId === 2}
+                                            disabled={row.values?.isActive === false}
                                         >
                                             <ReloadOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
@@ -303,8 +302,7 @@ const TransferBookList = () => {
                 page: 0,
                 per_page: 10,
                 search: '',
-                sort: "_id",
-                isActive: true
+                sort: "_id"
             }
         ))
     }, [success])
