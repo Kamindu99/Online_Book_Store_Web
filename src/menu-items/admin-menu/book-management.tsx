@@ -32,6 +32,20 @@ const bookmanagement: NavItemType = {
             icon: icons.BookOutlined,
         },
         {
+            id: 'Order List',
+            title: <FormattedMessage id="Order List" />,
+            type: 'item',
+            url: '/book-management/pre-order/list',
+            icon: icons.BookOutlined,
+        },
+        {
+            id: 'My Order List',
+            title: <FormattedMessage id="My Order List" />,
+            type: 'item',
+            url: '/book-management/pre-order/my-list',
+            icon: icons.BookOutlined,
+        },
+        {
             id: 'disposal-list',
             title: <FormattedMessage id="disposal-list" />,
             type: 'item',

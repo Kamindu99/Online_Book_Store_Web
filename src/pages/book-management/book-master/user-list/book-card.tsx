@@ -16,9 +16,10 @@ interface BookCardProps {
     noOfPages: number;
     bookId: string;
     isFavourite?: boolean;
+    status: string;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, categoryName, noOfPages, bookId, isFavourite }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, categoryName, noOfPages, bookId, isFavourite, status }) => {
 
     const { user } = useAuth()
     const Navigate = useNavigate();
@@ -78,7 +79,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                         fontWeight: 'bold',
                         zIndex: 1, // Ensure the banner is on top of everything
                     }}>
-                        Not Available
+                        {status === 'Ordered' ? 'Ordered' : 'Not Available'}
                     </Box>
                 )
             }

@@ -18,6 +18,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
 import ProductReview from 'sections/book-management/view/ProductReview';
 import RelatedProducts from 'sections/book-management/view/RelatedProducts';
+import { createBookorder, toInitialState as toInitialStateOrder } from 'store/reducers/book-order';
 
 // ==============================|| PRODUCT DETAILS - MAIN ||============================== //
 
@@ -29,13 +30,14 @@ const ProductDetails = () => {
 
     const { bookById, isLoading: isLoadingBook } = useSelector(state => state.book)
     const { success, error, isLoading } = useSelector(state => state.favouriteBook)
+    const { success: successOrder, error: errorOrder, isLoading: isLoadingOrder } = useSelector(state => state.booksorder)
 
     useEffect(() => {
         dispatch(getBookById({
             bookId: id!,
             userId: user?.id!
         }));
-    }, [id, dispatch, success]);
+    }, [id, dispatch, success, successOrder]);
 
     const handleBorrow = (event: React.MouseEvent) => {
         // Prevent the event from propagating to the Card's onClick
@@ -47,6 +49,19 @@ const ProductDetails = () => {
             } else {
                 dispatch(deleteBookfavourite(bookById?._id, user.id))
             }
+        }
+    };
+
+    const handleOrderBook = (event: React.MouseEvent) => {
+        // Prevent the event from propagating to the Card's onClick
+        event.stopPropagation();
+        // Handle the borrow action
+        if (user && bookById) {
+            dispatch(createBookorder({
+                bookId: bookById?._id,
+                userId: user.id,
+                comment: 'Order book'
+            }))
         }
     };
 
@@ -71,6 +86,26 @@ const ProductDetails = () => {
             );
             dispatch(toInitialState());
         }
+        if (errorOrder != null) {
+            let defaultErrorMessage = "ERROR";
+            // @ts-ignore
+            const errorExp = errorOrder as Template1Error
+            if (errorExp.message) {
+                defaultErrorMessage = errorExp.message
+            }
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: defaultErrorMessage,
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialStateOrder());
+        }
     }, [error]);
 
     useEffect(() => {
@@ -88,9 +123,23 @@ const ProductDetails = () => {
             );
             dispatch(toInitialState());
         }
-    }, [success])
+        if (successOrder != null) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: successOrder,
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: true
+                })
+            );
+            dispatch(toInitialStateOrder());
+        }
+    }, [success, successOrder])
 
-    if (isLoading || isLoadingBook) {
+    if (isLoading || isLoadingBook || isLoadingOrder) {
         return <Loading />
     }
 
@@ -105,7 +154,7 @@ const ProductDetails = () => {
                                     <ProductImages image={bookById?.imageUrl!} />
                                 </Grid>
                                 <Grid item xs={12} sm={7.2}>
-                                    <ProductInfo product={bookById} handleBorrow={handleBorrow} />
+                                    <ProductInfo product={bookById} handleBorrow={handleBorrow} handleOrderBook={handleOrderBook} />
                                 </Grid>
                             </Grid>
                         </MainCard>

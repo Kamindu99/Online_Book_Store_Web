@@ -26,14 +26,14 @@ const ProductReview = ({ reviewId, avatar, date, name, review, removeReview, can
       <Avatar alt={name} src={avatar && avatar} />
       <Stack spacing={2}>
         <Stack>
-          <Typography variant="subtitle1" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>
+          <Typography variant="subtitle2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>
             {name}
           </Typography>
           <Typography variant="caption" color="textSecondary">
             {date as ReactNode}
           </Typography>
         </Stack>
-        <Typography variant="body2">{review}</Typography>
+        <Typography variant="body1">{review}</Typography>
       </Stack>
       <IconButton
         aria-label="add to favorites"

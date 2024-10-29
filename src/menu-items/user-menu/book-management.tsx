@@ -37,6 +37,13 @@ const bookmanagement: NavItemType = {
             type: 'item',
             url: '/book-management/past-read-books/list',
             icon: icons.PropertySafetyOutlined,
+        },
+        {
+            id: 'My Order List',
+            title: <FormattedMessage id="My Order List" />,
+            type: 'item',
+            url: '/book-management/pre-order/my-list',
+            icon: icons.BookOutlined,
         }
     ]
 };

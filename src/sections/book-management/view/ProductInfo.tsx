@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
@@ -11,14 +10,13 @@ import {
 } from '@mui/material';
 
 // assets
-import { Books } from 'types/book-master';
 import { HeartFilled, HeartOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { Books } from 'types/book-master';
 
 // ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
 
-const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: (event: React.MouseEvent) => void }) => {
+const ProductInfo = ({ product, handleBorrow, handleOrderBook }: { product: Books, handleBorrow: (event: React.MouseEvent) => void, handleOrderBook: (event: React.MouseEvent) => void }) => {
 
-    const [value] = useState<number>(1);
     const Navigate = useNavigate();
 
     const handleRequest = () => {
@@ -95,14 +93,12 @@ const ProductInfo = ({ product, handleBorrow }: { product: Books, handleBorrow: 
             </Typography>
             <br />
             <Stack direction="row" alignItems="center" spacing={1} sx={{ position: { xs: '', sm: 'absolute' }, bottom: 20, width: { xs: "100%", sm: "55%" } }}>
-                {product.isActive && value > 0 && (
-                    <Button fullWidth color="primary" variant="contained" size="large" onClick={handleBorrow}>
-                        {product?.isFavourite ? 'Not Favourite' : 'Add to Favourite'}
-                    </Button>
-                )}
-                <Button type="button" fullWidth disabled={value < 1 || !product.isActive} color="secondary" variant="outlined" size="large"
+                <Button fullWidth color="primary" variant="contained" size="large" onClick={handleOrderBook} disabled={!product.isActive}>
+                    {product.isActive ? "Pre-Order" : "Not Available"}
+                </Button>
+                <Button type="button" fullWidth color="secondary" variant="outlined" size="large"
                     onClick={() => { Navigate(`/book-management/book-master/user-list`) }}>
-                    {!product.isActive ? 'Sold Out' : 'Back'}
+                    {'Back'}
                 </Button>
             </Stack>
         </Stack>

@@ -299,6 +299,8 @@ const List = () => {
                                 return <Chip color="success" label="Listed" size="small" />;
                             case 'Disposal':
                                 return <Chip color="error" label="Disposal" size="small" />;
+                            case 'Ordered':
+                                return <Chip color="error" label="Ordered" size="small" />;
                             default:
                                 return <Chip color="warning" label="Penging" size="small" />;
                         }

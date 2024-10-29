@@ -276,6 +276,7 @@ const List = () => {
                             isActive={book.isActive!}
                             isFavourite={book.isFavourite!}
                             bookId={book._id!}
+                            status={book.status!}
                         />
                     </Grid>
 
