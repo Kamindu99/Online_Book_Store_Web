@@ -225,6 +225,8 @@ const TransferBookList = () => {
                                 return <Chip color="error" label="Cancelled" size="small" />;
                             case "Borrowed":
                                 return <Chip color="success" label="Borrowed" size="small" />;
+                            case "Not Borrow":
+                                return <Chip color="error" label="Not Borrow" size="small" />;
                             default:
                                 return <Chip color="warning" label="Pending" size="small" />;
                         }

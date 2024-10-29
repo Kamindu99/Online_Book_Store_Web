@@ -45,13 +45,13 @@ const bookmanagement: NavItemType = {
             url: '/book-management/pre-order/my-list',
             icon: icons.BookOutlined,
         },
-        {
-            id: 'disposal-list',
-            title: <FormattedMessage id="disposal-list" />,
-            type: 'item',
-            url: '/book-management/book-disposal/list',
-            icon: icons.BlockOutlined,
-        },
+        // {
+        //     id: 'disposal-list',
+        //     title: <FormattedMessage id="disposal-list" />,
+        //     type: 'item',
+        //     url: '/book-management/book-disposal/list',
+        //     icon: icons.BlockOutlined,
+        // },
         {
             id: 'transfer-list',
             title: <FormattedMessage id="transfer-list" />,

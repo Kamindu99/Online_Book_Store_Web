@@ -252,7 +252,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                                             Cancel
                                         </Button>
                                         <Button type="submit" variant="contained" disabled={isSubmitting}>
-                                            {booktransfer ? 'Edit' : 'Add'}
+                                            {booktransfer ? 'Borrow' : 'Add'}
                                         </Button>
                                     </Stack>
                                 </Grid>
