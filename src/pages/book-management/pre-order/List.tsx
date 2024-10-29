@@ -4,6 +4,7 @@ import { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react';
 // material ui
 import {
     Chip,
+    Dialog,
     IconButton,
     Stack,
     Table,
@@ -37,6 +38,8 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { Booksorder } from 'types/book-order';
 import { Loading } from 'utils/loading';
 import { ReactTableProps, dataProps } from './types/types';
+import { PopupTransition } from 'components/@extended/Transitions';
+import AddEditTransfer from 'sections/book-management/pre-order/AddEditTransfer';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -220,6 +223,8 @@ const TransferBookList = () => {
                                 return <Chip color="error" label="Rejected" size="small" />;
                             case "Cancelled":
                                 return <Chip color="error" label="Cancelled" size="small" />;
+                            case "Borrowed":
+                                return <Chip color="success" label="Borrowed" size="small" />;
                             default:
                                 return <Chip color="warning" label="Pending" size="small" />;
                         }
@@ -262,6 +267,20 @@ const TransferBookList = () => {
                                             disabled={row.values?.status !== "Pending"}
                                         >
                                             <CloseOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Borrow">
+                                        <IconButton
+                                            color="success"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                const data: Booksorder = row.original;
+                                                e.stopPropagation();
+                                                setCustomer({ ...data });
+                                                handleAdd();
+                                            }}
+                                            disabled={row.values?.status !== "Approved"}
+                                        >
+                                            <CheckOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>
@@ -351,6 +370,14 @@ const TransferBookList = () => {
         }
     }, [success])
 
+    const [customer, setCustomer] = useState<any>(null);
+    const [add, setAdd] = useState<boolean>(false);
+
+    const handleAdd = () => {
+        setAdd(!add);
+        if (customer && !add) setCustomer([]);
+    };
+
     if (isLoading) {
         return <Loading />
     }
@@ -364,6 +391,20 @@ const TransferBookList = () => {
                         data={bookList} />
                 </ScrollX>
             </MainCard>
+            {add &&
+                <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleAdd}
+                    open={add}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <AddEditTransfer booktransfer={customer} onCancel={handleAdd} />
+                </Dialog>
+            }
             {/* alert model */}
             {bookTransferId && <AlertPreOrderApprove title={action!} open={openAlert} handleClose={handleAlertClose} deleteId={bookTransferId} />}
         </>

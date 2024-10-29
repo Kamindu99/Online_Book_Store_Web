@@ -10,7 +10,6 @@ import {
     Divider,
     Grid,
     InputLabel,
-    MenuItem,
     Stack,
     TextField,
     useTheme
@@ -30,11 +29,12 @@ import { dispatch, useSelector } from 'store';
 
 // assets
 import { getBooksFdd, toInitialState } from 'store/reducers/book-master';
-import { createBooktransfer, updateBooktransfer } from 'store/reducers/book-transfer';
-import { Books } from 'types/book-master';
-import { getUsersFdd } from 'store/reducers/users';
-import { Users } from 'types/users';
+import { createBooktransfer } from 'store/reducers/book-transfer';
 import { getCateogyCodesFdd } from 'store/reducers/category-code';
+import { getUsersFdd } from 'store/reducers/users';
+import { Books } from 'types/book-master';
+import { Users } from 'types/users';
+import { updateBookorder } from 'store/reducers/book-order';
 
 // types
 
@@ -42,6 +42,7 @@ import { getCateogyCodesFdd } from 'store/reducers/category-code';
 const getInitialValues = (booktransfer: FormikValues | null) => {
 
     const newBooktransfer = {
+        _id: '',
         bookId: '',
         transferedate: new Date().toISOString().split('T')[0],
         userId: '',
@@ -71,7 +72,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
     const theme = useTheme()
 
     const BooktransferSchema = Yup.object().shape({
-        transferedate: Yup.string().max(255).required('Borrow date is required'),
+        transferedate: Yup.string().max(255).required('Transfer date is required'),
         userId: Yup.string().max(255).required('Borrow person is required')
     });
 
@@ -81,15 +82,16 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
         enableReinitialize: true,
         onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
-                if (booktransfer) {
-                    dispatch(updateBooktransfer(values));
-                } else {
-                    dispatch(createBooktransfer({
-                        bookId: values.bookId,
-                        transferedate: values.transferedate,
-                        userId: values.userId
-                    }));
-                }
+                dispatch(createBooktransfer({
+                    bookId: values.bookId,
+                    transferedate: values.transferedate,
+                    userId: values.userId
+                }));
+                dispatch(updateBookorder({
+                    _id: values._id,
+                    approverComment: 'Book Borrowed',
+                    status: 'Borrowed'
+                }))
                 resetForm()
                 getInitialValues(null)
                 dispatch(toInitialState());
@@ -143,26 +145,33 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
             <FormikProvider value={formik}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <DialogTitle>{booktransfer ? 'Edit Borrow Details' : 'New Borrow Details'}</DialogTitle>
+                        <DialogTitle>{booktransfer ? 'Book Borrow Details' : 'New Borrow Details'}</DialogTitle>
                         <DialogContent sx={{ p: 2.5 }}>
                             <Grid container spacing={3}>
 
                                 <Grid item xs={12} lg={6}>
                                     <Stack spacing={1.25}>
                                         <InputLabel htmlFor="categoryId">Category</InputLabel>
-                                        <TextField
+                                        <Autocomplete
                                             fullWidth
+                                            disabled
                                             id="categoryId"
-                                            select
-                                            placeholder="Enter Book Category"
-                                            {...getFieldProps('categoryId')}
-                                            error={Boolean(touched.categoryId && errors.categoryId)}
-                                            helperText={touched.categoryId && errors.categoryId}
-                                        >
-                                            {categoryCodeFdd?.map((category) => (
-                                                <MenuItem key={category._id} value={category._id}>{category.categoryName}</MenuItem>
-                                            ))}
-                                        </TextField>
+                                            value={categoryCodeFdd?.find((option) => option._id === formik.values.categoryId) || null}
+                                            onChange={(event: any, newValue: Books | null) => {
+                                                formik.setFieldValue('categoryId', newValue?._id);
+                                            }}
+                                            options={categoryCodeFdd || []}
+                                            getOptionLabel={(item) => `${item.categoryName}`}
+                                            renderInput={(params) => {
+                                                return (
+                                                    <TextField
+                                                        {...params}
+                                                        placeholder="Select Category"
+                                                        sx={{ '& .MuiAutocomplete-input.Mui-disabled': { WebkitTextFillColor: theme.palette.text.primary } }}
+                                                    />
+                                                )
+                                            }}
+                                        />
                                     </Stack>
                                 </Grid>
 
@@ -173,6 +182,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                                         </InputLabel>
                                         <Autocomplete
                                             fullWidth
+                                            disabled
                                             id="bookId"
                                             value={bookList?.find((option) => option._id === formik.values.bookId) || null}
                                             onChange={(event: any, newValue: Books | null) => {
@@ -214,6 +224,7 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
                                         </InputLabel>
                                         <Autocomplete
                                             fullWidth
+                                            disabled
                                             id="userId"
                                             value={usersFdd?.find((option) => option._id === formik.values.userId) || null}
                                             onChange={(event: any, newValue: Users | null) => {

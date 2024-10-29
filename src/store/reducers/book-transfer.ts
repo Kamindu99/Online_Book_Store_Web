@@ -123,7 +123,7 @@ export function createBooktransfer(createBookProps: Bookstransfer) {
     return async () => {
         dispatch(slice.actions.startLoading());
         try {
-            const response = await axios.post('/api/v1/book-management/book-transfer/', createBookProps);
+            const response = await axios.post('/api/v1/book-management/book-transfer', createBookProps);
             dispatch(slice.actions.createBookSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));

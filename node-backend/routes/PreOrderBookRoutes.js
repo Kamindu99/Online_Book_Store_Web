@@ -132,7 +132,7 @@ router.route("/approve/:id").put(async (req, res) => {
         status: req.body.status,
         approverComment: req.body.approverComment,
         approvedDate: new Date().toISOString().slice(0, 10),
-        isActive: req.body.status === "Cancelled" ? false : true
+        isActive: req.body.status === "Cancelled" || req.body.status === "Rejected" || req.body.status === "Borrowed" ? false : true
     };
 
     // Step 1: Update the product
@@ -240,7 +240,16 @@ router.route("/approve/:id").put(async (req, res) => {
                             updatedProduct
                         });
                     });
-                } else {
+                } else if (updatedOrder.status === "Borrowed") {
+                    // Call the book transfer function directly
+                    const transferResult = await saveBookTransfer({ bookId: req.body.bookId, userId: req.body.userId, transferedate: req.body.transferedate });
+                    return res.status(200).json(transferResult);
+                    // Update the book status to 'Borrowed'
+                    res.status(200).json({
+                        status: "Book pre-ordered and book status updated",
+                        updatedProduct
+                    });
+                } else if (updatedOrder.status === "Cancelled") {
                     // Update the book status to 'Listed'
                     const updatedBook = await BookModel.findByIdAndUpdate(
                         product.bookId,
@@ -253,6 +262,11 @@ router.route("/approve/:id").put(async (req, res) => {
                     }
                     res.status(200).json({
                         status: "Pre-order cancelled",
+                        updatedProduct
+                    });
+                } else {
+                    res.status(200).json({
+                        status: "Book pre-ordered and book status updated",
                         updatedProduct
                     });
                 }
