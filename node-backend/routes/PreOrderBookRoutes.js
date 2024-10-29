@@ -5,6 +5,7 @@ const BookModel = require('../models/BookModel')
 const Category = require('../models/CategoryModel')
 const UserModel = require('../models/UserModel');
 const nodemailer = require('nodemailer');
+const { saveBookTransfer } = require('../services/BookTransferService');
 
 // Configure your SMTP transport
 const transporter = nodemailer.createTransport({
@@ -241,14 +242,16 @@ router.route("/approve/:id").put(async (req, res) => {
                         });
                     });
                 } else if (updatedOrder.status === "Borrowed") {
-                    // Call the book transfer function directly
-                    const transferResult = await saveBookTransfer({ bookId: req.body.bookId, userId: req.body.userId, transferedate: req.body.transferedate });
-                    return res.status(200).json(transferResult);
-                    // Update the book status to 'Borrowed'
-                    res.status(200).json({
-                        status: "Book pre-ordered and book status updated",
-                        updatedProduct
-                    });
+                    try {
+                        const result = await saveBookTransfer({
+                            bookId: updatedProduct?.bookId,
+                            userId: updatedProduct?.userId,
+                            transferedate: new Date().toISOString().slice(0, 10),
+                        });
+                        res.status(200).json(result);
+                    } catch (error) {
+                        res.status(500).json({ message: 'Error saving Book', error: error.message });
+                    }
                 } else if (updatedOrder.status === "Cancelled") {
                     // Update the book status to 'Listed'
                     const updatedBook = await BookModel.findByIdAndUpdate(
