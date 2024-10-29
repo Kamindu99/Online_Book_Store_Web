@@ -53,12 +53,12 @@ export default function AlertPreOrderApprove({ title, open, handleClose, deleteI
                                 // delete API call
                                 dispatch(updateBookorder({
                                     _id: deleteId,
-                                    approverComment: title === 'approve' ? 'Approved' : 'Rejected',
-                                    status: title === 'approve' ? 'Approved' : 'Rejected'
+                                    approverComment: title === 'approve' ? 'Approved' : title === 'not borrow' ? 'Not Borrow' : 'Rejected',
+                                    status: title === 'approve' ? 'Approved' : title === 'not borrow' ? 'Not Borrow' : 'Rejected'
                                 }))
                                 handleClose(true)
                             }} autoFocus>
-                            {title === 'approve' ? 'Approve' : 'Reject'}
+                            {title === 'approve' ? 'Approve' : title === 'not borrow' ? 'Not Borrow' : 'Reject'}
                         </Button>
                     </Stack>
                 </Stack>

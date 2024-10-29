@@ -267,6 +267,21 @@ router.route("/approve/:id").put(async (req, res) => {
                         status: "Pre-order cancelled",
                         updatedProduct
                     });
+                } else if (updatedOrder.status === "Not Borrow") {
+                    // Update the book status to 'Listed'
+                    const updatedBook = await BookModel.findByIdAndUpdate(
+                        product.bookId,
+                        { status: 'Listed', isActive: true }, // Update status to 'Ordered'
+                        { new: true }         // Return updated document
+                    );
+
+                    if (!updatedBook) {
+                        return res.status(404).json({ status: "Book not found" });
+                    }
+                    res.status(200).json({
+                        status: "Pre-order Not Borrow",
+                        updatedProduct
+                    });
                 } else {
                     res.status(200).json({
                         status: "Book pre-ordered and book status updated",

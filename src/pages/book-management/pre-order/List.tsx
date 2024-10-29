@@ -28,7 +28,7 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, SyncOutlined, DeleteOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AlertPreOrderApprove from 'sections/book-management/pre-order/AlertPreOrderApprove';
@@ -280,7 +280,22 @@ const TransferBookList = () => {
                                             }}
                                             disabled={row.values?.status !== "Approved"}
                                         >
-                                            <CheckOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                            <SyncOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="NotBorrow">
+                                        <IconButton
+                                            color="error"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                let data: Booksorder = row.original;
+                                                e.stopPropagation();
+                                                setBookTransferId(data._id!)
+                                                setAction('not borrow')
+                                                setOpenAlert(true)
+                                            }}
+                                            disabled={row.values?.status !== "Approved"}
+                                        >
+                                            <DeleteOutlined twoToneColor={row.values?.statusId === 2 ? theme.palette.secondary.main : theme.palette.primary.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>

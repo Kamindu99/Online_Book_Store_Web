@@ -29,12 +29,11 @@ import { dispatch, useSelector } from 'store';
 
 // assets
 import { getBooksFdd, toInitialState } from 'store/reducers/book-master';
-import { createBooktransfer } from 'store/reducers/book-transfer';
+import { updateBookorder } from 'store/reducers/book-order';
 import { getCateogyCodesFdd } from 'store/reducers/category-code';
 import { getUsersFdd } from 'store/reducers/users';
 import { Books } from 'types/book-master';
 import { Users } from 'types/users';
-import { updateBookorder } from 'store/reducers/book-order';
 
 // types
 
@@ -82,11 +81,6 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
         enableReinitialize: true,
         onSubmit: (values, { setSubmitting, resetForm }) => {
             try {
-                dispatch(createBooktransfer({
-                    bookId: values.bookId,
-                    transferedate: values.transferedate,
-                    userId: values.userId
-                }));
                 dispatch(updateBookorder({
                     _id: values._id,
                     approverComment: 'Book Borrowed',
