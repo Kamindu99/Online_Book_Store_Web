@@ -35,6 +35,7 @@ const getInitialValues = (categoryCode: FormikValues | null) => {
         _id: '',
         subject: '',
         message: '',
+        booksList: []
     };
 
     if (categoryCode) {
@@ -61,7 +62,18 @@ const MailSenderBook = () => {
             try {
                 dispatch(createSendMail({
                     subject: values.subject,
-                    message: values.message
+                    message: values.message,
+                    booksList: [
+                        {
+                            _id: '66e8523e2b964144f112e570'
+                        },
+                        {
+                            _id: '66e852d12b964144f112e578'
+                        },
+                        {
+                            _id: '66e8533c2b964144f112e580'
+                        }
+                    ]
                 }));
                 resetForm()
                 getInitialValues(null)

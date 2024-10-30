@@ -1,6 +1,11 @@
+export type BooksList = {
+    _id: string;
+};
+
 export type SendMailDTO = {
     subject?: string;
     message?: string;
+    booksList?: BooksList[];
 };
 
 export interface SendMailStateProps {
