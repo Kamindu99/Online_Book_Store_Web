@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
             booksList.map(async (bookId) => {
                 const book = await BookModel.findById(bookId);
                 return {
-                    bookCode: book.bookCode,
+                    author: book.author,
                     bookName: book.bookName,
                     imageUrl: book.imageUrl, // assuming imageUrl is in base64 format
                 };
@@ -50,17 +50,14 @@ router.post("/", async (req, res) => {
                         style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
                         <div style="text-align: center;">
                             <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png"
-                                alt="Wanigasinghe Books Collection" style="width: 150px; margin-bottom: 20px;">
+                                alt="Wanigasinghe Books Collection" style="width: 150px; margin-bottom: 10px;">
                         </div>
 
                         <h2 style="color: #4CAF50; text-align: center;">Hello Kamindu Gayantha,</h2>
 
                         <p style="font-size: 16px; line-height: 1.6;">
-                            We’re excited to share that new titles have just been added to our collection! Our latest selection has been
-                            handpicked to inspire, educate, and entertain book lovers like you.
+                             ${message}
                         </p>
-
-                        <p> ${message} </p>
 
                         <h3 style="color: #333;">✨ New Arrivals ✨</h3>
                          <ul style="font-size: 16px; color: #555; line-height: 1.8;">
@@ -70,7 +67,7 @@ router.post("/", async (req, res) => {
                                         <img src="cid:bookImage${index}" alt="Book Image" style="height: 80px; border-radius: 5px; margin-right: 10px;" />
                                         <div>
                                             <strong>${book.bookName}</strong><br/>
-                                            Book Code: ${book.bookCode}
+                                            Author: ${book.author}
                                         </div>
                                     </div>
                                 </li>
@@ -81,8 +78,9 @@ router.post("/", async (req, res) => {
                             Each of these books is now available at <strong>Wanigasinghe Books Collection</strong>. Don’t miss out on reading
                             them!
                         </p>
-                        <p>Thank you for using Wanigasinghe Books Collection.</p>
-                        <br />
+
+                        <p style="line-height: 2.6;">Thank you for using Wanigasinghe Books Collection.</p>
+                       
                         <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
                         <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
                         <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
