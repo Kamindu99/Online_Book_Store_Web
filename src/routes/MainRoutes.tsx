@@ -17,6 +17,7 @@ const MyFavoBookList = Loadable(lazy(() => import('pages/book-management/favouri
 const Viewbook = Loadable(lazy(() => import('pages/book-management/book-master/view/view-book')));
 const OrderList = Loadable(lazy(() => import('pages/book-management/pre-order/List')));
 const MyOrderList = Loadable(lazy(() => import('pages/book-management/my-orders/List')));
+const SendMail = Loadable(lazy(() => import('pages/book-management/mail-sender/create')));
 
 //user management
 const ViewProfile = Loadable(lazy(() => import('pages/user-management/profile-view/ViewProfile')));
@@ -111,6 +112,10 @@ const MainRoutes = {
             {
               path: 'qr-scan',
               element: <QRScanner />
+            },
+            {
+              path: 'send-mail',
+              element: <SendMail />
             }
           ]
         },

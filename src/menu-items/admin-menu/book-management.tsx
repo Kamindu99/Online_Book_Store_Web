@@ -26,7 +26,7 @@ const bookmanagement: NavItemType = {
         },
         {
             id: 'master-list-user',
-            title: <FormattedMessage id="master-list" />,
+            title: <FormattedMessage id="master-list-user" />,
             type: 'item',
             url: '/book-management/book-master/user-list',
             icon: icons.BookOutlined,
@@ -78,6 +78,13 @@ const bookmanagement: NavItemType = {
             title: <FormattedMessage id="User Details" />,
             type: 'item',
             url: '/book-management/qr-scan',
+            icon: icons.ScanOutlined,
+        },
+        {
+            id: 'Send Mail',
+            title: <FormattedMessage id="Send Mail" />,
+            type: 'item',
+            url: '/book-management/send-mail',
             icon: icons.ScanOutlined,
         }
     ]

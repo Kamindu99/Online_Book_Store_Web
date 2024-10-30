@@ -44,3 +44,6 @@ app.use("/api/v1/book-management/reviews", bookreviews);
 
 const preOrderBook = require('./routes/PreOrderBookRoutes');
 app.use("/api/v1/book-management/pre-order", preOrderBook);
+
+const sendMail = require('./routes/SendMailRoutes');
+app.use("/api/v1/book-management/send-mail", sendMail);

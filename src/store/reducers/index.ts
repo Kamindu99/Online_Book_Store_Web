@@ -20,6 +20,7 @@ import favouriteBook from './favourite-book';
 import categoryCode from './category-code';
 import bookReview from './book-reviews';
 import booksorder from './book-order';
+import sendMail from './send-mail';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -45,7 +46,8 @@ const reducers = combineReducers({
   favouriteBook,
   categoryCode,
   bookReview,
-  booksorder
+  booksorder,
+  sendMail
 });
 
 export default reducers;

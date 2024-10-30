@@ -19,7 +19,7 @@ const bookmanagement: NavItemType = {
     children: [
         {
             id: 'master-list-user',
-            title: <FormattedMessage id="master-list" />,
+            title: <FormattedMessage id="master-list-user" />,
             type: 'item',
             url: '/book-management/book-master/user-list',
             icon: icons.BookOutlined,
