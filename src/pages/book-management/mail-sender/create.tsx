@@ -1,6 +1,7 @@
 
 // material-ui
 import {
+    Autocomplete,
     Button,
     Grid,
     InputLabel,
@@ -21,10 +22,11 @@ import { dispatch, useSelector } from 'store';
 // assets
 import MainCard from 'components/MainCard';
 import { useEffect } from 'react';
-import { toInitialState } from 'store/reducers/book-master';
-import { createSendMail } from 'store/reducers/send-mail';
+import { getBooksFdd } from 'store/reducers/book-master';
+import { createSendMail, toInitialState } from 'store/reducers/send-mail';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { Loading } from 'utils/loading';
+import { Books } from 'types/book-master';
 
 // types
 
@@ -51,7 +53,7 @@ const MailSenderBook = () => {
 
     const CategoryCodeSchema = Yup.object().shape({
         subject: Yup.string().max(255).required('Subject is required'),
-        message: Yup.string().max(255).required('Message is required'),
+        message: Yup.string().required('Message is required'),
     });
 
     const formik = useFormik({
@@ -63,21 +65,10 @@ const MailSenderBook = () => {
                 dispatch(createSendMail({
                     subject: values.subject,
                     message: values.message,
-                    booksList: [
-                        {
-                            _id: '66e8523e2b964144f112e570'
-                        },
-                        {
-                            _id: '66e852d12b964144f112e578'
-                        },
-                        {
-                            _id: '66e8533c2b964144f112e580'
-                        }
-                    ]
+                    booksList: values.booksList.map((book: Books) => ({ _id: book._id! }))
                 }));
                 resetForm()
                 getInitialValues(null)
-                dispatch(toInitialState());
                 setSubmitting(false);
             } catch (error) {
                 console.error(error);
@@ -127,11 +118,17 @@ const MailSenderBook = () => {
         }
     }, [success])
 
+    const { handleSubmit, isSubmitting } = formik;
+
+    const { booksFdd } = useSelector(state => state.book)
+
+    useEffect(() => {
+        dispatch(getBooksFdd());
+    }, [])
+
     if (isLoading) {
         return <Loading />
     }
-
-    const { handleSubmit, isSubmitting } = formik;
 
     return (
         <>
@@ -141,6 +138,26 @@ const MailSenderBook = () => {
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
 
                             <Grid container spacing={2}>
+
+                                <Grid item xs={12}>
+                                    <Stack spacing={1.25}>
+                                        <InputLabel htmlFor="booksList">Select Books</InputLabel>
+                                        <Autocomplete
+                                            multiple
+                                            fullWidth
+                                            id="booksList"
+                                            options={booksFdd || []}
+                                            getOptionLabel={(option) => `${option.bookCode} - ${option.bookName}`}
+                                            value={formik.values.booksList}
+                                            onChange={(event, newValue) => {
+                                                formik.setFieldValue('booksList', newValue);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} placeholder="Select Books" />
+                                            )}
+                                        />
+                                    </Stack>
+                                </Grid>
 
                                 <Grid item xs={12}>
                                     <Stack spacing={1}>

@@ -149,7 +149,13 @@ router.route("/get-book-code").get(async (req, res) => {
 
 router.route("/fdd").get((req, res) => {
     // Fetch products where isActive is true
-    const { categoryId = '' } = req.query;
+    const { categoryId = '', direction = 'asc' } = req.query;
+
+    // Define sort object
+    const sortOrder = direction === 'desc' ? -1 : 1; // descending (-1) or ascending (1)
+    const sortObj = {};
+    sortObj[_id] = sortOrder;
+
     let searchQuery = {
         isActive: true
     };
@@ -157,6 +163,7 @@ router.route("/fdd").get((req, res) => {
         searchQuery.categoryId = categoryId;
     }
     Product.find(searchQuery)
+        .sort(sortObj)
         .then((products) => {
             res.json(
                 products.map((product) => {
