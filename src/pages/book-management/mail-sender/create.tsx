@@ -123,7 +123,9 @@ const MailSenderBook = () => {
     const { booksFdd } = useSelector(state => state.book)
 
     useEffect(() => {
-        dispatch(getBooksFdd());
+        dispatch(getBooksFdd({
+            direction: 'desc',
+        }));
     }, [])
 
     if (isLoading) {

@@ -154,7 +154,7 @@ router.route("/fdd").get((req, res) => {
     // Define sort object
     const sortOrder = direction === 'desc' ? -1 : 1; // descending (-1) or ascending (1)
     const sortObj = {};
-    sortObj[_id] = sortOrder;
+    sortObj["_id"] = sortOrder;
 
     let searchQuery = {
         isActive: true

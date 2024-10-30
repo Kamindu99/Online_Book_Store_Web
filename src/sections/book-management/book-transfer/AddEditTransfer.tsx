@@ -111,7 +111,9 @@ const AddEditTransferBook = ({ booktransfer, onCancel }: Props) => {
             setBookList([])
             return
         };
-        dispatch(getBooksFdd(formik.values.categoryId));
+        dispatch(getBooksFdd({
+            categoryId: formik.values.categoryId
+        }));
     }, [formik.values.categoryId])
 
     const { usersFdd } = useSelector(state => state.users)
