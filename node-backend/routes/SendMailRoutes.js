@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
                                 alt="Wanigasinghe Books Collection" style="width: 150px; margin-bottom: 10px;">
                         </div>
 
-                        <h2 style="color: #4CAF50; text-align: center;">Hello Kamindu Gayantha,</h2>
+                        <h2 style="color: #4CAF50; text-align: center;">Hello ${user.firstName} ${user.lastName},</h2>
 
                         <p style="font-size: 16px; line-height: 1.6;">
                              ${message}
