@@ -52,6 +52,36 @@ const MainRoutes = {
     {
       path: '/',
       element: (
+        <MainLayout />
+      ),
+      children: [
+        {
+          path: 'home',
+          children: [
+            {
+              path: 'dashboard',
+              element: <Dashboard />
+            }
+          ]
+        },
+        {
+          path: 'book-management',
+          children: [
+            {
+              path: 'book-master/user-list',
+              element: <UserList />
+            },
+            {
+              path: 'book-master/view-book/:id',
+              element: <Viewbook />
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: (
         <AuthGuard>
           <MainLayout />
         </AuthGuard>

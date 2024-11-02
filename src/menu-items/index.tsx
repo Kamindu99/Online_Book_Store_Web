@@ -4,6 +4,8 @@ import bookmanagement from './user-menu/book-management';
 import home from './user-menu/home';
 import bookmanagementAdmin from './admin-menu/book-management';
 import homeAdmin from './admin-menu/home';
+import bookmanagementguest from './guest-menu/book-management';
+import homeguest from './guest-menu/home';
 
 // types
 import { NavItemType } from 'types/menu';
@@ -16,7 +18,7 @@ const MenuItems = (): { items: NavItemType[] } => {
   const { user } = useAuth();
 
   return {
-    items: user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, paramatermanagement] : [home, bookmanagement]
+    items: user === null ? [homeguest, bookmanagementguest] : user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, paramatermanagement] : [home, bookmanagement]
   };
 };
 

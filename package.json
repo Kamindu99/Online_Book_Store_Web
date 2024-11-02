@@ -1,5 +1,6 @@
 {
   "name": "Book_Collection",
+  "homepage": "/home/dashboard",
   "version": "2.1.0",
   "private": true,
   "dependencies": {

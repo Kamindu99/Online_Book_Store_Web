@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import GuestGuard from 'utils/route-guard/GuestGuard';
 import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
+import MainLayout from 'layout/MainLayout';
 
 // render - login
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -12,6 +13,8 @@ const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-passwor
 const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
 const AuthCodeVerification = Loadable(lazy(() => import('pages/auth/code-verification')));
+const Dashboard = Loadable(lazy(() => import('pages/home/dashboard')));
+
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -21,15 +24,23 @@ const LoginRoutes = {
     {
       path: '/',
       element: (
+        <MainLayout />
+      ),
+      children: [
+        {
+          path: '/',
+          element: <Dashboard />
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: (
         <GuestGuard>
           <CommonLayout />
         </GuestGuard>
       ),
       children: [
-        {
-          path: '/',
-          element: <AuthLogin />
-        },
         {
           path: 'login',
           element: <AuthLogin />

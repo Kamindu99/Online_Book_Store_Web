@@ -52,7 +52,7 @@ router.route("/").get(async (req, res) => {
         }
 
         // Fetch paginated and sorted products
-        const favoBooks = await BookFavo.find(searchQueryFavo)
+        const favoBooks = userId ? await BookFavo.find(searchQueryFavo) : []
 
         // Fetch total number of matching products
         const total = await Product.countDocuments(searchQuery);
