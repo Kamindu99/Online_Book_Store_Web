@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // material-ui
 import { Grid } from '@mui/material';
@@ -24,9 +24,22 @@ import { createBookorder, toInitialState as toInitialStateOrder } from 'store/re
 
 const ProductDetails = () => {
     const { id } = useParams();
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { user } = useAuth()
+    const { user, logout } = useAuth()
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate(`/login`, {
+                state: {
+                    from: ''
+                }
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const { bookById, isLoading: isLoadingBook } = useSelector(state => state.book)
     const { success, error, isLoading } = useSelector(state => state.favouriteBook)
@@ -49,6 +62,8 @@ const ProductDetails = () => {
             } else {
                 dispatch(deleteBookfavourite(bookById?._id, user.id))
             }
+        } else {
+            handleLogout()
         }
     };
 
@@ -62,6 +77,8 @@ const ProductDetails = () => {
                 userId: user.id,
                 comment: 'Order book'
             }))
+        } else {
+            handleLogout()
         }
     };
 

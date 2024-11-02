@@ -45,11 +45,25 @@ const ProductReviews = ({ product }: { product: string }) => {
 
   const AddReview = () => {
     if (review === "") return;
-    dispatch(createBookReviews({
-      userId: user?.id!,
-      bookId: product!,
-      comment: review
-    }));
+    if (user) {
+      dispatch(createBookReviews({
+        userId: user?.id!,
+        bookId: product!,
+        comment: review
+      }));
+    } else {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Please login to add review',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: true
+        })
+      );
+    }
   }
 
   const RemoveReview = (deletBooKId: string) => {
@@ -132,7 +146,7 @@ const ProductReviews = ({ product }: { product: string }) => {
           <Chip label="No comments" sx={{ width: '100%', background: "#cdecfa" }} />
         </Stack>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} hidden={!user}>
         <Box sx={{ p: 2, pb: 1.5, border: `1px solid ${theme.palette.divider}` }}>
           <Grid container alignItems="center" spacing={0.5}>
             <Grid item xs={12}>
