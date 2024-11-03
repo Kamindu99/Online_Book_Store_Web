@@ -229,7 +229,7 @@ router.route("/:id").get(async (req, res) => {
         }
 
         // Fetch paginated and sorted products
-        const favoBooks = await BookFavo.find(searchQueryFavo)
+        const favoBooks = userId ? await BookFavo.find(searchQueryFavo) : []
 
         let productId = req.params.id;
         const product = await Product.findById(productId)
