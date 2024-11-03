@@ -104,11 +104,11 @@ const Profile = () => {
         ref={anchorRef}
         aria-controls={open ? 'profile-grow' : undefined}
         aria-haspopup="true"
-        onClick={handleToggle}
+        onClick={user ? handleToggle : handleLogout}
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={user?.profileImage} size="xs" />
-          <Typography variant="subtitle1">{user?.name}</Typography>
+          <Typography variant="subtitle1">{user ? user?.name : "Login"}</Typography>
         </Stack>
       </ButtonBase>
       <Popper
