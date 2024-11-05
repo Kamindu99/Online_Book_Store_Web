@@ -15,6 +15,7 @@ const initialState: DefaultRootStateProps['user'] = {
     success: null,
     usersFdd: null,
     userGetById: null,
+    usersList: null,
     isLoading: false
 };
 
@@ -50,7 +51,7 @@ const slice = createSlice({
 
         // GET BOOKS FDD
         getAllUsersSuccess(state, action) {
-            state.usersFdd = action.payload;
+            state.usersList = action.payload;
             state.success = null;
         },
 
@@ -58,6 +59,11 @@ const slice = createSlice({
         GetUserByIdSuccess(state, action) {
             state.userGetById = action.payload;
             state.success = null
+        },
+
+        // Get USER BY ID
+        InactiveUserSuccess(state, action) {
+            state.success = "User Inactive Successfully";
         },
     }
 });
@@ -137,6 +143,26 @@ export function updateUser(user: UserGetById) {
         try {
             const response = await axios.put(`/api/v1/book-management/auth/update/${user._id}`, user);
             dispatch(slice.actions.GetUserByIdSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+/**
+ * UPDATE USER
+ * @param user
+ * @returns
+ */
+export function inactiveUser(userId: string) {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+
+        try {
+            const response = await axios.put(`/api/v1/book-management/auth/inactive/${userId}`);
+            dispatch(slice.actions.InactiveUserSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

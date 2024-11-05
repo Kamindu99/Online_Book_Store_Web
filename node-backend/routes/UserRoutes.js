@@ -210,6 +210,17 @@ router.route("/update/:id").put(async (req, res) => {
     }
 });
 
+router.route("/inactive/:id").put(async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndUpdate(req.params.id, {
+            isActive: false
+        }, { new: true });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 router.route("/password-reset/:id").put(async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id);

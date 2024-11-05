@@ -26,20 +26,21 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
+import { StopOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import AlertCategoryDelete from 'sections/parameter-management/category-code/AlertCategoryDelete';
+import AlertUserInactive from 'sections/user-management/all-users/AlertUserInactive';
 import { useDispatch, useSelector } from 'store';
-import { getCateogyCodeList, toInitialState } from 'store/reducers/category-code';
+import { toInitialState } from 'store/reducers/category-code';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { CategoryCodeDTO, queryStringParams } from 'types/category-code';
+import { getAllUsers } from 'store/reducers/users';
+import { UserGetById, listParametersType } from 'types/users';
 import { Loading } from 'utils/loading';
 import { ReactTableProps, dataProps } from './types/types';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, handleAddEdit, getHeaderProps, tableParams }: ReactTableProps) {
+function ReactTable({ columns, data, getHeaderProps, tableParams }: ReactTableProps) {
     const theme = useTheme();
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -159,18 +160,12 @@ const UsersList = () => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const [category, setCategory] = useState<any>(null);
-    const [add, setAdd] = useState<boolean>(false);
     const [data, setData] = useState<dataProps[]>([]);
 
-    const handleAdd = () => {
-        setAdd(!add);
-        if (category && !add) setCategory(null);
-    };
 
     //alert model
     const [openAlert, setOpenAlert] = useState(false);
-    const [categoryId, setcategoryId] = useState<string | null>(null)
+    const [userId, setUserId] = useState<string | null>(null)
 
     const handleAlertClose = () => {
         setOpenAlert(!openAlert);
@@ -198,12 +193,31 @@ const UsersList = () => {
                     }
                 },
                 {
-                    Header: 'Code',
-                    accessor: 'categoryCode'
+                    Header: 'Full Name',
+                    accessor: 'firstName',
+                    Cell: ({ row }: { row: Row }) => {
+                        let data: UserGetById = row.original;
+                        return (
+                            <>
+                                {data.firstName} {data.lastName}
+                            </>
+                        )
+                    }
                 },
                 {
-                    Header: 'Name',
-                    accessor: 'categoryName'
+                    Header: 'Registered Date',
+                    accessor: 'createdDate',
+                    Cell: ({ value }: { value: string }) => {
+                        return value?.split('T')[0] ?? '-'
+                    }
+                },
+                {
+                    Header: 'Occupation',
+                    accessor: 'occupation'
+                },
+                {
+                    Header: 'Email',
+                    accessor: 'email'
                 },
                 {
                     Header: 'Status',
@@ -227,31 +241,17 @@ const UsersList = () => {
                         return (
                             <>
                                 <Stack direction="row" alignItems="" justifyContent="" spacing={0}>
-                                    <Tooltip title="Edit">
-                                        <IconButton
-                                            color="primary"
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                const data: CategoryCodeDTO = row.original;
-                                                e.stopPropagation();
-                                                setCategory({ ...data });
-                                                handleAdd();
-                                            }}
-                                            disabled={row.values?.statusId === 2}
-                                        >
-                                            <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                                        </IconButton>
-                                    </Tooltip>
                                     <Tooltip title="Delete">
                                         <IconButton
                                             color="error"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                let data: CategoryCodeDTO = row.original;
+                                                let data: UserGetById = row.original;
                                                 e.stopPropagation();
-                                                setcategoryId(data._id!)
+                                                setUserId(data._id!)
                                                 setOpenAlert(true)
                                             }}
                                         >
-                                            <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                                            <StopOutlined twoToneColor={theme.palette.error.main} />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>
@@ -272,7 +272,7 @@ const UsersList = () => {
     const [sort, setSort] = useState<string>("_id");
     const [totalRecords, setTotalRecords] = useState<number>(0);
 
-    const { categoryCodeList, error, isLoading, success } = useSelector((state) => state.categoryCode);
+    const { usersList, error, isLoading, success } = useSelector((state) => state.users);
 
     const tableParams: TableParamsType = {
         page,
@@ -289,27 +289,27 @@ const UsersList = () => {
     }
 
     useEffect(() => {
-        const listParameters: queryStringParams = {
+        const listParameters: listParametersType = {
             page: page,
             per_page: perPage,
             direction: direction,
             sort: sort
         };
-        dispatch(getCateogyCodeList(listParameters));
+        dispatch(getAllUsers(listParameters));
     }, [dispatch, success, page, perPage, direction, sort]);
 
     useEffect(() => {
-        if (!categoryCodeList) {
+        if (!usersList) {
             setData([])
             return
         }
-        if (categoryCodeList == null) {
+        if (usersList == null) {
             setData([])
             return
         }
-        setData(categoryCodeList?.result!)
-        setTotalRecords(categoryCodeList?.pagination?.total!)
-    }, [categoryCodeList])
+        setData(usersList?.result!)
+        setTotalRecords(usersList?.pagination?.total!)
+    }, [usersList])
 
     useEffect(() => {
         if (error != null) {
@@ -361,11 +361,11 @@ const UsersList = () => {
                 <ScrollX>
                     <ReactTable columns={columns} tableParams={tableParams}
                         getHeaderProps={(column: HeaderGroup) => column.getSortByToggleProps()}
-                        data={data!} handleAddEdit={handleAdd} />
+                        data={data!} />
                 </ScrollX>
             </MainCard>
             {/* alert model */}
-            {categoryId && <AlertCategoryDelete title={""} open={openAlert} handleClose={handleAlertClose} deleteId={categoryId} />}
+            {userId && <AlertUserInactive title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userId} />}
         </>
     )
 };

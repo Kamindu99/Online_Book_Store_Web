@@ -14,9 +14,22 @@ export interface UserGetById {
     profileImage?: string;
 };
 
+export type PaginationDTO = {
+    page?: number,
+    size?: number,
+    total?: number,
+    totalPages?: number
+}
+
+export type UsersDTOList = {
+    pagination?: PaginationDTO,
+    result?: Users[];
+};
+
 export interface UserStateProps {
     usersFdd: Users[] | null;
     userGetById: UserGetById | null;
+    usersList: UsersDTOList | null;
     error: object | string | null;
     success: object | string | null;
     isLoading: boolean
