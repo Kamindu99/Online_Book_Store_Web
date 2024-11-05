@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined } from '@ant-design/icons';
+import { SyncOutlined, BookOutlined, BlockOutlined, SafetyCertificateOutlined, DeliveredProcedureOutlined, FileMarkdownOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined };
+const icons = { SyncOutlined, BookOutlined, BlockOutlined, SafetyCertificateOutlined, DeliveredProcedureOutlined, FileMarkdownOutlined };
 
 // ==============================|| MENU ITEMS - book-management ||============================== //
 
@@ -36,14 +36,14 @@ const bookmanagement: NavItemType = {
             title: <FormattedMessage id="past-read-list" />,
             type: 'item',
             url: '/book-management/past-read-books/list',
-            icon: icons.PropertySafetyOutlined,
+            icon: icons.SafetyCertificateOutlined,
         },
         {
             id: 'My Order List',
             title: <FormattedMessage id="My Order List" />,
             type: 'item',
             url: '/book-management/pre-order/my-list',
-            icon: icons.BookOutlined,
+            icon: icons.DeliveredProcedureOutlined,
         }
     ]
 };

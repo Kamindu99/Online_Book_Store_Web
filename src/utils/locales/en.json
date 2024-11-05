@@ -147,5 +147,7 @@
   "parameter-management": "Paramater Management",
   "category-code": "Category List",
   "user-management": "User Management",
-  "users-list": "Users List"
+  "users-list": "Users List",
+  "application": "Application Settings",
+  "global-configuration": "Theme Settings"
 }

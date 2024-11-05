@@ -11,6 +11,8 @@ import homeguest from './guest-menu/home';
 import { NavItemType } from 'types/menu';
 import paramatermanagement from './admin-menu/parameter-management';
 import usermanagement from './admin-menu/user-management';
+import application from './admin-menu/application';
+import applicationUser from './user-menu/application';
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -19,7 +21,7 @@ const MenuItems = (): { items: NavItemType[] } => {
   const { user } = useAuth();
 
   return {
-    items: user === null ? [homeguest, bookmanagementguest] : user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, usermanagement, paramatermanagement] : [home, bookmanagement]
+    items: user === null ? [homeguest, bookmanagementguest] : user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, usermanagement, paramatermanagement, application] : [home, bookmanagement, applicationUser]
   };
 };
 

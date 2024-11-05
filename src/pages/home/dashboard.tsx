@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import AnalyticsDataCard from "components/cards/statistics/AnalyticsDataCard";
 import MainCard from "components/MainCard";
 import { useEffect } from "react";
-import InquiryStatusPieChart from "sections/dashboard/dashboard/InquiryStatusPieChart";
+import InquiryStatusPieChart from "sections/home/dashboard/dashboard/InquiryStatusPieChart";
 import { useDispatch, useSelector } from "store";
 import { getBooksCount } from "store/reducers/book-master";
 

@@ -44,6 +44,7 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 
 // render - home page
 const Dashboard = Loadable(lazy(() => import('pages/home/dashboard')));
+const ThemeSettings = Loadable(lazy(() => import('pages/home/ThemeSettings')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -94,6 +95,10 @@ const MainRoutes = {
             {
               path: 'dashboard',
               element: <Dashboard />
+            },
+            {
+              path: 'global-configuration/theme-settings',
+              element: <ThemeSettings />
             }
           ]
         },
@@ -139,10 +144,6 @@ const MainRoutes = {
             {
               path: 'favourite',
               element: <MyFavoBookList />
-            },
-            {
-              path: 'send-mail',
-              element: <SendMail />
             }
           ]
         },
@@ -168,6 +169,10 @@ const MainRoutes = {
             {
               path: 'qr-scan',
               element: <QRScanner />
+            },
+            {
+              path: 'send-mail',
+              element: <SendMail />
             }
           ]
         },

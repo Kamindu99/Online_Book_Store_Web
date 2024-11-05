@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined } from '@ant-design/icons';
+import { SyncOutlined, GroupOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined };
+const icons = { SyncOutlined, GroupOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined };
 
 // ==============================|| MENU ITEMS - book-management ||============================== //
 
@@ -22,7 +22,7 @@ const paramatermanagement: NavItemType = {
             title: <FormattedMessage id="category-code" />,
             type: 'item',
             url: '/parameter-management/category-code',
-            icon: icons.BookOutlined,
+            icon: icons.GroupOutlined,
         },
     ]
 };

@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined } from '@ant-design/icons';
+import { SyncOutlined, BookOutlined, ProfileOutlined, BlockOutlined, ScanOutlined, SafetyCertificateOutlined, FileMarkdownOutlined, PicLeftOutlined, DeliveredProcedureOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { SyncOutlined, BookOutlined, BlockOutlined, ScanOutlined, PropertySafetyOutlined, FileMarkdownOutlined };
+const icons = { SyncOutlined, ProfileOutlined, BookOutlined, BlockOutlined, ScanOutlined, SafetyCertificateOutlined, FileMarkdownOutlined, PicLeftOutlined, DeliveredProcedureOutlined };
 
 // ==============================|| MENU ITEMS - book-management ||============================== //
 
@@ -22,7 +22,7 @@ const bookmanagement: NavItemType = {
             title: <FormattedMessage id="master-list" />,
             type: 'item',
             url: '/book-management/book-master/list',
-            icon: icons.BookOutlined,
+            icon: icons.ProfileOutlined,
         },
         {
             id: 'master-list-user',
@@ -36,14 +36,14 @@ const bookmanagement: NavItemType = {
             title: <FormattedMessage id="Order List" />,
             type: 'item',
             url: '/book-management/pre-order/list',
-            icon: icons.BookOutlined,
+            icon: icons.PicLeftOutlined,
         },
         {
             id: 'My Order List',
             title: <FormattedMessage id="My Order List" />,
             type: 'item',
             url: '/book-management/pre-order/my-list',
-            icon: icons.BookOutlined,
+            icon: icons.DeliveredProcedureOutlined,
         },
         // {
         //     id: 'disposal-list',
@@ -71,14 +71,7 @@ const bookmanagement: NavItemType = {
             title: <FormattedMessage id="past-read-list" />,
             type: 'item',
             url: '/book-management/past-read-books/list',
-            icon: icons.PropertySafetyOutlined,
-        },
-        {
-            id: 'Send Mail',
-            title: <FormattedMessage id="Send Mail" />,
-            type: 'item',
-            url: '/book-management/send-mail',
-            icon: icons.ScanOutlined,
+            icon: icons.SafetyCertificateOutlined,
         }
     ]
 };

@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { UserOutlined, ScanOutlined } from '@ant-design/icons';
+import { UserOutlined, ScanOutlined, MailOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { UserOutlined, ScanOutlined };
+const icons = { UserOutlined, ScanOutlined, MailOutlined };
 
 // ==============================|| MENU ITEMS - book-management ||============================== //
 
@@ -30,6 +30,13 @@ const usermanagement: NavItemType = {
             type: 'item',
             url: '/user-management/qr-scan',
             icon: icons.ScanOutlined,
+        },
+        {
+            id: 'Send Mail',
+            title: <FormattedMessage id="Send Mail" />,
+            type: 'item',
+            url: '/user-management/send-mail',
+            icon: icons.MailOutlined,
         }
     ]
 };
