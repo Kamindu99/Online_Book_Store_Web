@@ -24,6 +24,7 @@ const ViewProfile = Loadable(lazy(() => import('pages/user-management/profile-vi
 const EditProfile = Loadable(lazy(() => import('pages/user-management/profile-edit/EditProfile')));
 const PasswordChange = Loadable(lazy(() => import('pages/user-management/password-change/PasswordChange')));
 const QRScanner = Loadable(lazy(() => import('pages/user-management/user-scan/user-scan')));
+const UsersList = Loadable(lazy(() => import('pages/user-management/all-users/List')));
 
 //parameter management
 const CategoryCode = Loadable(lazy(() => import('pages/parameter-management/category-code/List')));
@@ -140,10 +141,6 @@ const MainRoutes = {
               element: <MyFavoBookList />
             },
             {
-              path: 'qr-scan',
-              element: <QRScanner />
-            },
-            {
               path: 'send-mail',
               element: <SendMail />
             }
@@ -164,6 +161,14 @@ const MainRoutes = {
               path: 'password-change',
               element: <PasswordChange />
             },
+            {
+              path: 'users-list',
+              element: <UsersList />
+            },
+            {
+              path: 'qr-scan',
+              element: <QRScanner />
+            }
           ]
         },
         {

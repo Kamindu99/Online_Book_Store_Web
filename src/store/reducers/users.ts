@@ -6,7 +6,7 @@ import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types
-import { DefaultRootStateProps, UserGetById } from 'types/users';
+import { DefaultRootStateProps, listParametersType, UserGetById } from 'types/users';
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +48,12 @@ const slice = createSlice({
             state.success = null;
         },
 
+        // GET BOOKS FDD
+        getAllUsersSuccess(state, action) {
+            state.usersFdd = action.payload;
+            state.success = null;
+        },
+
         // Get USER BY ID
         GetUserByIdSuccess(state, action) {
             state.userGetById = action.payload;
@@ -77,6 +83,20 @@ export function getUsersFdd() {
         try {
             const response = await axios.get('/api/v1/book-management/auth/fdd');
             dispatch(slice.actions.getUsersFddSuccess(response.data));
+        } catch (error) {
+            dispatch(slice.actions.hasError(error));
+        } finally {
+            dispatch(slice.actions.finishLoading());
+        }
+    };
+}
+
+export function getAllUsers(query: listParametersType) {
+    return async () => {
+        dispatch(slice.actions.startLoading());
+        try {
+            const response = await axios.get('/api/v1/book-management/auth', { params: query });
+            dispatch(slice.actions.getAllUsersSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

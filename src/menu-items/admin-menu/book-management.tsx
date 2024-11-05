@@ -74,13 +74,6 @@ const bookmanagement: NavItemType = {
             icon: icons.PropertySafetyOutlined,
         },
         {
-            id: 'User Details',
-            title: <FormattedMessage id="User Details" />,
-            type: 'item',
-            url: '/book-management/qr-scan',
-            icon: icons.ScanOutlined,
-        },
-        {
             id: 'Send Mail',
             title: <FormattedMessage id="Send Mail" />,
             type: 'item',
