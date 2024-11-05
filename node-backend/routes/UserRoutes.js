@@ -84,7 +84,7 @@ router.route("/login").post(async (req, res) => {
                     }
                 });
             } else {
-                return res.status(401).json({ success: false, message: "Account is inactive" });
+                return res.status(401).json({ success: false, message: "Account is inactive. Please contact the administrator" });
             }
         } else {
             // Return a 401 response if the email or password is incorrect
