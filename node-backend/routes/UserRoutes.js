@@ -67,21 +67,25 @@ router.route("/login").post(async (req, res) => {
 
         if (users.length > 0) {
             const data = { id: users[0].id, firstName: users[0].firstName, lastName: users[0].lastName };
-            const accessToken = jwt.sign(data, 'abcd1234', { expiresIn: '1h' });
-            const refreshToken = jwt.sign(data, '1234abcd', { expiresIn: '24h' });
+            if (users[0].isActive === true) {
+                const accessToken = jwt.sign(data, 'abcd1234', { expiresIn: '1h' });
+                const refreshToken = jwt.sign(data, '1234abcd', { expiresIn: '24h' });
 
-            await UserModel.findOneAndUpdate({ _id: users[0]._id }, { $set: { refreshToken: refreshToken } });
+                await UserModel.findOneAndUpdate({ _id: users[0]._id }, { $set: { refreshToken: refreshToken } });
 
-            res.json({
-                serviceToken: accessToken,
-                user: {
-                    id: users[0]._id,
-                    email: users[0].email,
-                    name: `${users[0].firstName} ${users[0].lastName}`,
-                    occupation: users[0].occupation,
-                    profileImage: users[0].profileImage
-                }
-            });
+                res.json({
+                    serviceToken: accessToken,
+                    user: {
+                        id: users[0]._id,
+                        email: users[0].email,
+                        name: `${users[0].firstName} ${users[0].lastName}`,
+                        occupation: users[0].occupation,
+                        profileImage: users[0].profileImage
+                    }
+                });
+            } else {
+                return res.status(401).json({ success: false, message: "Account is inactive" });
+            }
         } else {
             // Return a 401 response if the email or password is incorrect
             return res.status(401).json({ success: false, message: "Invalid Username or Password" });

@@ -63,7 +63,7 @@ const slice = createSlice({
 
         // Get USER BY ID
         InactiveUserSuccess(state, action) {
-            state.success = "User Inactive Successfully";
+            state.success = action.payload == true ? 'User has been activated successfully' : 'User has been inactivated successfully';
         },
     }
 });
@@ -161,8 +161,8 @@ export function inactiveUser(userId: string, status: boolean) {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axios.put(`/api/v1/book-management/auth/inactive/${userId}`, { status: status });
-            dispatch(slice.actions.InactiveUserSuccess(response.data));
+            await axios.put(`/api/v1/book-management/auth/inactive/${userId}`, { status: status });
+            dispatch(slice.actions.InactiveUserSuccess(status));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         } finally {

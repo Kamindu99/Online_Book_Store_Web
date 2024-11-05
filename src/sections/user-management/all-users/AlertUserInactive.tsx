@@ -6,7 +6,7 @@ import Avatar from 'components/@extended/Avatar';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
-import { StopOutlined } from '@ant-design/icons';
+import { StopOutlined, CheckOutlined } from '@ant-design/icons';
 import { dispatch } from 'store';
 import { inactiveUser } from 'store/reducers/users';
 
@@ -34,7 +34,7 @@ export default function AlertUserDelete({ title, open, handleClose, deleteId }: 
             <DialogContent sx={{ mt: 2, my: 1 }}>
                 <Stack alignItems="center" spacing={3.5}>
                     <Avatar color={title === 'inactive' ? 'error' : 'success'} sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
-                        <StopOutlined />
+                        {title === 'inactive' ? <StopOutlined /> : <CheckOutlined />}
                     </Avatar>
                     <Stack spacing={2}>
                         <Typography variant="h4" align="center">
@@ -52,7 +52,7 @@ export default function AlertUserDelete({ title, open, handleClose, deleteId }: 
                             dispatch(inactiveUser(deleteId!, title === 'inactive' ? false : true));
                             handleClose(true)
                         }} autoFocus>
-                            Inactive
+                            {title === 'inactive' ? 'Inactive' : 'Active'}
                         </Button>
                     </Stack>
                 </Stack>

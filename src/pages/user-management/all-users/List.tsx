@@ -12,9 +12,12 @@ import {
     TableHead,
     TableRow,
     Tooltip,
+    Typography,
     useMediaQuery,
     useTheme
 } from '@mui/material';
+
+import Avatar from 'components/@extended/Avatar';
 
 // third-party
 import { EmptyTable, HeaderSort, SortingSelect, TablePagination, TableParamsType, TableRowSelection } from 'components/third-party/ReactTable';
@@ -197,12 +200,22 @@ const UsersList = () => {
                     Header: 'Full Name',
                     accessor: 'firstName',
                     Cell: ({ row }: { row: Row }) => {
-                        let data: UserGetById = row.original;
+
+                        const values: UserGetById = row?.original;
                         return (
-                            <>
-                                {data.firstName} {data.lastName}
-                            </>
-                        )
+                            <Stack direction="row" spacing={1.5} alignItems="center">
+                                <Avatar
+                                    variant="rounded"
+                                    alt={values.firstName}
+                                    color="secondary"
+                                    size="sm"
+                                    src={values.profileImage!}
+                                />
+                                <Stack spacing={0}>
+                                    <Typography variant="subtitle1"> {values.firstName} {values.lastName}</Typography>
+                                </Stack>
+                            </Stack>
+                        );
                     }
                 },
                 {
