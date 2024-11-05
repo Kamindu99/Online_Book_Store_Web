@@ -33,12 +33,12 @@ export default function AlertUserDelete({ title, open, handleClose, deleteId }: 
         >
             <DialogContent sx={{ mt: 2, my: 1 }}>
                 <Stack alignItems="center" spacing={3.5}>
-                    <Avatar color="error" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+                    <Avatar color={title === 'inactive' ? 'error' : 'success'} sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
                         <StopOutlined />
                     </Avatar>
                     <Stack spacing={2}>
                         <Typography variant="h4" align="center">
-                            Are you sure you want to inactive this user?
+                            Are you sure you want to {title} this user?
                         </Typography>
 
                     </Stack>
@@ -47,9 +47,9 @@ export default function AlertUserDelete({ title, open, handleClose, deleteId }: 
                         <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
                             Cancel
                         </Button>
-                        <Button fullWidth color="error" variant="contained" onClick={() => {
+                        <Button fullWidth color={title === 'inactive' ? 'error' : 'success'} variant="contained" onClick={() => {
                             // delete API call
-                            dispatch(inactiveUser(deleteId!))
+                            dispatch(inactiveUser(deleteId!, title === 'inactive' ? false : true));
                             handleClose(true)
                         }} autoFocus>
                             Inactive

@@ -26,7 +26,7 @@ import {
 } from 'utils/react-table';
 
 // project import
-import { StopOutlined } from '@ant-design/icons';
+import { StopOutlined, CheckOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import AlertUserInactive from 'sections/user-management/all-users/AlertUserInactive';
@@ -166,6 +166,7 @@ const UsersList = () => {
     //alert model
     const [openAlert, setOpenAlert] = useState(false);
     const [userId, setUserId] = useState<string | null>(null)
+    const [title, setTitle] = useState<string | null>(null)
 
     const handleAlertClose = () => {
         setOpenAlert(!openAlert);
@@ -241,19 +242,33 @@ const UsersList = () => {
                         return (
                             <>
                                 <Stack direction="row" alignItems="" justifyContent="" spacing={0}>
-                                    <Tooltip title="Delete">
+                                    {row.values.isActive ? <Tooltip title="Inactive">
                                         <IconButton
                                             color="error"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                 let data: UserGetById = row.original;
                                                 e.stopPropagation();
                                                 setUserId(data._id!)
+                                                setTitle("inactive")
                                                 setOpenAlert(true)
                                             }}
                                         >
                                             <StopOutlined twoToneColor={theme.palette.error.main} />
                                         </IconButton>
-                                    </Tooltip>
+                                    </Tooltip> : <Tooltip title="Active">
+                                        <IconButton
+                                            color="success"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                let data: UserGetById = row.original;
+                                                e.stopPropagation();
+                                                setUserId(data._id!)
+                                                setTitle("active")
+                                                setOpenAlert(true)
+                                            }}
+                                        >
+                                            <CheckOutlined twoToneColor={theme.palette.error.main} />
+                                        </IconButton>
+                                    </Tooltip>}
                                 </Stack>
                             </>
                         )
@@ -365,7 +380,7 @@ const UsersList = () => {
                 </ScrollX>
             </MainCard>
             {/* alert model */}
-            {userId && <AlertUserInactive title={""} open={openAlert} handleClose={handleAlertClose} deleteId={userId} />}
+            {userId && <AlertUserInactive title={title!} open={openAlert} handleClose={handleAlertClose} deleteId={userId} />}
         </>
     )
 };

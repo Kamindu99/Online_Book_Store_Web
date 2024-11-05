@@ -213,7 +213,7 @@ router.route("/update/:id").put(async (req, res) => {
 router.route("/inactive/:id").put(async (req, res) => {
     try {
         const user = await UserModel.findByIdAndUpdate(req.params.id, {
-            isActive: false
+            isActive: req.body.status
         }, { new: true });
         res.json(user);
     } catch (err) {

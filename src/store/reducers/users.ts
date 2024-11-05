@@ -156,12 +156,12 @@ export function updateUser(user: UserGetById) {
  * @param user
  * @returns
  */
-export function inactiveUser(userId: string) {
+export function inactiveUser(userId: string, status: boolean) {
     return async () => {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axios.put(`/api/v1/book-management/auth/inactive/${userId}`);
+            const response = await axios.put(`/api/v1/book-management/auth/inactive/${userId}`, { status: status });
             dispatch(slice.actions.InactiveUserSuccess(response.data));
         } catch (error) {
             dispatch(slice.actions.hasError(error));
