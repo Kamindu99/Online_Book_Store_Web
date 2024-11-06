@@ -27,27 +27,25 @@ router.post("/register", async (req, res) => {
             to: user.email,
             subject: 'Welcome to the Wanigasinghe Books Collection!',
             html: `
-                <div style="font-family: Arial, sans-serif; color: #333;">
-                    <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
-                    <p>Thank you for registering with us. We are excited to have you onboard and hope you enjoy your time here!</p>
-
-                    <p>Your login credentials are as follows:</p>
-                    <p style="font-size: 15px;margin:20px 0 0 20px">User name: ${user.email}</p>
-                    <p style="font-size: 15px;margin:0 0 20px 20px">Password: ${user.password}</p>
-
-                    <p >Feel free to explore our bookstore and let us know if you need any assistance.</p>
-
-                    <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
-                     <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
-                      <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
-                    <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
-                    <div>
-                        <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
-                    </div>
-                    <br/>
-                    <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
-                </div>
-            `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+              <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
+              <p>Thank you for registering with us. We are excited to have you onboard and hope you enjoy your time here!</p>
+              <p>Your login credentials are as follows:</p>
+              <ul style="list-style-type: none; margin-right: 20px">
+                <li><strong>User name:</strong> ${user.email}</li>
+                <li><strong>Password:</strong> ${user.password}</li>
+              </ul>
+              <p>Feel free to explore our bookstore and let us know if you need any assistance.</p>
+              <p style="margin-top: 20px;">Best regards,<br />
+                Kamindu Gayantha,<br />
+                System Administrator,<br />
+                Wanigasinghe Books Collection
+              </p>
+              <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo"
+                width="170" style="margin-top: 10px;" />
+              <p style="font-size: 12px; color: red; margin-top: 20px;">This is an automated email. Please do not reply to this
+                email.</p>
+            </div>`
         };
 
         // Send the email
