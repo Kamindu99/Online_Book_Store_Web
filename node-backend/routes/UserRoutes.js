@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
                 <li><strong>Password:</strong> ${user.password}</li>
               </ul>
               <p>Feel free to explore our bookstore and let us know if you need any assistance.</p>
-             <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
+             <p style="font-size: 14px; color: #555;margin:20px 0 0 0"; line-height: 0;>Best regards,</p>
                      <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
                       <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
                     <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
