@@ -19,6 +19,13 @@ const transporter = nodemailer.createTransport({
 router.post("/register", async (req, res) => {
     const user = new UserModel(req.body);
     try {
+
+        // Check if the email is already in use
+        const existingUser = await UserModel.findOne({ email: user.email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
         const savedUserModel = await user.save();
 
         // Email details
