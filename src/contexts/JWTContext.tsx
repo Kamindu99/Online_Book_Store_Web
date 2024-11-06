@@ -136,11 +136,23 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
 
   const updateProfile = () => { };
 
+  const resetPasswordUser = async (userName: string) => {
+    await axios.post(`/api/v1/book-management/auth/forgot-password`, { email: userName });
+  };
+
+  const verifyOtp = async (userName: string, otp: string) => {
+    await axios.post(`/api/v1/book-management/auth/verify-otp`, { email: userName, otp: otp });
+  };
+
+  const resetAuthPassword = async (userName: string, newPassword: string, otp: string) => {
+    await axios.post(`/api/v1/book-management/auth/reset-password`, { email: userName, newPassword: newPassword, otp: otp });
+  };
+
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
   }
 
-  return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>;
+  return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile, resetPasswordUser, verifyOtp, resetAuthPassword }}>{children}</JWTContext.Provider>;
 };
 
 export default JWTContext;

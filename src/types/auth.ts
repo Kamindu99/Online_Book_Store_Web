@@ -82,6 +82,9 @@ export type JWTContextType = {
     firstName: string, lastName: string, occupation: string, profileImage?: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: VoidFunction;
+  resetPasswordUser: (userName: string) => Promise<void>;
+  verifyOtp: (userName: string, otp: string) => Promise<void>;
+  resetAuthPassword: (userName: string, newPassword: string, otp: string) => Promise<void>;
 };
 
 export type Auth0ContextType = {

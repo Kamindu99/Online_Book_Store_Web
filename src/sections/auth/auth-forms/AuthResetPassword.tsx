@@ -38,10 +38,22 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
 const AuthResetPassword = () => {
-  const scriptedRef = useScriptRef();
+  const scriptedRef = useScriptRef(); // handle component unmount
   const navigate = useNavigate();
 
-  const { isLoggedIn } = useAuth();
+  const { resetAuthPassword } = useAuth();
+
+  const getSessionValue = (key: string) => {
+    const storedValue = sessionStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : null;
+  };
+
+  const removeSessionValue = (key: string) => {
+    sessionStorage.removeItem(key);
+  };
+
+  const username = getSessionValue('userName');
+  const otp = getSessionValue('otp');
 
   const [level, setLevel] = useState<StringColorProps>();
   const [showPassword, setShowPassword] = useState(false);
@@ -77,27 +89,33 @@ const AuthResetPassword = () => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          // password reset
-          if (scriptedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
-
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Successfuly reset password.',
-                variant: 'alert',
-                alert: {
-                  color: 'success'
-                },
-                close: false
-              })
-            );
-
-            setTimeout(() => {
-              navigate(isLoggedIn ? '/auth/login' : '/login', { replace: true });
-            }, 1500);
-          }
+          await resetAuthPassword(username, values.password, otp).then(
+            () => {
+              setStatus({ success: true });
+              setSubmitting(false);
+              dispatch(
+                openSnackbar({
+                  open: true,
+                  message: 'Password Reset Successfully',
+                  variant: 'alert',
+                  alert: {
+                    color: 'success'
+                  },
+                  close: false
+                })
+              );
+              setTimeout(() => {
+                navigate(`/login`, { replace: true });
+                removeSessionValue('userName');
+                removeSessionValue('otp');
+              }, 1500);
+            },
+            (err: any) => {
+              setStatus({ success: false });
+              setErrors({ submit: err.message });
+              setSubmitting(false);
+            }
+          );
         } catch (err: any) {
           console.error(err);
           if (scriptedRef.current) {
