@@ -32,12 +32,12 @@ router.post("/register", async (req, res) => {
                     <p>Thank you for registering with us. We are excited to have you onboard and hope you enjoy your time here!</p>
 
                     <p>Your login credentials are as follows:</p>
-                    <p style="font-size: 15px;margin:20px 0 0 20px">UserName: ${user.email}</p>
+                    <p style="font-size: 15px;margin:20px 0 0 20px">User name: ${user.email}</p>
                     <p style="font-size: 15px;margin:0 0 20px 20px">Password: ${user.password}</p>
 
                     <p >Feel free to explore our bookstore and let us know if you need any assistance.</p>
-                    <br/>
-                    <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
+
+                    <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
                      <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
                       <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
                     <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>

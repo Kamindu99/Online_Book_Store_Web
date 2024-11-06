@@ -92,7 +92,7 @@ const AuthRegister = () => {
               dispatch(
                 openSnackbar({
                   open: true,
-                  message: 'Your registration has been successfully completed.',
+                  message: 'Your registration has been successfully completed. Please Check your email.',
                   variant: 'alert',
                   alert: {
                     color: 'success'
