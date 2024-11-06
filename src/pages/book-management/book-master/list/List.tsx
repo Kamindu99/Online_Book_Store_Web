@@ -270,7 +270,7 @@ const List = () => {
                     accessor: 'price',
                     className: 'cell-right',
                     Cell: ({ value }: { value: number }) => {
-                        return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs. " /></div>;
+                        return <div><NumericFormat value={value} displayType="text" thousandSeparator fixedDecimalScale decimalScale={2} prefix="Rs." /></div>;
                     }
                 },
                 {

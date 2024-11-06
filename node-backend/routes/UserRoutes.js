@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
             subject: 'Welcome to the Wanigasinghe Books Collection!',
             html: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
-                    <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName},</h2>
+                    <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
                     <p>Thank you for registering with us. We are excited to have you onboard and hope you enjoy your time here!</p>
                     <p>Feel free to explore our bookstore and let us know if you need any assistance.</p>
                     <br/>
@@ -219,7 +219,47 @@ router.route("/inactive/:id").put(async (req, res) => {
         const user = await UserModel.findByIdAndUpdate(req.params.id, {
             isActive: req.body.status
         }, { new: true });
-        res.json(user);
+
+        if (req.body.status === false) {
+            // Email details
+            const mailOptions = {
+                from: 'wanigasinghebookcollection@gmail.com',
+                to: user.email,
+                subject: 'Account Deactivation',
+                html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
+                    <p>We regret to inform you that your account has been deactivated. If you have any questions, please contact the administrator.</p>
+                    <p>Thank you for being a part of the Wanigasinghe Books Collection.</p>
+                    <br/>
+                    <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
+                     <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
+                      <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
+                    <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
+                    <div>
+                        <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
+                    </div>
+                    <br/>
+                    <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
+                </div>
+            `
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error('Email sending failed:', error);
+                    return res.status(500).json({ message: 'Email sending failed.' });
+                }
+                console.log('Email sent successfully:', info.response);
+                res.json(user);
+            });
+        }
+        else {
+            res.json(user);
+        }
+
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
