@@ -14,10 +14,11 @@ const GuestGuard = ({ children }: GuardProps) => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth()
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(location?.state?.from ? location?.state?.from : APP_DEFAULT_PATH, {
+      navigate(location?.state?.from ? location?.state?.from : user?.isFirstLogin == true ? "/user-management/password-change" : APP_DEFAULT_PATH, {
         state: {
           from: ''
         },

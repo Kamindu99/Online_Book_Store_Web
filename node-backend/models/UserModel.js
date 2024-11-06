@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 // Schema definition
 const userSchema = new mongoose.Schema({
@@ -23,7 +24,11 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        default: () => crypto.randomBytes(4).toString('hex')
+    },
+    isFirstLogin: {
+        type: Boolean,
+        default: true
     },
     refreshToken: {
         type: String

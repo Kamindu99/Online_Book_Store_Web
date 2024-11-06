@@ -172,7 +172,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="occupation-signup">Occupation*</InputLabel>
+                  <InputLabel htmlFor="occupation-signup">Occupation</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.occupation && errors.occupation)}

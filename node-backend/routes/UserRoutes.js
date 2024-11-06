@@ -30,6 +30,11 @@ router.post("/register", async (req, res) => {
                 <div style="font-family: Arial, sans-serif; color: #333;">
                     <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
                     <p>Thank you for registering with us. We are excited to have you onboard and hope you enjoy your time here!</p>
+
+                    <p>Your login credentials are as follows:</p>
+                    <p>UserName: ${user.email}</p>
+                    <p>Password: ${user.password}</p>
+
                     <p>Feel free to explore our bookstore and let us know if you need any assistance.</p>
                     <br/>
                     <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
@@ -302,12 +307,23 @@ router.route("/password-reset/:id").put(async (req, res) => {
         const user = await UserModel.findById(req.params.id);
         if (user.password === req.body.currentPassword) {
             if (req.body.newPassword === req.body.reNewPassword) {
-                const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, {
-                    password: req.body.newPassword
-                }, { new: true });
-                res.json({
-                    message: 'Password updated successfully'
-                });
+                if (user.isFirstLogin === true) {
+                    const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, {
+                        password: req.body.newPassword,
+                        isFirstLogin: false
+                    }, { new: true });
+                    res.status(200).json({
+                        message: 'Password updated successfully'
+                    });
+
+                } else {
+                    const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, {
+                        password: req.body.newPassword
+                    }, { new: true });
+                    res.status(200).json({
+                        message: 'Password updated successfully'
+                    });
+                }
             } else {
                 res.status(400).json({ message: 'New passwords do not match' });
             }

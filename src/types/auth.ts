@@ -17,6 +17,7 @@ export type UserProfile = {
   profileImage?: string;
   name?: string;
   occupation?: string;
+  isFirstLogin?: boolean;
   role?: string;
   tier?: string;
 };
