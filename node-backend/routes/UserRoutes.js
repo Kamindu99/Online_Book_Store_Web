@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
         // Check if the email is already in use
         const existingUser = await UserModel.findOne({ email: user.email });
         if (existingUser) {
-            return res.status(400).json({ message: 'Email already in use' });
+            return res.status(400).json({ message: 'Email already exists. Please use a different email.' });
         }
 
         const savedUserModel = await user.save();
