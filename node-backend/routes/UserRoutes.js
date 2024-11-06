@@ -256,7 +256,39 @@ router.route("/inactive/:id").put(async (req, res) => {
             });
         }
         else {
-            res.json(user);
+            // Email details
+            const mailOptions = {
+                from: user.email,
+                to: user.email,
+                subject: 'Account Activation',
+                html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: #4CAF50;">Hello ${user.firstName} ${user.lastName}</h2>
+                    <p>We are pleased to inform you that your account has been reactivated. You can now access your account and continue to enjoy our services.</p>
+                    <p>Continue to explore our bookstore and let us know if you need any assistance.</p>
+                    <br/>
+                    <p style="font-size: 14px; color: #555;margin:0">Best regards,</p>
+                     <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
+                      <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
+                    <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
+                    <div>
+                        <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
+                    </div>
+                    <br/>
+                    <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
+                </div>
+            `
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error('Email sending failed:', error);
+                    return res.status(500).json({ message: 'Email sending failed.' });
+                }
+                console.log('Email sent successfully:', info.response);
+                res.json(user);
+            });
         }
 
 
