@@ -3,6 +3,7 @@ const router = express.Router();
 const UserModel = require('../models/UserModel')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 // Configure your SMTP transport
 const transporter = nodemailer.createTransport({
@@ -50,7 +51,7 @@ router.post("/register", async (req, res) => {
                     <div>
                         <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
                     </div>
-                    <p style="font-size: 12px; color: red;margin:20px">This is an automated email. Please do not reply to this email.</p>
+                    <p style="font-size: 12px; color: red;margin-top:20px">This is an automated email. Please do not reply to this email.</p>
             </div>`
         };
 
@@ -336,6 +337,114 @@ router.route("/password-reset/:id").put(async (req, res) => {
         } else {
             res.status(400).json({ message: 'Current password is incorrect' });
         }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Check if user exists
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this email.' });
+        }
+
+        // Generate a 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        const otpExpiry = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+
+        // Save OTP and expiry to the user document
+        user.resetOtp = otp;
+        user.resetOtpExpiry = otpExpiry;
+        await user.save();
+
+        // Send OTP email
+        const mailOptions = {
+            from: 'wanigasinghebookcollection@gmail.com',
+            to: user.email,
+            subject: 'Password Reset OTP',
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: #4CAF50;">Password Reset Request</h2>
+                    <p>Here is your OTP to reset your password:</p>
+                    <h3 style="margin-left:20px">${otp}</h3>
+                    <p>Please use this OTP within 10 minutes to reset your password.</p>
+
+                     <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
+                     <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
+                      <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
+                    <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
+                    <div>
+                        <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
+                    </div>
+                    <p style="font-size: 12px; color: red;margin-top:20px">This is an automated email. Please do not reply to this email.</p>
+                    
+                </div>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Email sending failed:', error);
+                return res.status(500).json({ message: 'Email sending failed.' });
+            }
+            res.status(200).json({ message: 'An OTP has been sent to your email. Please check your inbox.' });
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.post("/verify-otp", async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this email.' });
+        }
+
+        // Check if OTP is valid and not expired
+        if (user.resetOtp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP. Please try again.' });
+        }
+        if (Date.now() > user.resetOtpExpiry) {
+            return res.status(400).json({ message: 'OTP has expired. Please request a new OTP.' });
+        }
+
+        // OTP is verified; allow password reset
+        res.status(200).json({ message: 'OTP verified. You can now reset your password.' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.post("/reset-password", async (req, res) => {
+    const { email, newPassword, otp } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this email.' });
+        }
+
+        // Verify OTP again for security
+        if (user.resetOtp !== otp || user.resetOtpExpiry < Date.now()) {
+            return res.status(400).json({ message: 'Invalid or expired OTP.' });
+        }
+
+        user.password = newPassword; // Update password
+
+        // Clear OTP and expiry fields
+        user.resetOtp = undefined;
+        user.resetOtpExpiry = undefined;
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Password reset successfully.' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
