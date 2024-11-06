@@ -43,14 +43,14 @@ router.post("/register", async (req, res) => {
                 <li><strong>Password:</strong> ${user.password}</li>
               </ul>
               <p>Feel free to explore our bookstore and let us know if you need any assistance.</p>
-             <p style="font-size: 14px; color: #555;margin:20px 0 0 0"; line-height: 0;>Best regards,</p>
+            <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
                      <p style="font-size: 14px; color: #555;margin:0">Kamindu Gayantha,</p>
                       <p style="font-size: 14px; color: #555;margin:0">System Administrator,</p>
                     <p style="font-size: 14px; color: #555;margin:0">Wanigasinghe Books Collection</p>
                     <div>
                         <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
                     </div>
-                    <p style="font-size: 12px; color: red;margin-top: 20px;">This is an automated email. Please do not reply to this email.</p>
+                    <p style="font-size: 12px; color: red;margin:20px">This is an automated email. Please do not reply to this email.</p>
             </div>`
         };
 
