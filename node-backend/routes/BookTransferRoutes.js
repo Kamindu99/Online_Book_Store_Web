@@ -168,7 +168,7 @@ router.route("/return/:id/:bookId").put(async (req, res) => {
             subject: 'Book Returned Successfully!',
             html: `
                         <div style="font-family: Arial, sans-serif; color: #333;">
-                            <h2 style="color: #4CAF50;">Hello ${userDetails.firstName} ${userDetails.lastName},</h2>
+                            <h2 style="color: #4CAF50;">Hello ${userDetails.firstName} ${userDetails.lastName}</h2>
                             <p>You have successfully returned a book to Wanigasinghe Books Collection.</p>
                             <p>Book details:</p>
                             <ul>
