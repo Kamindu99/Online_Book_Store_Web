@@ -43,8 +43,7 @@ router.post("/register", async (req, res) => {
                     <div>
                         <img src="https://res.cloudinary.com/dmfljlyu1/image/upload/v1726644594/booklogo_jyd8ys.png" alt="Company Logo" width="170" />
                     </div>
-                    <br/>
-                    <p style="font-size: 12px; color: red;margin:0">This is an automated email. Please do not reply to this email.</p>
+                    <p style="font-size: 12px; color: red;margin-top: 20px;">This is an automated email. Please do not reply to this email.</p>
             </div>`
         };
 
