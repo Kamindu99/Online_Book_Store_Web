@@ -258,7 +258,7 @@ router.route("/inactive/:id").put(async (req, res) => {
         else {
             // Email details
             const mailOptions = {
-                from: user.email,
+                from: 'wanigasinghebookcollection@gmail.com',
                 to: user.email,
                 subject: 'Account Activation',
                 html: `
