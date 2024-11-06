@@ -85,6 +85,7 @@ router.route("/login").post(async (req, res) => {
                         email: users[0].email,
                         name: `${users[0].firstName} ${users[0].lastName}`,
                         occupation: users[0].occupation,
+                        isFirstLogin: users[0].isFirstLogin,
                         profileImage: users[0].profileImage
                     }
                 });
@@ -111,6 +112,7 @@ router.route("/account/me").get(async (req, res) => {
                 id: user._id,
                 email: user.email,
                 name: `${user.firstName} ${user.lastName}`,
+                isFirstLogin: user.isFirstLogin,
                 occupation: user.occupation,
                 profileImage: user.profileImage
             }

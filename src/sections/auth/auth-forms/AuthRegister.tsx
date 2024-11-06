@@ -1,15 +1,15 @@
-import { useEffect, useState, SyntheticEvent } from 'react';
+//import { useEffect, useState, SyntheticEvent } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
-  Box,
+  // Box,
   Button,
-  FormControl,
+  // FormControl,
   FormHelperText,
   Grid,
   Link,
-  InputAdornment,
+  // InputAdornment,
   InputLabel,
   OutlinedInput,
   Stack,
@@ -21,20 +21,20 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project import
-import IconButton from 'components/@extended/IconButton';
+//import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
+//import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // types
-import { StringColorProps } from 'types/password';
+//import { StringColorProps } from 'types/password';
 
 // assets
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+//import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import AvatarUpload from 'components/third-party/dropzone/Avatar';
 
 // ============================|| JWT - REGISTER ||============================ //
@@ -44,24 +44,24 @@ const AuthRegister = () => {
   const scriptedRef = useScriptRef();
   const navigate = useNavigate();
 
-  const [level, setLevel] = useState<StringColorProps>();
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  // const [level, setLevel] = useState<StringColorProps>();
+  // const [showPassword, setShowPassword] = useState(false);
+  // const handleClickShowPassword = () => {
+  //   setShowPassword(!showPassword);
+  // };
 
-  const handleMouseDownPassword = (event: SyntheticEvent) => {
-    event.preventDefault();
-  };
+  // const handleMouseDownPassword = (event: SyntheticEvent) => {
+  //   event.preventDefault();
+  // };
 
-  const changePassword = (value: string) => {
-    const temp = strengthIndicator(value);
-    setLevel(strengthColor(temp));
-  };
+  // const changePassword = (value: string) => {
+  //   const temp = strengthIndicator(value);
+  //   setLevel(strengthColor(temp));
+  // };
 
-  useEffect(() => {
-    changePassword('');
-  }, []);
+  // useEffect(() => {
+  //   changePassword('');
+  // }, []);
 
   return (
     <>
@@ -79,11 +79,13 @@ const AuthRegister = () => {
           firstname: Yup.string().max(255).required('First Name is required'),
           lastname: Yup.string().max(255).required('Last Name is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          //password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await register(values.email, values.password, values.firstname, values.lastname, values.occupation, values.imageUrl);
+            await register(values.email,
+              // values.password,
+              values.firstname, values.lastname, values.occupation, values.imageUrl);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -214,7 +216,7 @@ const AuthRegister = () => {
                   )}
                 </Stack>
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="password-signup">Password</InputLabel>
                   <OutlinedInput
@@ -263,7 +265,7 @@ const AuthRegister = () => {
                     </Grid>
                   </Grid>
                 </FormControl>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2">
                   By Signing up, you agree to our &nbsp;
