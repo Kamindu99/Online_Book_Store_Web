@@ -113,10 +113,10 @@ const PasswordChange = () => {
   const [passwordRules] = useState({
     passwordMaxLength: 15,
     passwordMinLength: 8,
-    passwordNumOfCapitalLetters: 3,
-    passwordNumOfDigits: 3,
-    passwordNumOfSimpleLetters: 3,
-    passwordNumOfSpecialCharacter: 2
+    passwordNumOfCapitalLetters: 1,
+    passwordNumOfDigits: 1,
+    passwordNumOfSimpleLetters: 1,
+    passwordNumOfSpecialCharacter: 1
   });
 
   return (
