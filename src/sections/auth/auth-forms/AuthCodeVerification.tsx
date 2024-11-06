@@ -39,26 +39,21 @@ const AuthCodeVerification = () => {
     sessionStorage.setItem(key, JSON.stringify(value));
   };
 
-  let interval: NodeJS.Timeout | undefined = undefined;
-
-  // Function to handle timer countdown
+  // Timer countdown
   useEffect(() => {
-    if (timer > 0 && isResendEnabled) {
+    let interval: NodeJS.Timeout | undefined;
+    if (timer > 0) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
-    } else if (timer === 0 && isResendEnabled) {
-      if (interval) {
-        clearInterval(interval);
-      }
-      setIsResendEnabled(false); // Disable resend option after countdown
+    } else {
+      setIsResendEnabled(true); // Enable resend button when timer reaches 0
+      if (interval) clearInterval(interval);
     }
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      if (interval) clearInterval(interval);
     };
-  }, [timer, isResendEnabled]);
+  }, [timer]);
 
   // Validate OTP
   const validateOtp = async (otp: string) => {
@@ -84,7 +79,7 @@ const AuthCodeVerification = () => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Error validating OTP. Please try again.',
+              message: err.message,
               variant: 'alert',
               alert: {
                 color: 'error'
@@ -112,24 +107,43 @@ const AuthCodeVerification = () => {
 
   // Function to resend OTP
   const handleResendOTP = async () => {
-    try {
-      setTimer(30); // Reset timer
-      setIsResendEnabled(true); // Enable resend
-      // logic to resend OTP
-      await resetPasswordUser(username)
-    } catch (err) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Error resending OTP. Please try again.',
-          variant: 'alert',
-          alert: {
-            color: 'error'
-          },
-          close: false
-        })
-      );
-      console.log(err);
+    if (isResendEnabled) {
+      try {
+        setTimer(30); // Reset timer to 30 seconds
+        setIsResendEnabled(false); // Disable resend until timer reaches 0
+        await resetPasswordUser(username).then(() => {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Resent OTP Successfully',
+              variant: 'alert',
+              alert: { color: 'success' },
+              close: false
+            })
+          );
+        }).catch((err: any) => {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: err.message,
+              variant: 'alert',
+              alert: { color: 'error' },
+              close: false
+            })
+          );
+        });
+      } catch (err) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Error resending OTP. Please try again.',
+            variant: 'alert',
+            alert: { color: 'error' },
+            close: false
+          })
+        );
+        console.log(err);
+      }
     }
   };
 
@@ -169,9 +183,13 @@ const AuthCodeVerification = () => {
       </Grid>
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="space-between" alignItems="baseline">
-          <Typography>Did not receive the email? </Typography>
-          <Typography variant="body1" sx={{ minWidth: 85, ml: 2, textDecoration: 'none', cursor: 'pointer' }} color="primary" onClick={handleResendOTP}>
-            Resend code
+          <Typography>Did not receive the email?</Typography>
+          <Typography
+            variant="body1"
+            sx={{ minWidth: 85, ml: 2, textDecoration: 'none', cursor: 'pointer', color: isResendEnabled ? 'blue' : 'grey.500' }}
+            onClick={handleResendOTP}
+          >
+            {isResendEnabled ? 'Resend code' : `Resend in ${timer}s`}
           </Typography>
         </Stack>
       </Grid>

@@ -1,11 +1,9 @@
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
-  Box,
   Button,
-  FormControl,
   FormHelperText,
   Grid,
   InputAdornment,
@@ -16,24 +14,22 @@ import {
 } from '@mui/material';
 
 // third party
-import * as Yup from 'yup';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 // project import
+import AnimateButton from 'components/@extended/AnimateButton';
+import IconButton from 'components/@extended/IconButton';
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
-import IconButton from 'components/@extended/IconButton';
-import AnimateButton from 'components/@extended/AnimateButton';
 
 import { dispatch } from 'store';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // types
-import { StringColorProps } from 'types/password';
 
 // assets
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
@@ -55,7 +51,6 @@ const AuthResetPassword = () => {
   const username = getSessionValue('userName');
   const otp = getSessionValue('otp');
 
-  const [level, setLevel] = useState<StringColorProps>();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -65,14 +60,14 @@ const AuthResetPassword = () => {
     event.preventDefault();
   };
 
-  const changePassword = (value: string) => {
-    const temp = strengthIndicator(value);
-    setLevel(strengthColor(temp));
-  };
-
-  useEffect(() => {
-    changePassword('');
-  }, []);
+  const [passwordRules] = useState({
+    passwordMaxLength: 15,
+    passwordMinLength: 8,
+    passwordNumOfCapitalLetters: 1,
+    passwordNumOfDigits: 1,
+    passwordNumOfSimpleLetters: 1,
+    passwordNumOfSpecialCharacter: 1
+  });
 
   return (
     <Formik
@@ -82,7 +77,14 @@ const AuthResetPassword = () => {
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        password: Yup.string().max(255).required('Password is required'),
+        password: Yup.string()
+          .required('New Password is required')
+          .min(passwordRules.passwordMinLength, `Password must be at least ${passwordRules.passwordMinLength} characters long`)
+          .max(passwordRules.passwordMaxLength, `Password must be at most ${passwordRules.passwordMaxLength} characters long`)
+          .matches(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+          ),
         confirmPassword: Yup.string()
           .required('Confirm Password is required')
           .test('confirmPassword', 'Both Password must be match!', (confirmPassword, yup) => yup.parent.password === confirmPassword)
@@ -142,7 +144,6 @@ const AuthResetPassword = () => {
                   onBlur={handleBlur}
                   onChange={(e) => {
                     handleChange(e);
-                    changePassword(e.target.value);
                   }}
                   endAdornment={
                     <InputAdornment position="end">
@@ -165,18 +166,6 @@ const AuthResetPassword = () => {
                   </FormHelperText>
                 )}
               </Stack>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item>
-                    <Box sx={{ bgcolor: level?.color, width: 85, height: 8, borderRadius: '7px' }} />
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle1" fontSize="0.75rem">
-                      {level?.label}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Stack spacing={1}>
@@ -205,6 +194,15 @@ const AuthResetPassword = () => {
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Grid>
             )}
+
+            <Grid item xs={12}>
+              <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+                <Typography variant="caption">
+                  *Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character</Typography>
+              </Stack>
+            </Grid>
+
+
             <Grid item xs={12}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
