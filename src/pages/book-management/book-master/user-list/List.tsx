@@ -19,7 +19,7 @@ import {
 // third-party
 
 // project import
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { DownOutlined, UpOutlined, CloseOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import { TablePagination, TableParamsType } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 import { getBooks, toInitialState } from 'store/reducers/book-master';
@@ -57,6 +57,7 @@ const List = () => {
     const [categoryTerm, setCategoryTerm] = useState<string>("All"); // Category filter
     const [categoryTermName, setCategoryTermName] = useState<string>("All"); // Category filter
     const [searchTerm, setSearchTerm] = useState<string>(''); // Search term
+    const [directionTerm, setDirectionTerm] = useState<"asc" | "desc">("asc"); // Sort direction
 
     const [isFilterVisible, setIsFilterVisible] = useState(false);
 
@@ -176,7 +177,7 @@ const List = () => {
 
     const handleCategoryChange = (event: any) => {
         setCategoryTerm(event.target.value as string);
-        setCategoryTermName(categoryCodeFdd?.find((category) => category._id === event.target.value)?.categoryName!);
+        setCategoryTermName(categoryCodeFdd?.find((category) => category._id === event.target.value)?.categoryName || 'All');
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,7 +214,7 @@ const List = () => {
                 {/* Collapsible Filter Section */}
                 <Collapse in={isFilterVisible}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4} md={4}>
+                        <Grid item xs={12} sm={3} md={3}>
                             <FormControl variant="outlined" sx={{ minWidth: 180, width: '100%' }}>
                                 <InputLabel>Category</InputLabel>
                                 <Select
@@ -229,17 +230,50 @@ const List = () => {
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={5} md={5}>
+                        <Grid item xs={12} sm={5.5} md={5.5}>
                             <TextField
                                 label="Search"
                                 variant="outlined"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                                 fullWidth
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={3} md={3}>
+                        <Grid item xs={12} sm={0.5} md={0.5}>
+                            <IconButton
+                                onClick={() => {
+                                    setDirectionTerm(directionTerm === 'asc' ? 'desc' : 'asc');
+                                }}
+                                color='inherit'
+                                sx={{ backgroundColor: '#98d9f5' }}
+                            >
+                                {directionTerm === 'asc' ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
+                            </IconButton>
+                        </Grid>
+
+                        <Grid item xs={12} sm={0.5} md={0.5}>
+                            <IconButton
+                                onClick={() => {
+                                    setPage(0);
+                                    setCategory('All');
+                                    setCategoryName('All');
+                                    setSearch('');
+                                    setCategoryTerm('All');
+                                    setCategoryTermName('All');
+                                    setSearchTerm('');
+                                    setDirection('asc');
+                                    setDirectionTerm('asc');
+                                }}
+                                color='error'
+                                sx={{ backgroundColor: '#fce3e1' }}
+                            >
+                                <CloseOutlined />
+                            </IconButton>
+                        </Grid>
+
+                        <Grid item xs={12} sm={2.5} md={2.5}>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -249,6 +283,7 @@ const List = () => {
                                     setCategory(categoryTerm);
                                     setCategoryName(categoryTermName);
                                     setSearch(searchTerm);
+                                    setDirection(directionTerm);
                                 }}
                             >
                                 Apply Filters
