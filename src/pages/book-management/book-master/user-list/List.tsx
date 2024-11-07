@@ -241,7 +241,7 @@ const List = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={0.5} md={0.5}>
+                        <Grid item xs={2} sm={0.5} md={0.5}>
                             <IconButton
                                 onClick={() => {
                                     setDirectionTerm(directionTerm === 'asc' ? 'desc' : 'asc');
@@ -253,7 +253,7 @@ const List = () => {
                             </IconButton>
                         </Grid>
 
-                        <Grid item xs={12} sm={0.5} md={0.5}>
+                        <Grid item xs={2} sm={0.5} md={0.5}>
                             <IconButton
                                 onClick={() => {
                                     setPage(0);
@@ -273,7 +273,7 @@ const List = () => {
                             </IconButton>
                         </Grid>
 
-                        <Grid item xs={12} sm={2.5} md={2.5}>
+                        <Grid item xs={8} sm={2.5} md={2.5}>
                             <Button
                                 variant="contained"
                                 color="primary"
