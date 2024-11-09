@@ -28,7 +28,7 @@ const home: NavItemType = {
             id: 'system-calendar',
             title: <FormattedMessage id="system-calendar" />,
             type: 'item',
-            url: '/parameter-management/system-calendar',
+            url: '/home/system-calendar',
             icon: icons.CalendarOutlined,
         }
     ]

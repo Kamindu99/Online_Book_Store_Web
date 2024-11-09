@@ -1,23 +1,10 @@
-
 export type CalendarCode = {
-  calenderDate?: string,
-  sysCalId?: number,
+  _id?: string,
+  holidayDate?: string,
   reason?: string
+  createdDate?: string
+  isActive?: boolean
 };
-
-
-export type CalendarCodePost = {
-  calenderDate?: string,
-  reason?: string
-};
-
-
-export type CalendarCodes = {
-  calenderDate?: string,
-  sysCalId?: number,
-  reason?: string
-};
-
 
 export type CalendarCodeList = {
   pagination: {
@@ -26,12 +13,12 @@ export type CalendarCodeList = {
     to?: number,
     total?: number
   }
-  result?: Array<CalendarCodes>
+  result?: Array<CalendarCode>
 };
 
 export interface CalendarCodeProps {
   calendarCodes?: any;
-  calendarCodesFdd?: CalendarCodes[] | null;
+  calendarCodesFdd?: CalendarCode[] | null;
   calendarCode?: CalendarCode | null;
   error?: object | string | null;
   success?: object | string | null;

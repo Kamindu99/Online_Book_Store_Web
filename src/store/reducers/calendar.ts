@@ -157,12 +157,12 @@ export function deleteEvent(eventId: string) {
   };
 }
 
-export function selectRange(start: Date, end: Date) {
+export function selectRange(start: string, end: string) {
   return async () => {
     dispatch(
       calendar.actions.selectRange({
-        start: start.getTime(),
-        end: end.getTime()
+        start: start,
+        end: end
       })
     );
   };

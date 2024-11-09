@@ -19,7 +19,6 @@ import Loader from 'components/Loader';
 import AddEventForm from 'sections/parameter-management/holiday-calendar/AddEventForm';
 import CalendarStyled from 'sections/parameter-management/holiday-calendar/CalendarStyled';
 import Toolbar from 'sections/parameter-management/holiday-calendar/Toolbar';
-
 import { selectEvent, selectRange, toggleModal, updateCalendarView, updateEvent } from 'store/reducers/calendar';
 
 // types
@@ -28,6 +27,7 @@ import { dispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { fetchCalendarCodes, toInitialState } from 'store/reducers/system-calendar';
 import List from 'sections/parameter-management/holiday-calendar/list';
+import useAuth from 'hooks/useAuth';
 
 // ==============================|| CALENDAR - MAIN ||============================== //
 
@@ -38,42 +38,37 @@ const Calendar = () => {
   const { calendarView, isModalOpen, selectedRange } = useSelector((state) => state.calendar);
   const [eventName, setEventName] = useState<any>([]);
   const { error, success, calendarCodes } = useSelector((state) => state.systemCalendar);
-  console.log(calendarCodes);
 
+  const { user } = useAuth();
 
   const selectedEvent = useSelector((state) => {
     const { selectedEventId } = state.calendar;
+
     if (selectedEventId) {
-      console.log(selectedEventId);
-      return eventName.find((event: any) => event.id === Number(selectedEventId));
+      return eventName.find((event: any) => event.id === selectedEventId);
     }
     return null;
   });
-
 
   useEffect(() => {
     dispatch(fetchCalendarCodes());
   }, [success]);
 
-
-  console.log(eventName);
-
   useEffect(() => {
 
     if (calendarCodes === undefined || calendarCodes === null) return;
     if (calendarCodes?.length === 0) return;
-    console.log(calendarCodes);
 
     setEventName(
       calendarCodes?.map((event: any) => {
         return {
           title: event.reason,
           description: event.reason,
-          start: new Date(event.calenderDate),
-          end: new Date(event.calenderDate),
+          start: new Date(event.holidayDate),
+          end: new Date(event.holidayDate),
           allDay: true,
-          id: event.sysCalId,
-          startDate: event.formattedDate,
+          id: event._id,
+          startDate: event.holidayDate,
         }
       })
     );
@@ -111,7 +106,6 @@ const Calendar = () => {
 
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
-
       calendarApi.today();
       setDate(calendarApi.getDate());
     }
@@ -170,11 +164,11 @@ const Calendar = () => {
       calendarApi.unselect();
     }
 
-    dispatch(selectRange(arg.start, arg.end));
+    dispatch(selectRange(arg.startStr, arg.endStr));
   };
 
   const handleEventSelect = (arg: EventClickArg) => {
-    dispatch(selectEvent(arg.event.id));
+    dispatch(selectEvent(arg.event._def.publicId));
   };
 
   const handleEventUpdate = async ({ event }: EventResizeDoneArg | EventDropArg) => {
@@ -275,7 +269,7 @@ const Calendar = () => {
       </CalendarStyled>
 
       {/* Dialog renders its body even if not open */}
-      {isModalOpen &&
+      {isModalOpen && user && user.email === 'wanigasinghebookcollection@gmail.com' &&
         <Dialog
           maxWidth="sm"
           TransitionComponent={PopupTransition}
@@ -287,14 +281,16 @@ const Calendar = () => {
           <AddEventForm event={selectedEvent} range={selectedRange} onCancel={handleModal} />
         </Dialog>
       }
-      <Tooltip title="Add New Event">
-        <SpeedDial
-          ariaLabel="add-event-fab"
-          sx={{ display: 'inline-flex', position: 'sticky', bottom: 24, left: '100%', transform: 'translate(-50%, -50% )' }}
-          icon={<PlusOutlined style={{ fontSize: '1.5rem' }} />}
-          onClick={handleModal}
-        />
-      </Tooltip>
+      {user && user.email === 'wanigasinghebookcollection@gmail.com' &&
+        <Tooltip title="Add New Event">
+          <SpeedDial
+            ariaLabel="add-event-fab"
+            sx={{ display: 'inline-flex', position: 'sticky', bottom: 24, left: '100%', transform: 'translate(-50%, -50% )' }}
+            icon={<PlusOutlined style={{ fontSize: '1.5rem' }} />}
+            onClick={handleModal}
+          />
+        </Tooltip>
+      }
     </Box>
   );
 };

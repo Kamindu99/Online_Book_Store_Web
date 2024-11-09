@@ -19,7 +19,6 @@ const initialState: DefaultRootStateProps['calendarCode'] = {
     isLoading: false
 };
 
-
 const slice = createSlice({
     name: 'calendarCode',
     initialState,
@@ -76,12 +75,7 @@ const slice = createSlice({
         //DELETE COLOR CODE
         deleteCalendarCodeSuccess(state, action) {
             state.success = "Holiday deleted successfully"
-        },
-
-
-
-
-
+        }
     }
 })
 
@@ -111,7 +105,7 @@ export function addCalendarCode(newEvent: Omit<EventInput, 'id'>) {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axiosServices.post('/user-management/holiday', newEvent);
+            const response = await axiosServices.post('/api/v1/parameter-management/holiday', newEvent);
             dispatch(slice.actions.addCalendarCodeSuccess(response.data));
 
         } catch (error) {
@@ -128,12 +122,12 @@ export function addCalendarCode(newEvent: Omit<EventInput, 'id'>) {
 * @param id
 * @returns
 */
-export function fetchCalendarCode(id: number) {
+export function fetchCalendarCode(id: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axiosServices.post(`/reference/colour/${id}`);
+            const response = await axiosServices.post(`/api/v1/parameter-management/holiday/${id}`);
             dispatch(slice.actions.fetchCalendarCodeSuccess(response.data));
 
         } catch (error) {
@@ -158,10 +152,10 @@ export function fetchCalendarCodes() {
             let queryParams = {
                 page: 0,
                 per_page: 1000,
-                direction: "desc",
-                sort: 'sysCalId'
+                direction: "asc",
+                sort: 'holidayDate'
             }
-            const response = await axiosServices.get('/user-management/holiday', { params: queryParams });
+            const response = await axiosServices.get('/api/v1/parameter-management/holiday', { params: queryParams });
             dispatch(slice.actions.fetchCalendarCodesSuccess(response.data));
 
         } catch (error) {
@@ -179,12 +173,12 @@ export function fetchCalendarCodes() {
  * @param updatedCalendarCode
  * @returns
  */
-export function updateCalendarCode(sysCalId: number, updatedCalendarCode: CalendarCode) {
+export function updateCalendarCode(sysCalId: string, updatedCalendarCode: CalendarCode) {
     return async () => {
         dispatch(slice.actions.startLoading());
 
         try {
-            const response = await axiosServices.put(`/user-management/holiday/${sysCalId}`, updatedCalendarCode);
+            const response = await axiosServices.put(`/api/v1/parameter-management/holiday/${sysCalId}`, updatedCalendarCode);
             dispatch(slice.actions.updateCalendarCodeSuccess(response.data));
 
         } catch (error) {
@@ -200,12 +194,12 @@ export function updateCalendarCode(sysCalId: number, updatedCalendarCode: Calend
  * @param calendarCodeId
  * @returns
  */
-export function deleteCalendarCode(calendarCodeId: number) {
+export function deleteCalendarCode(calendarCodeId: string) {
     return async () => {
         dispatch(slice.actions.startLoading());
 
         try {
-            await axiosServices.delete(`/user-management/holiday/${calendarCodeId}`);
+            await axiosServices.delete(`/api/v1/parameter-management/holiday/${calendarCodeId}`);
             dispatch(slice.actions.deleteCalendarCodeSuccess(calendarCodeId));
 
         } catch (error) {

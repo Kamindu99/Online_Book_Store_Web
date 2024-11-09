@@ -64,6 +64,10 @@ const MainRoutes = {
             {
               path: 'dashboard',
               element: <Dashboard />
+            },
+            {
+              path: 'system-calendar',
+              element: <SystemCalandar />
             }
           ]
         },
@@ -100,6 +104,10 @@ const MainRoutes = {
             {
               path: 'global-configuration/theme-settings',
               element: <ThemeSettings />
+            },
+            {
+              path: 'system-calendar',
+              element: <SystemCalandar />
             }
           ]
         },
@@ -183,10 +191,6 @@ const MainRoutes = {
             {
               path: 'category-code',
               element: <CategoryCode />
-            },
-            {
-              path: 'system-calendar',
-              element: <SystemCalandar />
             }
           ]
         }

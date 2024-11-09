@@ -161,16 +161,16 @@ const List = ({ data }: ListProps) => {
                 },
                 {
                     Header: 'Date',
-                    accessor: 'formattedDate',
+                    accessor: 'holidayDate',
                     Cell: ({ row }: { row: Row }) => {
-                        if (row.values.formattedDate === undefined || row.values.formattedDate === null || row.values.formattedDate === '') {
+                        if (row.values.holidayDate === undefined || row.values.holidayDate === null || row.values.holidayDate === '') {
                             return <>-</>
                         }
-                        if (typeof row.values.formattedDate === 'string') {
-                            return <>{row.values.formattedDate}</>;
+                        if (typeof row.values.holidayDate === 'string') {
+                            return <>{row.values.holidayDate}</>;
                         }
-                        if (typeof row.values.formattedDate === 'number') {
-                            return <>{row.values.formattedDate}</>;
+                        if (typeof row.values.holidayDate === 'number') {
+                            return <>{row.values.holidayDate}</>;
                         }
                         // Handle any other data types if necessary
                         return <>-</>;
