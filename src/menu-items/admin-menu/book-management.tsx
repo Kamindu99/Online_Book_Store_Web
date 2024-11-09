@@ -17,13 +17,13 @@ const bookmanagement: NavItemType = {
     title: <FormattedMessage id="book-management" />,
     type: 'group',
     children: [
-        {
-            id: 'master-list',
-            title: <FormattedMessage id="master-list" />,
-            type: 'item',
-            url: '/book-management/book-master/list',
-            icon: icons.ProfileOutlined,
-        },
+        // {
+        //     id: 'master-list',
+        //     title: <FormattedMessage id="master-list" />,
+        //     type: 'item',
+        //     url: '/book-management/book-master/list',
+        //     icon: icons.ProfileOutlined,
+        // },
         {
             id: 'master-list-user',
             title: <FormattedMessage id="master-list-user" />,

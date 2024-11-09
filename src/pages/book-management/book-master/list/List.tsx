@@ -192,8 +192,6 @@ const List = () => {
     const { booksList, error, isLoading, success } = useSelector(state => state.book)
 
     const [book, setBook] = useState<dataProps>();
-    console.log(book);
-
     const [bookList, setBookList] = useState<dataProps[]>([]);
     const [add, setAdd] = useState<boolean>(false);
 

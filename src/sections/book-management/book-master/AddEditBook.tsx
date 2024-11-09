@@ -28,14 +28,14 @@ import * as Yup from 'yup';
 import IconButton from 'components/@extended/IconButton';
 
 import { useDispatch, useSelector } from 'store';
-import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
-import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
 import axios from 'axios';
-import { getCateogyCodesFdd } from 'store/reducers/category-code';
+import SingleFileUpload from 'components/third-party/dropzone/SingleFile';
+import { createBook, toInitialState, updateBook } from 'store/reducers/book-master';
+import { getCateogyCodesFdd, toInitialState as toInitialStateCat } from 'store/reducers/category-code';
+import { CategoryCodeDTO } from 'types/category-code';
 
 // types
 
@@ -68,8 +68,8 @@ export interface Props {
 const AddEditBook = ({ book, onCancel }: Props) => {
 
     const dispatch = useDispatch();
-    const { error, isLoading, success } = useSelector(state => state.book)
     const { categoryCodeFdd } = useSelector(state => state.categoryCode)
+    const [categoryCodes, setCategoryCodes] = useState<CategoryCodeDTO[]>([]);
     const isCreating = !book;
 
     const BookSchema = Yup.object().shape({
@@ -132,48 +132,11 @@ const AddEditBook = ({ book, onCancel }: Props) => {
     }, [])
 
     useEffect(() => {
-        if (error != null) {
-            let defaultErrorMessage = "ERROR";
-            // @ts-ignore
-            const errorExp = error as Template1Error
-            if (errorExp.message) {
-                defaultErrorMessage = errorExp.message
-            }
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: defaultErrorMessage,
-                    variant: 'alert',
-                    alert: {
-                        color: 'error'
-                    },
-                    close: true
-                })
-            );
-            dispatch(toInitialState());
+        if (categoryCodeFdd) {
+            setCategoryCodes(categoryCodeFdd);
+            dispatch(toInitialStateCat());
         }
-    }, [error]);
-
-    useEffect(() => {
-        if (success != null) {
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: success,
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: true
-                })
-            );
-            dispatch(toInitialState());
-        }
-    }, [success])
-
-    if (isLoading) {
-        return <>Loading...</>
-    }
+    }, [categoryCodeFdd]);
 
     return (
         <>
@@ -262,7 +225,7 @@ const AddEditBook = ({ book, onCancel }: Props) => {
                                             error={Boolean(touched.categoryId && errors.categoryId)}
                                             helperText={touched.categoryId && errors.categoryId}
                                         >
-                                            {categoryCodeFdd?.map((category) => (
+                                            {categoryCodes?.map((category) => (
                                                 <MenuItem key={category._id} value={category._id}>{category.categoryName}</MenuItem>
                                             ))}
                                         </TextField>

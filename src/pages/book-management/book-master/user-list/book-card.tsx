@@ -1,11 +1,12 @@
 // components/BookCard.tsx
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
+import { DeleteTwoTone, EditTwoTone, HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { Box, Card, CardContent, CardMedia, IconButton, Typography, useTheme } from '@mui/material';
 import useAuth from 'hooks/useAuth';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { dispatch } from 'store';
 import { createBookfavourite, deleteBookfavourite } from 'store/reducers/favourite-book';
+import { Books } from 'types/book-master';
 
 interface BookCardProps {
     imageUrl: string;
@@ -17,12 +18,19 @@ interface BookCardProps {
     bookId: string;
     isFavourite?: boolean;
     status: string;
+    bookDetails: Books;
+    handleAdd: () => void;
+    setBook: (book: any) => void;
+    setDeletedBookId: (bookId: string) => void;
+    setOpenAlert: (open: boolean) => void;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive, categoryName, noOfPages, bookId, isFavourite, status }) => {
+const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActive,
+    categoryName, noOfPages, bookId, isFavourite, status, handleAdd, setBook, setDeletedBookId, setOpenAlert, bookDetails }) => {
 
     const { user } = useAuth()
     const Navigate = useNavigate();
+    const theme = useTheme();
 
     const handleBorrow = (event: React.MouseEvent) => {
         // Prevent the event from propagating to the Card's onClick
@@ -107,6 +115,21 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 alt={bookName}
             />
             <CardContent>
+                {user && user.email === 'wanigasinghebookcollection@gmail.com' &&
+                    <Typography
+                        gutterBottom
+                        variant="h6"
+                        component="div"
+                        sx={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            marginBottom: '0rem'
+                        }}
+                    >
+                        Code - {bookDetails?.bookCode}
+                    </Typography>
+                }
                 <Typography
                     gutterBottom
                     variant="h5"
@@ -137,20 +160,65 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 }}>
                     {noOfPages} pages
                 </Typography>
-                <IconButton
-                    aria-label="add to favorites"
-                    sx={{
-                        position: 'absolute',
-                        bottom: 10,
-                        right: 10,
-                        backgroundColor: 'white',
-                        color: 'black'
-                    }}
-                    onClick={handleBorrow}
-                    disabled={!isActive}
-                >
-                    {isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
-                </IconButton>
+                {user && user.email !== 'wanigasinghebookcollection@gmail.com' &&
+                    <IconButton
+                        aria-label="add to favorites"
+                        sx={{
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 10,
+                            backgroundColor: 'white',
+                            color: 'black'
+                        }}
+                        onClick={handleBorrow}
+                        disabled={!isActive}
+                    >
+                        {isFavourite ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+                    </IconButton>
+                }
+                {user && user.email === 'wanigasinghebookcollection@gmail.com' &&
+                    <>
+                        <IconButton
+                            aria-label="Delete"
+                            color="error"
+                            sx={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10,
+
+                            }}
+                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+                                setDeletedBookId(bookId)
+                                setOpenAlert(true)
+                            }}
+                            disabled={!isActive}
+                        >
+                            <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                        </IconButton>
+                        {bookDetails &&
+                            <IconButton
+                                aria-label="Edit"
+                                color="primary"
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 10,
+                                    right: 50,
+                                    backgroundColor: 'white',
+                                    color: 'black'
+                                }}
+                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                    e.stopPropagation();
+                                    setBook({ ...bookDetails });
+                                    handleAdd();
+                                }}
+                                disabled={!isActive}
+                            >
+                                <EditTwoTone style={{ color: 'red' }} />
+                            </IconButton>
+                        }
+                    </>
+                }
             </CardContent>
         </Card >
     );
