@@ -28,6 +28,7 @@ const UsersList = Loadable(lazy(() => import('pages/user-management/all-users/Li
 
 //parameter management
 const CategoryCode = Loadable(lazy(() => import('pages/parameter-management/category-code/List')));
+const SystemCalandar = Loadable(lazy(() => import('pages/parameter-management/holiday-calendar/calendar')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -182,6 +183,10 @@ const MainRoutes = {
             {
               path: 'category-code',
               element: <CategoryCode />
+            },
+            {
+              path: 'system-calendar',
+              element: <SystemCalandar />
             }
           ]
         }

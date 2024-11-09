@@ -21,6 +21,7 @@ import categoryCode from './category-code';
 import bookReview from './book-reviews';
 import booksorder from './book-order';
 import sendMail from './send-mail';
+import systemCalendar from './system-calendar';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -47,7 +48,8 @@ const reducers = combineReducers({
   categoryCode,
   bookReview,
   booksorder,
-  sendMail
+  sendMail,
+  systemCalendar
 });
 
 export default reducers;

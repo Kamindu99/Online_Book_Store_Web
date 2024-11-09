@@ -149,5 +149,6 @@
   "user-management": "User Management",
   "users-list": "Users List",
   "application": "Application Settings",
-  "global-configuration": "Theme Settings"
+  "global-configuration": "Theme Settings",
+  "system-calendar": "System Calendar"
 }

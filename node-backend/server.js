@@ -47,3 +47,6 @@ app.use("/api/v1/book-management/pre-order", preOrderBook);
 
 const sendMail = require('./routes/SendMailRoutes');
 app.use("/api/v1/book-management/send-mail", sendMail);
+
+const holidayCalandar = require('./routes/SystemCalandarRoutes');
+app.use("/api/v1/parameter-management/holiday", holidayCalandar);

@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const CategoryModel = require('../models/CategoryModel')
+const CalandarModel = require('../models/SystemCalandarModel')
 
 router.post("/", async (req, res) => {
-    const product = new CategoryModel(req.body);
+    const holiday = new CalandarModel(req.body);
     try {
-        const savedCategoryModel = await product.save();
-        res.json(savedCategoryModel);
+        const savedCalandarModel = await holiday.save();
+        res.status(200).json(savedCalandarModel);
     } catch (err) {
-        res.json({ message: err });
+        res.status(500).json({ message: err });
     }
 })
 
 router.route("/fdd").get((req, res) => {
 
-    CategoryModel.find({ isActive: true })
-        .then((category) => {
-            res.json(category);
+    CalandarModel.find({ isActive: true })
+        .then((holiday) => {
+            res.status(200).json(holiday);
         })
         .catch((err) => {
             console.log(err);
@@ -45,21 +45,21 @@ router.route("/").get(async (req, res) => {
 
         // If a search term is provided, search by bookName
         if (search) {
-            searchQuery.categoryName = new RegExp(search, 'i'); // Case-insensitive search
+            searchQuery.reason = new RegExp(search, 'i'); // Case-insensitive search
         }
 
-        // Fetch total number of matching products
-        const total = await CategoryModel.countDocuments(searchQuery);
+        // Fetch total number of matching holidays
+        const total = await CalandarModel.countDocuments(searchQuery);
 
-        // Fetch paginated and sorted products
-        const products = await CategoryModel.find(searchQuery)
+        // Fetch paginated and sorted holidays
+        const holdays = await CalandarModel.find(searchQuery)
             .sort(sortObj)
             .skip(pageNumber * pageSize)
             .limit(pageSize);
 
-        const results = await Promise.all(products.map(async (product) => {
+        const results = await Promise.all(holdays.map(async (holiday) => {
             return {
-                ...product.toObject(),
+                ...holiday.toObject(),
             };
         }));
 
@@ -77,7 +77,7 @@ router.route("/").get(async (req, res) => {
             result: results
         };
 
-        res.json(response);
+        res.status(200).json(response);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: 'An error occurred' });
@@ -86,22 +86,22 @@ router.route("/").get(async (req, res) => {
 
 router.route("/:id").get(async (req, res) => {
     try {
-        const category = await CategoryModel.findById(req.params.id);
-        res.json(category);
+        const holiday = await CalandarModel.findById(req.params.id);
+        res.status(200).json(holiday);
     } catch (err) {
         res.status(500).json({ error: 'An error occurred' }); // Handle errors
     }
 });
 
 router.route("/:id").put(async (req, res) => {
-    let productId = req.params.id;
-    const { categoryCode, categoryName } = req.body;
-    const updatedProduct = {
-        categoryCode,
-        categoryName
+    let holidayId = req.params.id;
+    const { holidayDate, reason } = req.body;
+    const updatedHoliday = {
+        holidayDate,
+        reason
     };
 
-    const update = await CategoryModel.findByIdAndUpdate(productId, updatedProduct).then((response) => {
+    const update = await CalandarModel.findByIdAndUpdate(holidayId, updatedHoliday).then((response) => {
         res.status(200).send({ status: "Updated", response });
 
     }).catch((err) => {
@@ -111,8 +111,8 @@ router.route("/:id").put(async (req, res) => {
 })
 
 router.route("/:id").delete(async (req, res) => {
-    let productId = req.params.id;
-    await CategoryModel.findByIdAndDelete(productId).then(() => {
+    let holidayId = req.params.id;
+    await CalandarModel.findByIdAndDelete(holidayId).then(() => {
         res.status(200).send({ status: "deleted" });
     }).catch((err) => {
         res.status(500).send({ status: "error in delete", err });
