@@ -23,7 +23,10 @@ const sendReminderEmails = async () => {
 
     try {
         // Find books that are active (i.e., not returned)
-        const overdueBooks = await Product.find({ returnDate: formattedDate, isActive: true });
+        const overdueBooks = await Product.find({
+            //  returnDate: formattedDate,
+            isActive: true
+        });
 
         for (const overdueBook of overdueBooks) {
             const userDetails = await UserModel.findById(overdueBook.userId);
