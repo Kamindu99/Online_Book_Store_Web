@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-require('./cronJobs');
 
 app.use(bodyParser.json({ limit: '10mb', extended: true }));
 app.use(cors());
@@ -51,3 +50,6 @@ app.use("/api/v1/book-management/send-mail", sendMail);
 
 const holidayCalandar = require('./routes/SystemCalandarRoutes');
 app.use("/api/v1/parameter-management/holiday", holidayCalandar);
+
+const cronJobs = require('./cronJobs');
+app.use("/api/v1/cron-jobs", cronJobs);
