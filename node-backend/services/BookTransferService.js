@@ -2,6 +2,7 @@ const Product = require('../models/BookTransferModel')
 const BookModel = require('../models/BookModel');
 const UserModel = require('../models/UserModel');
 const nodemailer = require('nodemailer');
+const cron = require('node-cron');
 
 // Configure your SMTP transport
 const transporter = nodemailer.createTransport({
@@ -17,14 +18,15 @@ const transporter = nodemailer.createTransport({
 
 const saveBookTransfer = async (data) => {
     const { bookId, userId, transferedate } = data;
-    // Step 1: Save the product
+    const returnDate = new Date(new Date(transferedate).getTime() + 7 * 24 * 60 * 60 * 1000)
+        .toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
+    // Step 1: Save the product
     const product = new Product({
         bookId,
         userId,
         transferedate,
-        //returnDate - set to 7 days from transfer date (in yyyy-mm-dd format)
-        returnDate: new Date(new Date(transferedate).getTime() + 7 * 24 * 60 * 60 * 1000)?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+        returnDate,
         isActive: true
     }); // Create a new product instance from request body
 
@@ -116,6 +118,50 @@ const saveBookTransfer = async (data) => {
         // If no bookId is provided, only return saved product
         return { status: "Book transfer saved", savedProduct };
     }
+
 };
+
+// Scheduled job to check for overdue books and send reminders
+// Runs every day at midnight (00:00) to check for overdue books
+cron.schedule('30 1 * * *', async () => {
+    console.log("Running scheduled check for overdue books...");
+
+    const today = new Date().toISOString().split('T')[0];
+
+    // Find books with a return date equal to today and not marked as returned
+    const overdueBooks = await Product.find({ returnDate: today, isActive: false });
+
+    overdueBooks.forEach(async (overdueBook) => {
+        const userDetails = await UserModel.findById(overdueBook.userId);
+        const bookDetails = await BookModel.findById(overdueBook.bookId);
+
+        const reminderMailOptions = {
+            from: 'wanigasinghebookcollection@gmail.com',
+            to: userDetails.email,
+            subject: 'Reminder: Book Return Due',
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: #FF0000;">Reminder to Return Book</h2>
+                    <p>Dear ${userDetails.firstName} ${userDetails.lastName},</p>
+                    <p>This is a reminder that the book you borrowed from Wanigasinghe Books Collection is due for return:</p>
+                    <ul>
+                        <li>Book Code: ${bookDetails.bookCode}</li>
+                        <li>Book Name: ${bookDetails.bookName}</li>
+                        <li>Return Date: ${overdueBook.returnDate}</li>
+                    </ul>
+                    <p>Please return the book on time to avoid any penalties.</p>
+                </div>
+            `,
+        };
+
+        transporter.sendMail(reminderMailOptions, (error, info) => {
+            if (error) {
+                console.error('Reminder email sending failed:', error);
+            } else {
+                console.log('Reminder email sent successfully:', info.response);
+            }
+        });
+    });
+});
 
 module.exports = { saveBookTransfer };
