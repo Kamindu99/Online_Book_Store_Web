@@ -22,7 +22,7 @@ cron.schedule('* * * * *', async () => {
     const today = new Date().toISOString().split('T')[0];
 
     // Find books with a return date equal to today and not marked as returned
-    const overdueBooks = await Product.find({ returnDate: today, isActive: true });
+    const overdueBooks = await Product.find({ isActive: true });
 
     overdueBooks.forEach(async (overdueBook) => {
         const userDetails = await UserModel.findById(overdueBook.userId);
