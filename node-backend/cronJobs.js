@@ -24,7 +24,7 @@ const sendReminderEmails = async () => {
     try {
         // Find books that are active (i.e., not returned)
         const overdueBooks = await Product.find({
-            //  returnDate: formattedDate,
+            returnDate: formattedDate,
             isActive: true
         });
 
