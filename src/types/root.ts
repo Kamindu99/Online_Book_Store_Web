@@ -9,8 +9,8 @@ import { AuthProps } from './auth';
 import { CalendarProps } from './calendar';
 import { MenuProps } from './menu';
 import { SnackbarProps } from './snackbar';
-import { KanbanStateProps } from './kanban';
-import { InvoiceProps } from './invoice';
+// import { KanbanStateProps } from './kanban';
+// import { InvoiceProps } from './invoice';
 
 // ==============================|| ROOT TYPES  ||============================== //
 
@@ -19,8 +19,8 @@ export type RootStateProps = {
   calendar: CalendarProps;
   menu: MenuProps;
   snackbar: SnackbarProps;
-  kanban: KanbanStateProps;
-  invoice: InvoiceProps;
+  // kanban: KanbanStateProps;
+  // invoice: InvoiceProps;
 };
 
 export type KeyedObject = {
@@ -29,8 +29,8 @@ export type KeyedObject = {
 
 export type OverrideIcon =
   | (OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
-      muiName: string;
-    })
+    muiName: string;
+  })
   | ComponentClass<any>
   | FunctionComponent<any>;
 
