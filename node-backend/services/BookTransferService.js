@@ -123,7 +123,7 @@ const saveBookTransfer = async (data) => {
 
 // Scheduled job to check for overdue books and send reminders
 // Runs every day at midnight (00:00) to check for overdue books
-cron.schedule('30 1 * * *', async () => {
+cron.schedule('20 1 * * *', async () => {
     console.log("Running scheduled check for overdue books...");
 
     const today = new Date().toISOString().split('T')[0];
