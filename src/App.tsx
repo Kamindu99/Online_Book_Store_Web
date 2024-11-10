@@ -24,6 +24,7 @@ import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  console.log(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     // fetch dashboard menu from API
