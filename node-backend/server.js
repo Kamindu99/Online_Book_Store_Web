@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+require('./cronJobs');
 
 app.use(bodyParser.json({ limit: '10mb', extended: true }));
 app.use(cors());
