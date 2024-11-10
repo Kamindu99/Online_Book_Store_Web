@@ -1,6 +1,6 @@
-const Product = require('../models/BookTransferModel')
-const BookModel = require('../models/BookModel');
-const UserModel = require('../models/UserModel');
+const Product = require('./models/BookTransferModel')
+const BookModel = require('./models/BookModel');
+const UserModel = require('./models/UserModel');
 const nodemailer = require('nodemailer');
 const cron = require('node-cron');
 
