@@ -122,13 +122,16 @@ const saveBookTransfer = async (data) => {
 };
 
 // Scheduled job to check for overdue books and send reminders
-cron.schedule('32 20 * * *', async () => {
-    console.log("Running scheduled check for overdue books...");
+cron.schedule('45 20 * * *', async () => {
+    console.log("Running scheduled check for overdue books at 1:30 a.m. Sri Lanka time...");
 
     const today = new Date().toISOString().split('T')[0];
+    console.log('Today:', today);
 
     // Find books with a return date equal to today and not marked as returned
     const overdueBooks = await Product.find({ returnDate: today, isActive: true });
+
+    console.log('Overdue books:', overdueBooks);
 
     overdueBooks.forEach(async (overdueBook) => {
         const userDetails = await UserModel.findById(overdueBook.userId);
