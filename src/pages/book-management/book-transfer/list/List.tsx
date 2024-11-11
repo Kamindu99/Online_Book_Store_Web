@@ -220,6 +220,10 @@ const TransferBookList = () => {
                     accessor: 'returnDate',
                 },
                 {
+                    Header: 'Penalty',
+                    accessor: 'penalty',
+                },
+                {
                     Header: 'Status',
                     accessor: 'isActive',
                     Cell: ({ value }: { value: boolean }) => {

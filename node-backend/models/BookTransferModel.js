@@ -20,7 +20,7 @@ const transferbookSchema = new mongoose.Schema({
     actualReturnDate: {
         type: String,
     },
-    panalty: {
+    penalty: {
         type: Number,
         default: 0
     },
