@@ -52,22 +52,42 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
     };
 
     return (
-        <Card sx={{
-            maxWidth: 345,
-            margin: 0,
-            transition: '0.3s',
-            opacity: isActive ? 1 : 0.8,
-            cursor: isActive ? 'pointer' : 'not-allowed',
-            position: 'relative',
-            zIndex: 1,
-            '&:hover': isActive ? {
-                boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
-                scale: '1.02'
-            }
-                : {}
-        }}
-            onClick={handleCardClick}
+        <Card
+            sx={{
+                maxWidth: 345,
+                margin: 0,
+                transition: '0.3s',
+                opacity: isActive ? 1 : 0.8,
+                cursor: isActive ? 'pointer' : 'not-allowed',
+                position: 'relative',
+                zIndex: 1,
+                '&:hover': isActive
+                    ? {
+                        boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
+                        transform: 'scale(1.02)',
+                    }
+                    : {}
+            }}
+            onClick={isActive ? handleCardClick : undefined}
         >
+            {/* Category label styled like a badge */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 10,
+                    left: 0, // Align it to the left edge
+                    padding: '0.2rem 0.5rem 0.2rem 0.8rem',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    backgroundColor: '#4d81db', // Change to your preferred color
+                    borderRadius: '0 0.3rem 0.3rem 0', // Rounded top-right and bottom-right corners
+                    fontSize: '0.85rem',
+                    transform: 'rotate(-10deg) translateX(-15%)', // Adds a slight angle and offset
+                    whiteSpace: 'nowrap', // Prevent text from wrapping
+                }}
+            >
+                {categoryName}
+            </Box>
             {/* Conditionally render the "Booked" banner */}
             {
                 !isActive && (
@@ -91,18 +111,6 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                     </Box>
                 )
             }
-            <Box sx={{
-                position: 'absolute',
-                top: 10,
-                right: 0,
-                padding: '0.2rem 0.5rem 0.2rem 0.5rem',
-                borderRadius: '0.3rem 0 0 0.3rem',
-                color: 'black',
-                fontWeight: 'bold',
-                backgroundColor: '#16b5c7',
-            }}>
-                {categoryName}
-            </Box>
             <CardMedia
                 component="img"
                 sx={{
