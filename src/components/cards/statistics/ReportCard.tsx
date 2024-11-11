@@ -7,7 +7,7 @@ import { GenericCardProps } from 'types/root';
 
 // ==============================|| REPORT CARD ||============================== //
 
-interface ReportCardProps extends GenericCardProps {}
+interface ReportCardProps extends GenericCardProps { }
 
 const ReportCard = ({ primary, secondary, iconPrimary, color }: ReportCardProps) => {
   const IconPrimary = iconPrimary!;
@@ -18,14 +18,14 @@ const ReportCard = ({ primary, secondary, iconPrimary, color }: ReportCardProps)
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Stack spacing={1}>
-            <Typography variant="h4">{primary}</Typography>
+            <Typography variant="h5">{primary}</Typography>
             <Typography variant="body1" color="secondary">
               {secondary}
             </Typography>
           </Stack>
         </Grid>
         <Grid item>
-          <Typography variant="h2" style={{ color }}>
+          <Typography variant="h3" style={{ color }}>
             {primaryIcon}
           </Typography>
         </Grid>

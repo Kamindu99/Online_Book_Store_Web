@@ -79,7 +79,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                     padding: '0.2rem 0.5rem 0.2rem 0.8rem',
                     color: 'white',
                     fontWeight: 'bold',
-                    backgroundColor: '#4d81db', // Change to your preferred color
+                    backgroundColor: '#1b64e3', // Change to your preferred color
                     borderRadius: '0 0.3rem 0.3rem 0', // Rounded top-right and bottom-right corners
                     fontSize: '0.85rem',
                     transform: 'rotate(-10deg) translateX(-15%)', // Adds a slight angle and offset

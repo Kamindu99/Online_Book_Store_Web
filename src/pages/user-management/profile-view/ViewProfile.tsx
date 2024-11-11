@@ -1,4 +1,10 @@
 import {
+    MehOutlined,
+    DeliveredProcedureOutlined,
+    MoneyCollectOutlined,
+    CheckSquareOutlined
+} from '@ant-design/icons';
+import {
     Avatar,
     Box,
     Button,
@@ -8,9 +14,11 @@ import {
     InputLabel,
     OutlinedInput,
     Stack,
-    Typography
+    Typography,
+    useTheme
 } from '@mui/material';
 import { PopupTransition } from 'components/@extended/Transitions';
+import ReportCard from 'components/cards/statistics/ReportCard';
 import MainCard from 'components/MainCard';
 import useAuth from 'hooks/useAuth';
 import { useEffect, useState } from 'react';
@@ -19,7 +27,7 @@ import { getUserById } from 'store/reducers/users';
 import MembershipCard from './member-card';
 
 const TabProfile = () => {
-
+    const theme = useTheme();
     const { user } = useAuth();
     const { userGetById } = useSelector((state) => state.users);
 
@@ -44,6 +52,21 @@ const TabProfile = () => {
                             Member Card
                         </Button>
                     </Box>
+
+                    <Grid container spacing={3} mt={2} mb={2}>
+                        <Grid item xs={12} lg={3} sm={6}>
+                            <ReportCard primary="1 Books" secondary="Return Due" color={theme.palette.secondary.main} iconPrimary={MehOutlined} />
+                        </Grid>
+                        <Grid item xs={12} lg={3} sm={6}>
+                            <ReportCard primary="3 Books" secondary="Borrow Books" color={theme.palette.secondary.main} iconPrimary={DeliveredProcedureOutlined} />
+                        </Grid>
+                        <Grid item xs={12} lg={3} sm={6}>
+                            <ReportCard primary="2 Books" secondary="All Reads" color={theme.palette.success.dark} iconPrimary={CheckSquareOutlined} />
+                        </Grid>
+                        <Grid item xs={12} lg={3} sm={6}>
+                            <ReportCard primary="Rs.200.00" secondary="Penalties" color={theme.palette.primary.main} iconPrimary={MoneyCollectOutlined} />
+                        </Grid>
+                    </Grid>
 
                     <Box display="flex" justifyContent="center" mb={3}>
                         <Avatar
