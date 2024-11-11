@@ -16,21 +16,23 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send reminder emails for overdue books
-const sendReminderEmails = async () => {
+const sendReminderEmailsAndCalculatePanalties = async () => {
+    const today = new Date().toISOString().split('T')[0];
+
     const twoDaysFromNow = new Date();
     twoDaysFromNow.setDate(twoDaysFromNow.getDate() + 2);
     const formattedDate = twoDaysFromNow.toISOString().split('T')[0];
 
     try {
         // Find books that are active (i.e., not returned)
-        const overdueBooks = await Product.find({
+        const booksDueSoon = await Product.find({
             returnDate: formattedDate,
             isActive: true
         });
 
-        for (const overdueBook of overdueBooks) {
-            const userDetails = await UserModel.findById(overdueBook.userId);
-            const bookDetails = await BookModel.findById(overdueBook.bookId);
+        for (const bookDueSoon of booksDueSoon) {
+            const userDetails = await UserModel.findById(bookDueSoon.userId);
+            const bookDetails = await BookModel.findById(bookDueSoon.bookId);
 
             const reminderMailOptions = {
                 from: 'wanigasinghebookcollection@gmail.com',
@@ -40,11 +42,11 @@ const sendReminderEmails = async () => {
                     <div style="font-family: Arial, sans-serif; color: #333;">
                         <h2 style="color: #FF0000;">Reminder to Return Book</h2>
                         <p>Dear ${userDetails.firstName} ${userDetails.lastName},</p>
-                        <p>This is a reminder that the book you borrowed from Wanigasinghe Books Collection is due for return on ${overdueBook.returnDate}.</p>
+                        <p>This is a reminder that the book you borrowed from Wanigasinghe Books Collection is due for return on ${bookDueSoon.returnDate}.</p>
                         <ul>
                             <li>Book Code: ${bookDetails.bookCode}</li>
                             <li>Book Name: ${bookDetails.bookName}</li>
-                            <li>Return Date: ${overdueBook.returnDate}</li>
+                            <li>Return Date: ${bookDueSoon.returnDate}</li>
                         </ul>
                         <p>Please return the book on time to avoid any penalties.</p>
                          <p style="font-size: 14px; color: #555;margin:20px 0 0 0">Best regards,</p>
@@ -63,6 +65,23 @@ const sendReminderEmails = async () => {
             await transporter.sendMail(reminderMailOptions);
             console.log('Reminder email sent successfully to:', userDetails.email);
         }
+
+        // Find overdue books (past returnDate) that are still active
+        const overdueBooks = await Product.find({
+            returnDate: { $lt: today },
+            isActive: true
+        });
+
+        for (const overdueBook of overdueBooks) {
+            const daysOverdue = Math.floor((new Date(today) - new Date(overdueBook.returnDate)) / (1000 * 60 * 60 * 24));
+            const penaltyAmount = daysOverdue * 20;
+
+            // Update the book record with the penalty
+            overdueBook.panalty = penaltyAmount;
+            await overdueBook.save();
+
+            console.log(`Penalty of Rs.${penaltyAmount} applied to book with ID: ${overdueBook._id}`);
+        }
     } catch (error) {
         console.error('Failed to send reminder emails:', error);
     }
@@ -70,7 +89,7 @@ const sendReminderEmails = async () => {
 
 async function cronJobs(req, res) {
     try {
-        await sendReminderEmails(); // Function that contains your email sending logic
+        await sendReminderEmailsAndCalculatePanalties(); // Function that contains your email sending logic
         res.status(200).json({ message: 'Reminder emails sent successfully' });
     } catch (error) {
         console.error('Error sending emails:', error);

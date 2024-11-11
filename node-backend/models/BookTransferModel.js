@@ -20,6 +20,10 @@ const transferbookSchema = new mongoose.Schema({
     actualReturnDate: {
         type: String,
     },
+    panalty: {
+        type: Number,
+        default: 0
+    },
     isActive: {
         type: Boolean,
         default: true
