@@ -18,9 +18,9 @@ const ReportCard = ({ primary, secondary, iconPrimary, color }: ReportCardProps)
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Stack spacing={1}>
-            <Typography variant="h5">{primary}</Typography>
-            <Typography variant="body1" color="secondary">
-              {secondary}
+            <Typography variant="body1" color="secondary">{secondary}</Typography>
+            <Typography variant="h5" >
+              {primary}
             </Typography>
           </Stack>
         </Grid>

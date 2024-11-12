@@ -55,16 +55,16 @@ const TabProfile = () => {
 
                     <Grid container spacing={3} mt={2} mb={2}>
                         <Grid item xs={6} lg={3} sm={6}>
-                            <ReportCard primary={user?.returnDue} secondary="Return Due" color={theme.palette.secondary.main} iconPrimary={MehOutlined} />
+                            <ReportCard primary={`${user?.returnDue} Books`} secondary="Return Due" color={theme.palette.error.main} iconPrimary={MehOutlined} />
                         </Grid>
                         <Grid item xs={6} lg={3} sm={6}>
-                            <ReportCard primary={user?.borrowBooks} secondary="Borrow Books" color={theme.palette.secondary.main} iconPrimary={DeliveredProcedureOutlined} />
+                            <ReportCard primary={`${user?.borrowBooks} Books`} secondary="Borrows" color={theme.palette.warning.main} iconPrimary={DeliveredProcedureOutlined} />
                         </Grid>
                         <Grid item xs={6} lg={3} sm={6}>
-                            <ReportCard primary={user?.allReads} secondary="All Reads" color={theme.palette.success.dark} iconPrimary={CheckSquareOutlined} />
+                            <ReportCard primary={`${user?.allReads} Books`} secondary="All Reads" color={theme.palette.success.dark} iconPrimary={CheckSquareOutlined} />
                         </Grid>
                         <Grid item xs={6} lg={3} sm={6}>
-                            <ReportCard primary={user?.penaltyAmount} secondary="Penalties" color={theme.palette.primary.main} iconPrimary={MoneyCollectOutlined} />
+                            <ReportCard primary={`Rs.${user?.penaltyAmount?.toFixed(2)}`} secondary="Penalties" color={theme.palette.primary.main} iconPrimary={MoneyCollectOutlined} />
                         </Grid>
                     </Grid>
 
