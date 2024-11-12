@@ -81,7 +81,7 @@ const sendReminderEmailsAndCalculatePanalties = async () => {
             userDetails.penaltyAmount += 20;
             await userDetails.save();
 
-            console.log(`Penalty of Rs.${penaltyAmount} applied to book with ID: ${overdueBook._id}`);
+            console.log(`Penalty of Rs.${20} applied to book with ID: ${overdueBook._id}`);
         }
     } catch (error) {
         console.error('Failed to send reminder emails:', error);
