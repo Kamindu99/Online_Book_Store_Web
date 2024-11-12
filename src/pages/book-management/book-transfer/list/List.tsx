@@ -219,18 +219,22 @@ const TransferBookList = () => {
                     Header: 'Return Date',
                     accessor: 'returnDate',
                 },
-                {
-                    Header: 'Penalty',
-                    accessor: 'penalty',
-                    className: 'cell-right',
-                    Cell: ({ value }) => {
-                        return new Intl.NumberFormat('en-US', {
-                            style: 'decimal',
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }).format(value);
-                    },
-                },
+                // {
+                //     Header: 'Penalty',
+                //     accessor: 'penalty',
+                //     className: 'cell-right',
+                //     Cell: ({ row, value }) => {
+                //         const today = new Date().toISOString().split('T')[0];
+                //         //@ts-ignore
+                //         const daysOverdue = Math.floor((new Date(today) - new Date(row?.values?.returnDate)) / (1000 * 60 * 60 * 24));
+                //         const penaltyAmount = daysOverdue * 20;
+                //         return new Intl.NumberFormat('en-US', {
+                //             style: 'decimal',
+                //             minimumFractionDigits: 2,
+                //             maximumFractionDigits: 2
+                //         }).format(penaltyAmount);
+                //     },
+                // },
                 {
                     Header: 'Status',
                     accessor: 'isActive',

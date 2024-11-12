@@ -15,6 +15,10 @@ export type UserProfile = {
   avatar?: string;
   image?: string;
   profileImage?: string;
+  returnDue?: string;
+  borrowBooks?: string;
+  allReads?: string;
+  penaltyAmount?: number;
   name?: string;
   occupation?: string;
   isFirstLogin?: boolean;

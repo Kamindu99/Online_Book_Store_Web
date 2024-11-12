@@ -11,6 +11,7 @@ export interface UserGetById {
     firstName?: string;
     lastName?: string;
     occupation?: string;
+    penaltyAmount?: number;
     profileImage?: string;
 };
 

@@ -113,8 +113,7 @@ router.route("/account/me").get(async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, 'abcd1234');
         const user = await UserModel.findById(decoded.id);
-
-
+        const bookTransfer = await BookTransferModel.find({ userId: user._id });
 
         res.json({
             user: {
@@ -123,6 +122,10 @@ router.route("/account/me").get(async (req, res) => {
                 name: `${user.firstName} ${user.lastName}`,
                 isFirstLogin: user.isFirstLogin,
                 occupation: user.occupation,
+                returnDue: bookTransfer.filter((book) => book.isActive === true && new Date(book.returnDate) < new Date()).length,
+                borrowBooks: bookTransfer.filter((book) => book.isActive === true).length,
+                allReads: bookTransfer.filter((book) => book.isActive === false).length,
+                penaltyAmount: user.penaltyAmount,
                 profileImage: user.profileImage
             }
         });

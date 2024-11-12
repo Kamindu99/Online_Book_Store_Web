@@ -234,6 +234,18 @@ const UsersList = () => {
                     accessor: 'email'
                 },
                 {
+                    Header: 'Penalty',
+                    accessor: 'penaltyAmount',
+                    className: 'cell-right',
+                    Cell: ({ value }) => {
+                        return new Intl.NumberFormat('en-US', {
+                            style: 'decimal',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(value);
+                    },
+                },
+                {
                     Header: 'Status',
                     accessor: 'isActive',
                     Cell: ({ value }: { value: boolean }) => {
