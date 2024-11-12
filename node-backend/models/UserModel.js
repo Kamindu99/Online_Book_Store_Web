@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: () => crypto.randomBytes(4).toString('hex')
     },
+    penaltyAmount: {
+        type: Number,
+        default: 0
+    },
     isFirstLogin: {
         type: Boolean,
         default: true

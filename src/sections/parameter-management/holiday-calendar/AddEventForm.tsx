@@ -150,7 +150,7 @@ const AddEventFrom = ({ event, range, onCancel }: AddEventFormProps) => {
                   {touched.start && errors.start && <FormHelperText error={true}>{errors.start as string}</FormHelperText>}
                 </Stack>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
                   <InputLabel htmlFor="cal-title">Reason</InputLabel>
                   <TextField

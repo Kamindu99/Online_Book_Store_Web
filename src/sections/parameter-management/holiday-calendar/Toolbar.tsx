@@ -58,7 +58,7 @@ const Toolbar = ({ date, view, onClickNext, onClickPrev, onClickToday, onClickAl
 
   useEffect(() => {
     if (matchDownSM) {
-      const filter = viewOptions.filter((item) => item.value !== 'dayGridMonth' && item.value !== 'timeGridWeek');
+      const filter = viewOptions.filter((item) => item.value !== 'timeGridDay' && item.value !== 'timeGridWeek');
       setViewFilter(filter);
     } else {
       setViewFilter(viewOptions);
@@ -71,9 +71,11 @@ const Toolbar = ({ date, view, onClickNext, onClickPrev, onClickToday, onClickAl
         <Button variant="outlined" onClick={onClickToday} size={matchDownSM ? 'small' : 'medium'}>
           Today
         </Button>
-        <Button variant="outlined" onClick={onClickAllHoliday} size={matchDownSM ? 'small' : 'medium'} sx={{ ml: 1 }}>
-          {titleAllHoliday}
-        </Button>
+        {!matchDownSM &&
+          <Button variant="outlined" onClick={onClickAllHoliday} size={matchDownSM ? 'small' : 'medium'} sx={{ ml: 1 }}>
+            {titleAllHoliday}
+          </Button>
+        }
       </Grid>
       <Grid item>
         <Stack direction="row" alignItems="center" spacing={matchDownSM ? 1 : 3}>

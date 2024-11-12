@@ -4,6 +4,7 @@ const UserModel = require('../models/UserModel')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const BookTransferModel = require('../models/BookTransferModel')
 
 // Configure your SMTP transport
 const transporter = nodemailer.createTransport({
@@ -112,6 +113,9 @@ router.route("/account/me").get(async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, 'abcd1234');
         const user = await UserModel.findById(decoded.id);
+
+
+
         res.json({
             user: {
                 id: user._id,
