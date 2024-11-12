@@ -77,8 +77,6 @@ const sendReminderEmailsAndCalculatePanalties = async () => {
             const penaltyAmount = daysOverdue * 20;
 
             // Update the book record with the penalty
-            overdueBook.userId = penaltyAmount;
-
             const userDetails = await UserModel.findById(overdueBook.userId);
             userDetails.penaltyAmount += penaltyAmount;
             await userDetails.save();
