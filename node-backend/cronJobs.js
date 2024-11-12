@@ -73,12 +73,12 @@ const sendReminderEmailsAndCalculatePanalties = async () => {
         });
 
         for (const overdueBook of overdueBooks) {
-            const daysOverdue = Math.floor((new Date(today) - new Date(overdueBook.returnDate)) / (1000 * 60 * 60 * 24));
-            const penaltyAmount = daysOverdue * 20;
+            // const daysOverdue = Math.floor((new Date(today) - new Date(overdueBook.returnDate)) / (1000 * 60 * 60 * 24));
+            // const penaltyAmount = daysOverdue * 20;
 
             // Update the book record with the penalty
             const userDetails = await UserModel.findById(overdueBook.userId);
-            userDetails.penaltyAmount += penaltyAmount;
+            userDetails.penaltyAmount += 20;
             await userDetails.save();
 
             console.log(`Penalty of Rs.${penaltyAmount} applied to book with ID: ${overdueBook._id}`);
