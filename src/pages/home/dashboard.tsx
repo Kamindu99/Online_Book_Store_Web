@@ -25,16 +25,16 @@ const Dashboard = () => {
     return (
         <>
             <Grid container rowSpacing={1.5} columnSpacing={2.75}>
-                <Grid item xs={6} sm={6} md={4} lg={4}>
+                <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Total Users" count={booksCount?.totalUsers?.toString()!} children={undefined} />
                 </Grid>
-                <Grid item xs={6} sm={6} md={4} lg={4}>
+                <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Total Books" count={booksCount?.totalBooks?.toString()!} isLoss color="warning" children={undefined} />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
+                <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Not Return" count={booksCount?.totalTransfers?.toString()!} isLoss color="warning" children={undefined} />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
+                <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Pre Orders" count={booksCount?.totalPreOrders?.toString()!} isLoss color="warning" children={undefined} />
                 </Grid>
 
