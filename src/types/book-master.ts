@@ -36,6 +36,7 @@ export type BooksCount = {
     totalBooks?: number
     totalUsers?: number
     totalTransfers?: number
+    totalPreOrders?: number
     category?: CategoryDTO[]
 };
 

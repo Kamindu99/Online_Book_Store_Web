@@ -32,7 +32,10 @@ const Dashboard = () => {
                     <AnalyticsDataCard title="Total Books" count={booksCount?.totalBooks?.toString()!} isLoss color="warning" children={undefined} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <AnalyticsDataCard title="Total Borrow" count={booksCount?.totalTransfers?.toString()!} isLoss color="warning" children={undefined} />
+                    <AnalyticsDataCard title="Not Return" count={booksCount?.totalTransfers?.toString()!} isLoss color="warning" children={undefined} />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                    <AnalyticsDataCard title="Pre Orders" count={booksCount?.totalPreOrders?.toString()!} isLoss color="warning" children={undefined} />
                 </Grid>
 
                 <Grid item xs={12} md={7} lg={7}>
