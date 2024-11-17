@@ -39,8 +39,8 @@ const bookmanagement: NavItemType = {
             icon: icons.SafetyCertificateOutlined,
         },
         {
-            id: 'My Order List',
-            title: <FormattedMessage id="My Order List" />,
+            id: 'ordered-books',
+            title: <FormattedMessage id="ordered-books" />,
             type: 'item',
             url: '/book-management/pre-order/my-list',
             icon: icons.DeliveredProcedureOutlined,

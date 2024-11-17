@@ -140,16 +140,18 @@
   "home": "Home",
   "book-management": "Book Management",
   "master-list": "Books List Admin",
-  "master-list-user": "Books List",
+  "master-list-user": "All Books",
   "disposal-list": "Disposal List",
   "transfer-list": "Borrow List",
-  "my-transfer-list": "My Borrow List",
-  "past-read-list": "Past Read List",
+  "my-transfer-list": "Borrowed Books",
+  "past-read-list": "Past Read Books",
   "parameter-management": "Paramater Management",
   "category-code": "Category List",
   "user-management": "User Management",
   "users-list": "Users List",
   "application": "Application Settings",
   "global-configuration": "Theme Settings",
-  "system-calendar": "Library Calendar"
+  "system-calendar": "Library Calendar",
+  "ordered-books": "Ordered Books",
+  "order-list": "Order List"
 }
