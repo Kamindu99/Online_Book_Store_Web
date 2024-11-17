@@ -1,15 +1,9 @@
-import { Column, HeaderGroup } from 'react-table';
-import { Books } from 'types/book-master';
+import { HeaderGroup } from 'react-table';
+import { Booksorder } from 'types/book-order';
 
-export interface dataProps extends Books {
+export interface dataProps extends Booksorder {
     userId?: string;
     transferDate?: string;
-}
-
-export interface ReactTableProps {
-    columns: Column[]
-    data: dataProps[]
-    getHeaderProps: (column: HeaderGroup) => {};
 }
 export interface TableHeaderProps {
     headerGroups: HeaderGroup[];

@@ -128,7 +128,7 @@ const TransferBookList = () => {
             <Grid container spacing={2}>
                 {bookList && bookList.length !== 0 ? <>
                     {bookList.map((book) => (
-                        <Grid item xs={12} sm={12} md={2.4} lg={2.4} xl={2.4} sx={{ width: "100%" }}>
+                        <Grid item xs={6} sm={6} md={2.4} lg={2.4} xl={2.4} sx={{ width: "100%" }}>
                             <BookCard
                                 imageUrl={book.bmBook?.imageUrl!}
                                 bookName={book.bmBook?.bookName!}
