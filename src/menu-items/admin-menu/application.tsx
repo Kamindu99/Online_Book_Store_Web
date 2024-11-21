@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined, PhoneOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { SettingOutlined };
+const icons = { SettingOutlined, PhoneOutlined };
 // ==============================|| MENU ITEMS - SUPPORT ||============================== //
 
 const application: NavItemType = {
@@ -22,6 +22,13 @@ const application: NavItemType = {
       type: 'item',
       url: '/home/global-configuration/theme-settings',
       icon: icons.SettingOutlined,
+    },
+    {
+      id: 'contact-us',
+      title: <FormattedMessage id="contact-us" />,
+      type: 'item',
+      url: '/home/contact-us',
+      icon: icons.PhoneOutlined,
     }
   ]
 };

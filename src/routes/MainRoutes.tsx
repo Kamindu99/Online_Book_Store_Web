@@ -46,6 +46,7 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 // render - home page
 const Dashboard = Loadable(lazy(() => import('pages/home/dashboard')));
 const ThemeSettings = Loadable(lazy(() => import('pages/home/ThemeSettings')));
+const ContactUs = Loadable(lazy(() => import('pages/home/contact-us')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -68,6 +69,10 @@ const MainRoutes = {
             {
               path: 'system-calendar',
               element: <SystemCalandar />
+            },
+            {
+              path: 'contact-us',
+              element: <ContactUs />
             }
           ]
         },
@@ -108,6 +113,10 @@ const MainRoutes = {
             {
               path: 'system-calendar',
               element: <SystemCalandar />
+            },
+            {
+              path: 'contact-us',
+              element: <ContactUs />
             }
           ]
         },
