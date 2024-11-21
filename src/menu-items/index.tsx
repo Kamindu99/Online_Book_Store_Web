@@ -21,7 +21,7 @@ const MenuItems = (): { items: NavItemType[] } => {
   const { user } = useAuth();
 
   return {
-    items: user === null ? [homeguest, bookmanagementguest] : user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, usermanagement, paramatermanagement, application] : [home, bookmanagement, applicationUser]
+    items: user === null ? [homeguest, bookmanagementguest, application] : user?.email === 'wanigasinghebookcollection@gmail.com' ? [homeAdmin, bookmanagementAdmin, usermanagement, paramatermanagement, application] : [home, bookmanagement, applicationUser]
   };
 };
 
