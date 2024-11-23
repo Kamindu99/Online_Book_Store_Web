@@ -6,7 +6,7 @@
 
 ## Technologies Used
 
-- Frontend: React.js
+- Frontend: React.js with MUI
 - Backend: Node.js with Express.js
 - Database: MongoDB
 
