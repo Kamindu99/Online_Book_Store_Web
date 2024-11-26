@@ -16,15 +16,20 @@ interface MenuItem {
 }
 
 // Utility to flatten menu structure
-const flattenMenu = (menu: any, parentPath: string = ""): MenuItem[] => {
+const FlattenMenu = (menu: any, parentPath: string = ""): MenuItem[] => {
+
+  const intl = useIntl();
+
   let flatList: MenuItem[] = [];
   menu.forEach((item: any) => {
+
     const fullPath = parentPath + (item.url || ""); // Ensure paths are concatenated correctly
+
     if (item.type === "item") {
-      flatList.push({ id: item.id, title: item.title.props.id, url: fullPath });
+      flatList.push({ id: item.id, title: intl.formatMessage({ id: item.title.props.id }), url: fullPath });
     }
     if (item.children) {
-      flatList = flatList.concat(flattenMenu(item.children, fullPath));
+      flatList = flatList.concat(FlattenMenu(item.children, fullPath));
     }
   });
   return flatList;
@@ -32,10 +37,8 @@ const flattenMenu = (menu: any, parentPath: string = ""): MenuItem[] => {
 
 const Search = () => {
   const navigate = useNavigate();
-  const intl = useIntl();
-  console.log(navigation());
 
-  const allMenuItems = navigation() ? flattenMenu(navigation().items) : [];
+  const allMenuItems = navigation() ? FlattenMenu(navigation().items) : [];
 
   const [inputValue, setInputValue] = useState<string>('');
   const [filteredOptions, setFilteredOptions] = useState<MenuItem[]>([]);
@@ -44,22 +47,11 @@ const Search = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
-    // if (value) {
-    //   setFilteredOptions(
-    //     allMenuItems.filter((option) =>
-    //       option.title.toLowerCase().includes(value.toLowerCase())
-    //     )
-    //   );
-    // }
-
-
-
     if (value) {
       setFilteredOptions(
-        allMenuItems.filter((option) => {
-          const title = intl.formatMessage({ id: option.title });
-          return title.toLowerCase().includes(value.toLowerCase());
-        })
+        allMenuItems.filter((option) =>
+          option.title.toLowerCase().includes(value.toLowerCase())
+        )
       );
     }
     else {
