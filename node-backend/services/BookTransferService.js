@@ -131,8 +131,6 @@ const saveBookTransfer = async (data) => {
 //     // Find books with a return date equal to today and not marked as returned
 //     const overdueBooks = await Product.find({ returnDate: today, isActive: true });
 
-//     console.log('Overdue books:', overdueBooks);
-
 //     // overdueBooks.forEach(async (overdueBook) => {
 //     //     const userDetails = await UserModel.findById(overdueBook.userId);
 //     //     const bookDetails = await BookModel.findById(overdueBook.bookId);
