@@ -3,12 +3,13 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 
 // project import
-import AnalyticsDataCard from "components/cards/statistics/AnalyticsDataCard";
 import MainCard from "components/MainCard";
 import { useEffect } from "react";
 import InquiryStatusPieChart from "sections/home/dashboard/dashboard/InquiryStatusPieChart";
 import { useDispatch, useSelector } from "store";
 import { getBooksCount } from "store/reducers/book-master";
+import SalesChart from "./SalesChart";
+import CardViews from "./CardView";
 
 // ==============================|| Dashboard ||============================== //
 
@@ -25,7 +26,7 @@ const Dashboard = () => {
     return (
         <>
             <Grid container rowSpacing={1.5} columnSpacing={2.75}>
-                <Grid item xs={6} sm={6} md={3} lg={3}>
+                {/* <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Total Users" count={booksCount?.totalUsers?.toString()!} children={undefined} />
                 </Grid>
                 <Grid item xs={6} sm={6} md={3} lg={3}>
@@ -36,8 +37,16 @@ const Dashboard = () => {
                 </Grid>
                 <Grid item xs={6} sm={6} md={3} lg={3}>
                     <AnalyticsDataCard title="Pre Orders" count={booksCount?.totalPreOrders?.toString()!} isLoss color="warning" children={undefined} />
-                </Grid>
+                </Grid> */}
 
+                <Grid item xs={12} sm={12}>
+                    {/* <ReaderCard />
+                    <BarChart />
+                    <DonutChart />
+                    <HorizontalBarChart /> */}
+                    <CardViews scheduleSummaryDashboardData={booksCount!} />
+                    <br />
+                </Grid>
                 <Grid item xs={12} md={7} lg={7}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
@@ -87,6 +96,13 @@ const Dashboard = () => {
                         )}
                     </MainCard>
                 </Grid>
+
+                <Grid item xs={12} sm={12}>
+                    <SalesChart noOfCustomers={booksCount?.category?.map(item => item.count!)} categories={booksCount?.category?.map(item => item.categoryName!)} />
+                </Grid>
+
+
+
             </Grid>
         </>
     );
