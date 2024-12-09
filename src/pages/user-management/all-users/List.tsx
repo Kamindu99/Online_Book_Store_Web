@@ -404,7 +404,7 @@ const UsersList = () => {
                         data={data!} />
                 </ScrollX>
             </MainCard>
-            {/* alert model */}
+            {/* alert model for deactivate users*/}
             {userId && <AlertUserInactive title={title!} open={openAlert} handleClose={handleAlertClose} deleteId={userId} />}
         </>
     )
