@@ -404,7 +404,7 @@ const UsersList = () => {
                         data={data!} />
                 </ScrollX>
             </MainCard>
-            {/* alert model for deactivate users in book store*/}
+            {/* alert model for deactivate users in book store */}
             {userId && <AlertUserInactive title={title!} open={openAlert} handleClose={handleAlertClose} deleteId={userId} />}
         </>
     )
