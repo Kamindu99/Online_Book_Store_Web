@@ -27,7 +27,7 @@ const App = () => {
   console.log(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
-    //  fetch dashboard menu from API
+    // fetch dashboard menu from API
     dispatch(fetchMenu()).then(() => {
       setLoading(false);
     });
