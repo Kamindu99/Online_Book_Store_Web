@@ -190,6 +190,7 @@ const List = () => {
         }
     }, [categoryCodeFdd]);
 
+
     const handleCategoryChange = (event: any) => {
         setCategoryTerm(event.target.value as string);
         setCategoryTermName(categoryCodes?.find((category) => category._id === event.target.value)?.categoryName || 'All');
