@@ -329,7 +329,6 @@ const List = () => {
                 </Collapse>
             </Box>
 
-
             <Grid container spacing={2}>
                 {bookList.map((book) => (
                     <Grid item xs={6} sm={6} md={2.4} key={book._id!}>
