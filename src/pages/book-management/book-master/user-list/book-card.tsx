@@ -138,6 +138,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                         Code - {bookDetails?.bookCode}
                     </Typography>
                 }
+
                 <Typography
                     gutterBottom
                     variant="h5"
