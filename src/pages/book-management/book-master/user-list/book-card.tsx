@@ -169,6 +169,7 @@ const BookCard: React.FC<BookCardProps> = ({ imageUrl, bookName, author, isActiv
                 }}>
                     {noOfPages} pages
                 </Typography>
+
                 {user && user.email !== 'wanigasinghebookcollection@gmail.com' &&
                     <IconButton
                         aria-label="add to favorites"
