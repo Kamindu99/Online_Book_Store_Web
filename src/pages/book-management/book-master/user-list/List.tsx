@@ -49,7 +49,6 @@ const List = () => {
     const { success: successCat, error: errorCat, isLoading: isLoadingCat, categoryCodeFdd } = useSelector(state => state.categoryCode)
     const [bookList, setBookList] = useState<dataProps[]>([]);
     const [categoryCodes, setCategoryCodes] = useState<CategoryCodeDTO[]>([]);
-
     const { user } = useAuth()
 
     // ----------------------- | API Call - Roles | ---------------------
