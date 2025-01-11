@@ -19,11 +19,6 @@ import { Loading } from 'utils/loading';
 import BookCard from './book-card';
 import { dataProps } from './types/types';
 
-// ==============================|| REACT TABLE ||============================== //
-
-
-
-
 // ==============================|| Transfer Book List ||============================== //
 
 const TransferBookList = () => {
