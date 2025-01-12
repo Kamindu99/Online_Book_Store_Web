@@ -48,7 +48,6 @@ function ReactTable({ columns, data, getHeaderProps }: ReactTableProps) {
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
     const sortBy = { id: 'id', desc: false };
-
     const filterTypes = useMemo(() => renderFilterTypes, []);
 
     const {
