@@ -52,7 +52,6 @@ function ReactTable({ columns, data, handleAddEdit, getHeaderProps, tableParams 
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
     const sortBy = { id: '_id', desc: false };
-
     const filterTypes = useMemo(() => renderFilterTypes, []);
 
     const {
