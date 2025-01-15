@@ -9,6 +9,7 @@ import { NavItemType } from 'types/menu';
 
 // icons
 const icons = { SettingOutlined, PhoneOutlined };
+
 // ==============================|| MENU ITEMS - SUPPORT ||============================== //
 
 const application: NavItemType = {
