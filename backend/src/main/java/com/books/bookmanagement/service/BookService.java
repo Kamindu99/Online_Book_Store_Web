@@ -145,6 +145,7 @@ public class BookService {
                 throw new Exception("Data not found for given id");
             }
         }
+        
         catch (Exception e){
             log.error(e.getMessage());
             throw new Exception(e.getMessage());
