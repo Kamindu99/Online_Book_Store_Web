@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 // project import
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
-
 import Loader from 'components/Loader';
 import Locales from 'components/Locales';
 import RTLLayout from 'components/RTLLayout';
