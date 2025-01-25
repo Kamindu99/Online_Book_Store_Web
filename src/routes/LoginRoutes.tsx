@@ -15,7 +15,6 @@ const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password'
 const AuthCodeVerification = Loadable(lazy(() => import('pages/auth/code-verification')));
 const Dashboard = Loadable(lazy(() => import('pages/home/dashboard')));
 
-
 // ==============================|| AUTH ROUTING ||============================== //
 
 const LoginRoutes = {
