@@ -1,8 +1,6 @@
 // third-party
 import { FormattedMessage } from 'react-intl';
 
-// assets
-
 // type
 import { NavItemType } from 'types/menu';
 
