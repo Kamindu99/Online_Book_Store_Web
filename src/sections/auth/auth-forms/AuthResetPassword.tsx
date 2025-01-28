@@ -26,8 +26,6 @@ import useScriptRef from 'hooks/useScriptRef';
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-// types
-
 // assets
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
