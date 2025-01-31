@@ -118,7 +118,6 @@ const saveBookTransfer = async (data) => {
         // If no bookId is provided, only return saved product
         return { status: "Book transfer saved", savedProduct };
     }
-
 };
 
 // // Scheduled job to check for overdue books and send reminders
