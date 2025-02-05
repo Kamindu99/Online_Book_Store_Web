@@ -40,6 +40,7 @@ export interface DefaultRootStateProps {
     user: UserStateProps;
 }
 
+
 export interface listParametersType {
     direction?: string;
     page?: number;
