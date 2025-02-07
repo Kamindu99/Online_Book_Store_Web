@@ -26,7 +26,6 @@ export type UsersDTOList = {
     pagination?: PaginationDTO,
     result?: Users[];
 };
-
 export interface UserStateProps {
     usersFdd: Users[] | null;
     userGetById: UserGetById | null;
