@@ -10,7 +10,6 @@ export interface TableProps {
 
 export interface TableHeaderProps {
     headerGroups: HeaderGroup[];
-
 }
 
 export interface dataProps extends UserRequestDto { }
